@@ -1,0 +1,77 @@
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
+
+export const navLinks = [
+    { label: 'Home', href: '#hero' },
+    { label: 'Features', href: '#features' },
+    { label: 'Capabilities', href: '#capabilities' },
+    { label: 'Code', href: '#code-examples' },
+    { label: 'Use Cases', href: '#use-cases' },
+    { label: 'Vision', href: '#vision' }
+];
+
+export default function NavBar() {
+    const [open, setOpen] = useState(false);
+
+    const toggle = () => setOpen((prev) => !prev);
+    const handleNavClick = () => setOpen(false);
+
+    return (
+        <header className="sticky top-0 z-50 border-b border-white/5 bg-slate-950/80 backdrop-blur-xl">
+            <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+                <a href="#hero" className="text-white font-semibold text-xl tracking-tight">
+                    Browser4
+                </a>
+                <nav className="hidden md:flex items-center gap-8 text-sm text-slate-300">
+                    {navLinks.map((link) => (
+                        <a key={link.href} href={link.href} className="transition hover:text-white">
+                            {link.label}
+                        </a>
+                    ))}
+                </nav>
+                <div className="hidden md:flex items-center gap-3">
+                    <a
+                        href="https://github.com/platonai/browser4"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 text-sm font-semibold text-slate-300 border border-slate-700/70 rounded-xl hover:text-white hover:border-slate-500/70"
+                    >
+                        GitHub
+                    </a>
+                    <a
+                        href="#code-examples"
+                        className="px-5 py-2 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-sky-500 to-violet-500 hover:from-sky-400 hover:to-violet-400"
+                    >
+                        Get Started
+                    </a>
+                </div>
+                <button
+                    type="button"
+                    onClick={toggle}
+                    className="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-xl border border-slate-700/70 text-white"
+                    aria-label="Toggle navigation"
+                    aria-expanded={open}
+                >
+                    {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                </button>
+            </div>
+            {open && (
+                <div className="md:hidden border-t border-white/5 bg-slate-950/95 px-6 py-4 flex flex-col gap-4 text-sm text-slate-300">
+                    {navLinks.map((link) => (
+                        <a key={link.href} href={link.href} onClick={handleNavClick} className="py-1">
+                            {link.label}
+                        </a>
+                    ))}
+                    <a
+                        href="#code-examples"
+                        onClick={handleNavClick}
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-violet-500 text-white text-center font-semibold"
+                    >
+                        Get Started
+                    </a>
+                </div>
+            )}
+        </header>
+    );
+}
+

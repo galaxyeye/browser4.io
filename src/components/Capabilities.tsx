@@ -152,7 +152,7 @@ export default function Capabilities() {
     };
 
     return (
-        <section className="relative py-24 bg-gradient-to-b from-slate-950 via-slate-950/80 to-slate-900">
+        <section id="capabilities" className="relative py-24 bg-gradient-to-b from-slate-950 via-slate-950/80 to-slate-900">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(129,140,248,0.08),transparent_55%)]" />
 
             <div className="relative max-w-7xl mx-auto px-6">

@@ -44,7 +44,7 @@ export default function Features() {
     ];
 
     return (
-        <section className="relative py-24 bg-slate-950">
+        <section id="features" className="relative py-24 bg-slate-950">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(56,189,248,0.05),transparent_50%)]" />
 
             <div className="relative max-w-7xl mx-auto px-6">

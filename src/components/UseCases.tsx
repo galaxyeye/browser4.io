@@ -78,7 +78,7 @@ export default function UseCases() {
     const activeColor = colorClasses[active.color as keyof typeof colorClasses];
 
     return (
-        <section className="relative py-24 bg-slate-950">
+        <section id="use-cases" className="relative py-24 bg-slate-950">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,rgba(56,189,248,0.05),transparent_50%)]" />
 
             <div className="relative max-w-7xl mx-auto px-6">

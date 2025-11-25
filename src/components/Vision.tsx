@@ -21,7 +21,7 @@ const accentMap = {
 
 export default function Vision() {
     return (
-        <section className="relative py-24 bg-gradient-to-b from-slate-900 to-slate-950">
+        <section id="vision" className="relative py-24 bg-gradient-to-b from-slate-900 to-slate-950">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(79,70,229,0.08),transparent_55%)]" />
             <div className="relative max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16">
