@@ -47,8 +47,11 @@ const pillars = [
         stat: '100+',
         statLabel: 'Concurrent agents per node',
         footnote: 'Core value: end-to-end reasoning plus reliable execution loops',
-        language: 'kotlin',
-        code: `val agent = AgenticContexts.getOrCreateAgent()
+        codeSamples: [
+            {
+                label: 'Agent run',
+                language: 'kotlin',
+                code: `val agent = AgenticContexts.getOrCreateAgent()
 
 val task = """
     1. go to amazon.com
@@ -58,6 +61,8 @@ val task = """
     """
 
 agent.run(task)`
+            }
+        ]
     },
     {
         icon: Workflow,
@@ -69,8 +74,11 @@ agent.run(task)`
         stat: '99.2%',
         statLabel: 'Completion rate',
         footnote: 'Strength: always-on automation with graceful recovery',
-        language: 'kotlin',
-        code: `val session = AgenticContexts.getOrCreateSession()
+        codeSamples: [
+            {
+                label: 'Automation loop',
+                language: 'kotlin',
+                code: `val session = AgenticContexts.getOrCreateSession()
 val driver = session.getOrCreateBoundDriver()
 
 // Open and parse the page
@@ -85,6 +93,8 @@ var content = driver.selectFirstTextOrNull("#comments")
 var history = agent.run(
     "Search for 'smart phone', read the first four products"
 )`
+            }
+        ]
     },
     {
         icon: Database,
@@ -96,8 +106,21 @@ var history = agent.run(
         stat: '99.9%+',
         statLabel: 'Field accuracy',
         footnote: 'No brittle rules—auto adapts to each site',
-        language: 'kotlin',
-        code: `val sql = """
+        codeSamples: [
+            {
+                label: 'Harvest API',
+                language: 'sql',
+                code: `# Learning from multiple product pages 
+# and precisely extracting each field 
+# without token consumption
+
+select * from harvest('https://www.amazon.com/b?node=3117954011');
+`
+            },
+            {
+                label: 'Extended X-SQL',
+                language: 'kotlin',
+                code: `val sql = """
 select
   llm_extract(dom, 'product name, price, ratings') as llm_data,
   dom_first_text(dom, '#productTitle') as title,
@@ -112,6 +135,8 @@ from load_and_select(
 
 val rs = context.executeQuery(sql)
 println(ResultSetFormatter(rs, withHeader = true))`
+            },
+        ]
     },
     {
         icon: Shield,
@@ -123,8 +148,11 @@ println(ResultSetFormatter(rs, withHeader = true))`
         stat: '100k+',
         statLabel: 'Pages per day',
         footnote: 'Throughput and anti-detection guaranteed together',
-        language: 'kotlin',
-        code: `val args = "-refresh -dropContent -interactLevel fastest"
+        codeSamples: [
+            {
+                label: 'Throughput controls',
+                language: 'kotlin',
+                code: `val args = "-refresh -dropContent -interactLevel fastest"
 val blockingUrls = listOf("*.png", "*.jpg")
 
 val links = LinkExtractors.fromResource("urls.txt")
@@ -137,18 +165,29 @@ val links = LinkExtractors.fromResource("urls.txt")
     }
 
 session.submitAll(links)`
+            }
+        ]
     }
 ] as const;
 
 export default function Capabilities() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [copied, setCopied] = useState(false);
+    const [tabIndices, setTabIndices] = useState(() => pillars.map(() => 0));
+
     const active = pillars[activeIndex];
+    const activeTabIndex = tabIndices[activeIndex] ?? 0;
+    const activeSample = active.codeSamples[activeTabIndex] ?? active.codeSamples[0];
 
     const handleCopy = () => {
-        navigator.clipboard.writeText(active.code);
+        navigator.clipboard.writeText(activeSample.code);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
+    };
+
+    const handleTabChange = (pillarIdx: number, tabIdx: number) => {
+        setTabIndices((prev) => prev.map((current, idx) => (idx === pillarIdx ? tabIdx : current)));
+        setCopied(false);
     };
 
     return (
@@ -232,7 +271,7 @@ export default function Capabilities() {
                         </div>
 
                         <div className="flex items-center justify-between text-xs font-mono uppercase text-slate-500">
-                            <span>{active.language}</span>
+                            <span>{activeSample.language}</span>
                             <button
                                 onClick={handleCopy}
                                 className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-slate-400 hover:text-sky-400 hover:border-slate-600 ${
@@ -243,12 +282,33 @@ export default function Capabilities() {
                             </button>
                         </div>
 
+                        {active.codeSamples.length > 1 && (
+                            <div className="flex gap-2 flex-wrap text-xs font-medium text-slate-400">
+                                {active.codeSamples.map((sample, idx) => {
+                                    const isTabActive = idx === activeTabIndex;
+                                    return (
+                                        <button
+                                            key={sample.label}
+                                            onClick={() => handleTabChange(activeIndex, idx)}
+                                            className={`px-3 py-1 rounded-full border transition ${
+                                                isTabActive
+                                                    ? 'border-sky-500/40 text-sky-300 bg-slate-900'
+                                                    : 'border-slate-800 hover:border-slate-700'
+                                            }`}
+                                        >
+                                            {sample.label}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        )}
+
                         <div className="relative flex-1 bg-slate-950 rounded-2xl p-5 border border-slate-900 shadow-inner overflow-auto">
                             <pre className="text-sm font-mono leading-relaxed text-slate-200 min-h-full">
-                                 <code>{active.code}</code>
+                                 <code>{activeSample.code}</code>
                              </pre>
-                         </div>
-                     </aside>
+                        </div>
+                    </aside>
                 </div>
             </div>
         </section>

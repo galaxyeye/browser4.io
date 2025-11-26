@@ -38,7 +38,7 @@ export default function Features() {
             subtitle: 'Deep web understanding',
             description: 'Understands dynamic, script-driven, and interactive pages',
             color: 'from-pink-400 to-rose-500',
-            stat: '90%+',
+            stat: '99%+',
             statLabel: 'Structured accuracy'
         }
     ];

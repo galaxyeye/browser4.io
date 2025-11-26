@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Bot } from 'lucide-react';
 
-const VERB_TOKENS = ['browse', 'automate', 'study', 'scrape', 'monitor', 'crawl', 'extract'];
+const VERB_TOKENS = ['browse', 'automate', 'study', 'scrape', 'study', 'browse', 'monitor',
+    'crawl', 'automate', 'extract', 'browse', 'automate', 'study'];
 const VERB_SLOT_WIDTH_CH = Math.max(...VERB_TOKENS.map((token) => token.length));
 const VERB_TEMPO_WAVE_MS = [
     520, 360, 220, 160, 140, 180, 260, 420, 640, 420, 260, 180,
@@ -17,7 +18,7 @@ export default function Hero() {
     const milestones = [
         { label: 'Founded in 2014', detail: 'Dedicated to browser automation and agents' },
         { label: 'Evolving 2020+', detail: 'Operationalizing large-scale AI agents' },
-        { label: 'Future ready', detail: 'Embracing digital twins of everything' }
+        { label: 'Future ready', detail: 'Embracing AI agent networks' },
     ];
 
     useEffect(() => {
