@@ -72,6 +72,31 @@ const cases = [
     }
 ];
 
+const videos = [
+    {
+        id: 'WO3M7g35Zt4',
+        title: 'Browser4 demo - product comparison',
+        description: 'Demonstrates how Browser4 agents search Amazon, capture product specs, and stack-rank items side by side.',
+        notes: [
+            'Live navigation across Amazon results pages',
+            'Automatic attribute extraction and comparison highlights',
+            'Great fit for commerce and sourcing analysts'
+        ],
+        color: 'sky'
+    },
+    {
+        id: 'qoXbnL4wdtc',
+        title: 'Browser4: Build an Army of Virtual Agents',
+        description: 'Shows PulsarAgents automating web data extraction and annotation so teams can export into Excel, HTML, or SQL instantly.',
+        notes: [
+            'Provide a list page link, then crawl every product detail',
+            'Generate structured tables with zero manual tagging',
+            'Ideal for turning messy sites into business-ready datasets'
+        ],
+        color: 'violet'
+    }
+];
+
 export default function UseCases() {
     const [activeIndex, setActiveIndex] = useState(0);
     const active = cases[activeIndex];
@@ -155,6 +180,50 @@ export default function UseCases() {
                             <p className="text-slate-400 text-sm leading-relaxed">{item.description}</p>
                         </article>
                     ))}
+                </div>
+
+                <div className="mt-20">
+                    <div className="text-center mb-10">
+                        <p className="text-sm tracking-[0.5em] text-slate-500 uppercase mb-3">video demos</p>
+                        <h3 className="text-3xl font-bold text-white mb-3">See Browser4 in Action</h3>
+                        <p className="text-slate-400 text-lg">Real footage of agents collecting data and comparing products.</p>
+                    </div>
+                    <div className="grid gap-10 md:grid-cols-2">
+                        {videos.map((video) => (
+                            <article key={video.id} className="bg-slate-900/60 border border-slate-800 rounded-3xl p-6 space-y-4">
+                                <div className="flex items-center gap-3">
+                                    <div className={`px-3 py-1 rounded-full text-xs font-semibold ${colorClasses[video.color as keyof typeof colorClasses].badge}`}>
+                                        Video
+                                    </div>
+                                    <h4 className="text-white text-xl font-semibold">{video.title}</h4>
+                                </div>
+                                <p className="text-slate-300 text-sm leading-relaxed">{video.description}</p>
+                                <div className="relative aspect-video rounded-2xl overflow-hidden border border-slate-800">
+                                    <iframe
+                                        src={`https://www.youtube.com/embed/${video.id}`}
+                                        title={video.title}
+                                        className="absolute inset-0 w-full h-full"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    />
+                                </div>
+                                <ul className="text-slate-400 text-sm space-y-2">
+                                    {video.notes.map((note) => (
+                                        <li key={note}>✦ {note}</li>
+                                    ))}
+                                </ul>
+                                <a
+                                    href={`https://www.youtube.com/watch?v=${video.id}`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-2 text-sm font-semibold text-sky-300 hover:text-sky-200"
+                                >
+                                    Watch on YouTube
+                                    <span aria-hidden="true">↗</span>
+                                </a>
+                            </article>
+                        ))}
+                    </div>
                 </div>
             </div>
         </section>
