@@ -57,19 +57,19 @@ export default function Hero() {
     }, []);
 
     return (
-        <section id="hero" className="relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(56,189,248,0.1),transparent_50%)]" />
+        <section id="hero" className="relative overflow-hidden bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
+            <div className="absolute inset-0 bg-gradient-to-br from-white via-slate-50 to-white dark:from-slate-900 dark:via-slate-950 dark:to-slate-900" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(56,189,248,0.18),transparent_55%)] dark:bg-[radial-gradient(circle_at_50%_120%,rgba(56,189,248,0.1),transparent_50%)]" />
 
             <div className="relative max-w-5xl mx-auto px-6 py-28 text-center">
-                <div className="inline-flex items-center justify-center gap-2 px-5 py-2 bg-sky-500/10 border border-sky-500/20 rounded-full mb-8">
-                    <Bot className="w-4 h-4 text-sky-400" />
-                    <span className="text-sky-400 text-sm font-medium">Infrastructure for the ultra-fast browser + agent era</span>
+                <div className="inline-flex items-center justify-center gap-2 px-5 py-2 bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 rounded-full mb-8">
+                    <Bot className="w-4 h-4" />
+                    <span className="text-sm font-medium">Infrastructure for the ultra-fast browser + agent era</span>
                 </div>
 
-                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight tracking-tight drop-shadow-[0_10px_35px_rgba(45,212,191,0.15)]">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 dark:text-white mb-6 leading-tight tracking-tight dark:drop-shadow-[0_10px_35px_rgba(45,212,191,0.15)]">
                     Enable AI to <span
-                        className="inline-flex text-sky-300"
+                        className="inline-flex text-sky-600 dark:text-sky-300"
                         aria-live="polite"
                         style={{ width: `${VERB_SLOT_WIDTH_CH}ch` }}
                     >
@@ -77,8 +77,8 @@ export default function Hero() {
                     </span> <div>the web.</div>
                 </h1>
 
-                <p className="text-xl sm:text-2xl md:text-[26px] text-slate-300 mb-8 font-light max-w-3xl mx-auto">
-                    The ECOSYSTEM built around the world's most-<span className="text-sky-300" aria-live="polite">{ADJECTIVE_TOKENS[adjectiveIndex]}</span> browser-automation library.
+                <p className="text-xl sm:text-2xl md:text-[26px] text-slate-600 dark:text-slate-300 mb-8 font-light max-w-3xl mx-auto">
+                    The ECOSYSTEM built around the world's most-<span className="text-sky-600 dark:text-sky-300" aria-live="polite">{ADJECTIVE_TOKENS[adjectiveIndex]}</span> browser-automation library.
                 </p>
 
                 <div className="flex flex-wrap justify-center items-center gap-4 mb-14">
@@ -92,21 +92,21 @@ export default function Hero() {
                         href="https://github.com/platonai/Browser4"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-10 py-4 border border-slate-700/80 text-white/80 rounded-xl font-semibold transition-all hover:border-slate-500/80"
+                        className="px-10 py-4 border border-slate-200 dark:border-slate-700/80 text-slate-700 dark:text-white/80 rounded-xl font-semibold transition-all hover:border-slate-400 dark:hover:border-slate-500/80"
                     >
                         GITHUB
                     </a>
                 </div>
 
-                <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 backdrop-blur">
-                    <p className="text-slate-500 text-xs tracking-[0.3em] uppercase mb-4">
+                <div className="bg-white/80 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 backdrop-blur">
+                    <p className="text-slate-500 dark:text-slate-500 text-xs tracking-[0.3em] uppercase mb-4">
                         Milestones
                     </p>
                     <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-center md:gap-12">
                         {milestones.map((item) => (
                             <div key={item.label} className="text-center">
-                                <p className="text-sm font-semibold text-white/90">{item.label}</p>
-                                <p className="text-slate-400 text-sm">{item.detail}</p>
+                                <p className="text-sm font-semibold text-slate-900 dark:text-white/90">{item.label}</p>
+                                <p className="text-slate-600 dark:text-slate-400 text-sm">{item.detail}</p>
                             </div>
                         ))}
                     </div>

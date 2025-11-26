@@ -191,16 +191,16 @@ export default function Capabilities() {
     };
 
     return (
-        <section id="capabilities" className="relative py-24 bg-gradient-to-b from-slate-950 via-slate-950/80 to-slate-900">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(129,140,248,0.08),transparent_55%)]" />
+        <section id="capabilities" className="relative py-24 bg-gradient-to-b from-white via-slate-50 to-slate-100 text-slate-900 dark:from-slate-950 dark:via-slate-950/80 dark:to-slate-900 dark:text-white">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_20%,rgba(129,140,248,0.15),transparent_60%)] dark:bg-[radial-gradient(circle_at_15%_20%,rgba(129,140,248,0.08),transparent_55%)]" />
 
             <div className="relative max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16">
-                    <p className="text-sm tracking-[0.5em] text-slate-500 uppercase mb-4">browser4 stack</p>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                    <p className="text-sm tracking-[0.5em] text-slate-400 dark:text-slate-500 uppercase mb-4">browser4 stack</p>
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4">
                         Four Capability Pillars
                     </h2>
-                    <p className="text-xl text-slate-400">
+                    <p className="text-xl text-slate-600 dark:text-slate-400">
                         Agents · Automation · Data · Reliability
                     </p>
                 </div>
@@ -216,8 +216,8 @@ export default function Capabilities() {
                                     onMouseEnter={() => setActiveIndex(index)}
                                     onFocus={() => setActiveIndex(index)}
                                     tabIndex={0}
-                                    className={`relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/60 p-8 lg:p-10 transition ${
-                                        isActive ? accent.ring : ''
+                                    className={`relative overflow-hidden rounded-3xl border bg-white/80 dark:bg-slate-900/60 p-8 lg:p-10 transition ${
+                                        isActive ? `${accent.ring} dark:${accent.ring}` : 'border-slate-200 dark:border-slate-800'
                                     }`}
                                 >
                                     <div className={`absolute inset-y-4 left-4 w-1 rounded-full bg-gradient-to-b ${accent.accentBar}`} />
@@ -228,28 +228,29 @@ export default function Capabilities() {
                                                     <pillar.icon className={`w-4 h-4 ${accent.icon}`} />
                                                     <span>{pillar.tag}</span>
                                                 </div>
-                                                <span className="text-slate-600 text-sm">{pillar.accent.toUpperCase()}</span>
+                                                <span className="text-slate-500 text-sm">{pillar.accent.toUpperCase()}</span>
                                             </div>
-                                            <h3 className="text-3xl font-bold text-white mb-4">{pillar.title}</h3>
-                                            <p className="text-slate-400 mb-6 leading-relaxed">{pillar.summary}</p>
+                                            <h3 className="text-3xl font-bold mb-4">{pillar.title}</h3>
+                                            <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">{pillar.summary}</p>
                                             <div className="grid gap-3 sm:grid-cols-2">
                                                 {pillar.bullets.map((bullet) => (
-                                                    <div key={bullet} className="flex items-center gap-3 text-slate-300">
-                                                        <span className="w-1.5 h-8 rounded-full bg-slate-800" />
+                                                    <div key={bullet} className="flex items-center gap-3 text-slate-700 dark:text-slate-300">
+                                                        <span className="w-1.5 h-8 rounded-full bg-slate-200 dark:bg-slate-800" />
                                                         <p className="text-sm md:text-base">{bullet}</p>
                                                     </div>
                                                 ))}
                                             </div>
                                         </div>
 
-                                        <div className="bg-slate-950/60 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
+                                        <div className="bg-white/90 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
                                             <div>
                                                 <p className="text-sm text-slate-500 mb-2">{pillar.tag}</p>
-                                                <p className="text-5xl font-bold text-white">{pillar.stat}</p>
+                                                <p className="text-5xl font-bold text-slate-900 dark:text-white">{pillar.stat}</p>
                                                 <p className="text-sm text-slate-500">{pillar.statLabel}</p>
                                             </div>
-                                            <div className={`mt-6 rounded-xl border ${accent.statBorder} bg-gradient-to-br ${accent.glow} to-transparent p-4`}>
-                                                <p className="text-slate-300 text-sm leading-relaxed">{pillar.footnote}</p>
+                                            <div className={`mt-6 rounded-xl border ${accent.statBorder} bg-gradient-to-br ${accent.glow} to-transparent p-4`}
+                                            >
+                                                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">{pillar.footnote}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -258,14 +259,14 @@ export default function Capabilities() {
                         })}
                     </div>
 
-                    <aside className="bg-slate-900/70 border border-slate-800 rounded-3xl p-6 lg:p-8 h-full flex flex-col gap-4 lg:sticky lg:top-24 lg:max-h-[80vh] lg:min-h-[60vh] lg:overflow-hidden">
+                    <aside className="bg-white/85 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 lg:p-8 h-full flex flex-col gap-4 lg:sticky lg:top-24 lg:max-h-[80vh] lg:min-h-[60vh] lg:overflow-hidden">
                         <div className="flex items-center justify-between mb-4">
                             <div>
                                 <p className="text-sm text-slate-500">{active.tag}</p>
-                                <h3 className="text-2xl font-semibold text-white">{active.title}</h3>
+                                <h3 className="text-2xl font-semibold text-slate-900 dark:text-white">{active.title}</h3>
                             </div>
                             <div className="text-right">
-                                <p className="text-3xl font-bold text-white">{active.stat}</p>
+                                <p className="text-3xl font-bold text-slate-900 dark:text-white">{active.stat}</p>
                                 <p className="text-xs text-slate-500">{active.statLabel}</p>
                             </div>
                         </div>
@@ -274,8 +275,8 @@ export default function Capabilities() {
                             <span>{activeSample.language}</span>
                             <button
                                 onClick={handleCopy}
-                                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-slate-400 hover:text-sky-400 hover:border-slate-600 ${
-                                    copied ? 'border-sky-500/50 text-sky-300' : 'border-slate-800'
+                                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-slate-500 dark:text-slate-400 hover:text-sky-500 hover:border-slate-400 dark:hover:text-sky-400 ${
+                                    copied ? 'border-sky-500/50 text-sky-500 dark:text-sky-300' : 'border-slate-200 dark:border-slate-800'
                                 }`}
                             >
                                 {copied ? 'Copied' : 'Copy code'}
@@ -283,7 +284,7 @@ export default function Capabilities() {
                         </div>
 
                         {active.codeSamples.length > 1 && (
-                            <div className="flex gap-2 flex-wrap text-xs font-medium text-slate-400">
+                            <div className="flex gap-2 flex-wrap text-xs font-medium text-slate-500 dark:text-slate-400">
                                 {active.codeSamples.map((sample, idx) => {
                                     const isTabActive = idx === activeTabIndex;
                                     return (
@@ -292,8 +293,8 @@ export default function Capabilities() {
                                             onClick={() => handleTabChange(activeIndex, idx)}
                                             className={`px-3 py-1 rounded-full border transition ${
                                                 isTabActive
-                                                    ? 'border-sky-500/40 text-sky-300 bg-slate-900'
-                                                    : 'border-slate-800 hover:border-slate-700'
+                                                    ? 'border-sky-500/40 text-sky-500 dark:text-sky-300 bg-white dark:bg-slate-900'
+                                                    : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-700'
                                             }`}
                                         >
                                             {sample.label}
@@ -303,8 +304,8 @@ export default function Capabilities() {
                             </div>
                         )}
 
-                        <div className="relative flex-1 bg-slate-950 rounded-2xl p-5 border border-slate-900 shadow-inner overflow-auto">
-                            <pre className="text-sm font-mono leading-relaxed text-slate-200 min-h-full">
+                        <div className="relative flex-1 bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-900 shadow-inner overflow-auto">
+                            <pre className="text-sm font-mono leading-relaxed text-slate-700 dark:text-slate-200 min-h-full">
                                  <code>{activeSample.code}</code>
                              </pre>
                         </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, Moon, Sun, X } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
 
 export const navLinks = [
     { label: 'Home', href: '#hero' },
@@ -12,24 +13,39 @@ export const navLinks = [
 
 export default function NavBar() {
     const [open, setOpen] = useState(false);
+    const { isDark, toggleTheme } = useTheme();
 
     const toggle = () => setOpen((prev) => !prev);
     const handleNavClick = () => setOpen(false);
 
     return (
-        <header className="sticky top-0 z-50 border-b border-white/5 bg-slate-950/80 backdrop-blur-xl">
+        <header className={`sticky top-0 z-50 border-b backdrop-blur-xl ${
+            isDark ? 'border-white/5 bg-slate-950/80 text-white' : 'border-slate-200 bg-white/80 text-slate-900'
+        }`}>
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-                <a href="#hero" className="text-white font-semibold text-xl tracking-tight">
+                <a href="#hero" className="font-semibold text-xl tracking-tight">
                     Browser4
                 </a>
-                <nav className="hidden md:flex items-center gap-8 text-sm text-slate-300">
+                <nav className={`hidden md:flex items-center gap-8 text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                     {navLinks.map((link) => (
-                        <a key={link.href} href={link.href} className="transition hover:text-white">
+                        <a key={link.href} href={link.href} className="transition hover:text-current">
                             {link.label}
                         </a>
                     ))}
                 </nav>
                 <div className="hidden md:flex items-center gap-3">
+                    <button
+                        type="button"
+                        onClick={toggleTheme}
+                        className={`w-11 h-11 rounded-xl border flex items-center justify-center transition ${
+                            isDark
+                                ? 'border-slate-700/70 text-slate-200 hover:text-white'
+                                : 'border-slate-200 text-slate-600 hover:text-slate-900'
+                        }`}
+                        aria-label="Toggle color theme"
+                    >
+                        {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                    </button>
                     <a
                         href="https://github.com/platonai/browser4"
                         target="_blank"
@@ -56,7 +72,9 @@ export default function NavBar() {
                 </button>
             </div>
             {open && (
-                <div className="md:hidden border-t border-white/5 bg-slate-950/95 px-6 py-4 flex flex-col gap-4 text-sm text-slate-300">
+                <div className={`md:hidden border-t px-6 py-4 flex flex-col gap-4 text-sm ${
+                    isDark ? 'border-white/5 bg-slate-950/95 text-slate-300' : 'border-slate-200 bg-white text-slate-600'
+                }`}>
                     {navLinks.map((link) => (
                         <a key={link.href} href={link.href} onClick={handleNavClick} className="py-1">
                             {link.label}
@@ -74,4 +92,3 @@ export default function NavBar() {
         </header>
     );
 }
-
