@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { BrainCircuit, Workflow, Database, Shield } from 'lucide-react';
+import { useTheme } from '../theme/ThemeProvider';
+import { Highlight, type Language, themes } from 'prism-react-renderer';
 
 const accentStyles = {
     sky: {
@@ -174,6 +176,8 @@ export default function Capabilities() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [copied, setCopied] = useState(false);
     const [tabIndices, setTabIndices] = useState(() => pillars.map(() => 0));
+    const { isDark } = useTheme();
+    const prismTheme = isDark ? themes.vsDark : themes.duotoneLight;
 
     const active = pillars[activeIndex];
     const activeTabIndex = tabIndices[activeIndex] ?? 0;
@@ -305,9 +309,26 @@ export default function Capabilities() {
                         )}
 
                         <div className="relative flex-1 bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-900 shadow-inner overflow-auto">
-                            <pre className="text-sm font-mono leading-relaxed text-slate-700 dark:text-slate-200 min-h-full">
-                                 <code>{activeSample.code}</code>
-                             </pre>
+                            <Highlight
+                                code={activeSample.code.trim()}
+                                language={activeSample.language as Language}
+                                theme={prismTheme}
+                            >
+                                {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                                    <pre
+                                        className={`${className ?? ''} text-sm font-mono leading-relaxed text-slate-700 dark:text-slate-100 min-h-full`}
+                                        style={{ ...style, background: 'transparent' }}
+                                    >
+                                        {tokens.map((line, lineIndex) => (
+                                            <div key={lineIndex} {...getLineProps({ line })}>
+                                                {line.map((token, tokenIndex) => (
+                                                    <span key={tokenIndex} {...getTokenProps({ token })} />
+                                                ))}
+                                            </div>
+                                        ))}
+                                    </pre>
+                                )}
+                            </Highlight>
                         </div>
                     </aside>
                 </div>

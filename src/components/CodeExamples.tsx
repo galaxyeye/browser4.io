@@ -2,6 +2,7 @@ import { Code, Play, Copy, Check } from 'lucide-react';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { useTheme } from '../theme/ThemeProvider';
+import { Highlight, type Language, themes } from 'prism-react-renderer';
 
 const accentMap = {
     sky: {
@@ -25,6 +26,7 @@ const accentMap = {
 export default function CodeExamples() {
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
     const { isDark } = useTheme();
+    const prismTheme = isDark ? themes.vsDark : themes.duotoneLight;
 
     const examples = [
         {
@@ -163,9 +165,26 @@ session.submitAll(links)`,
                                             </button>
                                         </div>
                                         <div className="relative flex-1 rounded-2xl border border-slate-200/70 bg-slate-900 shadow-inner dark:border-slate-900 dark:bg-slate-950">
-                                            <pre className="h-full overflow-x-auto text-sm font-mono leading-relaxed text-slate-100">
-                                                <code>{example.code}</code>
-                                            </pre>
+                                            <Highlight
+                                                code={example.code.trim()}
+                                                language={example.language as Language}
+                                                theme={prismTheme}
+                                            >
+                                                {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                                                    <pre
+                                                        className={clsx('h-full overflow-x-auto text-sm font-mono leading-relaxed text-slate-100 px-4 py-4', className)}
+                                                        style={{ ...style, background: 'transparent' }}
+                                                    >
+                                                        {tokens.map((line, lineIndex) => (
+                                                            <div key={lineIndex} {...getLineProps({ line })}>
+                                                                {line.map((token, tokenIndex) => (
+                                                                    <span key={tokenIndex} {...getTokenProps({ token })} />
+                                                                ))}
+                                                            </div>
+                                                        ))}
+                                                    </pre>
+                                                )}
+                                            </Highlight>
                                         </div>
                                     </div>
                                 </div>
