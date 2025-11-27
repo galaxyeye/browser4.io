@@ -121,6 +121,14 @@ const FooterComponent = () => {
                         <a href="#" className="hover:text-sky-600 dark:hover:text-sky-300">Privacy</a>
                         <a href="#" className="hover:text-sky-600 dark:hover:text-sky-300">Terms</a>
                         <a href="#" className="hover:text-sky-600 dark:hover:text-sky-300">Contact</a>
+                        <a
+                            href="https://github.com/galaxyeye/browser4.top/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-sky-600 dark:hover:text-sky-300"
+                        >
+                            Edit on GitHub
+                        </a>
                     </div>
                 </div>
             </div>
