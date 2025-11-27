@@ -48,7 +48,7 @@ const pillars = [
         title: 'Autonomous Browser Agents',
         summary: 'Real-time perception, reasoning, and multi-agent orchestration keep the agent on course.',
         bullets: ['Chain-of-thought planning', 'LLM + vision mixed context', 'Multi-agent collaboration'],
-        stat: '100+',
+        stat: '50+',
         statLabel: 'Concurrent agents per node',
         footnote: 'Core value: end-to-end reasoning plus reliable execution loops',
         codeSamples: [
