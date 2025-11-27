@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { BrainCircuit, Workflow, Database, Shield } from 'lucide-react';
 import { useTheme } from '../theme/ThemeProvider';
 import { Highlight, type Language, themes } from 'prism-react-renderer';
+import HarvestTable from './HarvestTable';
+import { harvestRows, harvestSummary } from '../lib/harvestData';
 
 const accentStyles = {
     sky: {
@@ -72,7 +74,7 @@ agent.run(task)`
         tag: 'Automation & RPA',
         title: 'High-Precision Workflow Automation',
         summary: 'Composable primitives, coroutine-level safety, and elastic recovery for long-running work.',
-        bullets: ['Visual workflow orchestration', 'Millisecond coroutine controls', 'Event-driven resilience'],
+        bullets: ['Millisecond coroutine controls', 'Event-driven resilience'],
         stat: '99.2%',
         statLabel: 'Completion rate',
         footnote: 'Strength: always-on automation with graceful recovery',
@@ -112,11 +114,10 @@ var history = agent.run(
             {
                 label: 'Harvest API',
                 language: 'sql',
-                code: `# Learning from multiple product pages 
-# and precisely extracting each field 
-# without token consumption
+                code: `# NO token consumption
 
-select * from harvest('https://www.amazon.com/b?node=3117954011');
+val result = 
+session.harvest('https://www.amazon.com/b?node=3117954011');
 `
             },
             {
@@ -182,6 +183,8 @@ export default function Capabilities() {
     const active = pillars[activeIndex];
     const activeTabIndex = tabIndices[activeIndex] ?? 0;
     const activeSample = active.codeSamples[activeTabIndex] ?? active.codeSamples[0];
+    const showHarvestTable = active.tag === 'Data Extraction' && activeSample.label === 'Harvest API';
+    const codePaneSize = showHarvestTable ? 'min-h-[165px] max-h-[220px]' : 'min-h-[280px]';
 
     const handleCopy = () => {
         navigator.clipboard.writeText(activeSample.code);
@@ -263,7 +266,7 @@ export default function Capabilities() {
                         })}
                     </div>
 
-                    <aside className="bg-white/85 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 lg:p-8 h-full flex flex-col gap-4 lg:sticky lg:top-24 lg:max-h-[80vh] lg:min-h-[60vh] lg:overflow-hidden">
+                    <aside className="bg-white/85 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 lg:p-6 h-full flex flex-col gap-3 lg:sticky lg:top-24 lg:max-h-[85vh] lg:min-h-[65vh] lg:overflow-hidden">
                         <div className="flex items-center justify-between mb-4">
                             <div>
                                 <p className="text-sm text-slate-500">{active.tag}</p>
@@ -308,27 +311,42 @@ export default function Capabilities() {
                             </div>
                         )}
 
-                        <div className="relative flex-1 bg-white dark:bg-slate-950 rounded-2xl p-5 border border-slate-200 dark:border-slate-900 shadow-inner overflow-auto">
-                            <Highlight
-                                code={activeSample.code.trim()}
-                                language={activeSample.language as Language}
-                                theme={prismTheme}
-                            >
-                                {({ className, style, tokens, getLineProps, getTokenProps }) => (
-                                    <pre
-                                        className={`${className ?? ''} text-sm font-mono leading-relaxed text-slate-700 dark:text-slate-100 min-h-full`}
-                                        style={{ ...style, background: 'transparent' }}
+                        <div className="flex-1 flex flex-col gap-3 overflow-hidden">
+                            <div className={`relative flex-1 bg-white dark:bg-slate-950 rounded-2xl p-4 border border-slate-200
+                             dark:border-slate-900 shadow-inner overflow-x-auto overflow-y-hidden ${codePaneSize}`}>
+                                <Highlight
+                                    code={activeSample.code.trim()}
+                                    language={activeSample.language as Language}
+                                    theme={prismTheme}
+                                >
+                                    {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                                        <pre
+                                            className={`${className ?? ''} text-sm font-mono leading-relaxed text-slate-700 dark:text-slate-100 min-h-full`}
+                                            style={{ ...style, background: 'transparent' }}
+                                        >
+                                            {tokens.map((line, lineIndex) => (
+                                                <div key={lineIndex} {...getLineProps({ line })}>
+                                                    {line.map((token, tokenIndex) => (
+                                                        <span key={tokenIndex} {...getTokenProps({ token })} />
+                                                    ))}
+                                                </div>
+                                            ))}
+                                        </pre>
+                                    )}
+                                </Highlight>
+                            </div>
+
+                            {showHarvestTable && (
+                                <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 shadow-sm p-2">
+                                    <div
+                                        className="overflow-x-auto overflow-y-hidden pb-1 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-slate-200/60 dark:[&::-webkit-scrollbar-track]:bg-slate-800/60 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-600"
                                     >
-                                        {tokens.map((line, lineIndex) => (
-                                            <div key={lineIndex} {...getLineProps({ line })}>
-                                                {line.map((token, tokenIndex) => (
-                                                    <span key={tokenIndex} {...getTokenProps({ token })} />
-                                                ))}
-                                            </div>
-                                        ))}
-                                    </pre>
-                                )}
-                            </Highlight>
+                                        <div className="min-w-max">
+                                            <HarvestTable summary={harvestSummary} rows={harvestRows} />
+                                        </div>
+                                    </div>
+                                </div>
+                             )}
                         </div>
                     </aside>
                 </div>
