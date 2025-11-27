@@ -42,6 +42,11 @@ export default function Features() {
             statLabel: 'Pages per day'
         }
     ];
+    const featureVideo = {
+        title: 'See Browser Agents in Action',
+        description: 'Watch how browser-native agents plan and execute complex tasks end to end.',
+        embedUrl: 'https://www.youtube.com/embed/rJzXNXH3Gwk?rel=0'
+    };
 
     return (
         <section id="features" className="relative py-24 bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white">
@@ -87,6 +92,22 @@ export default function Features() {
                                 <p className="text-slate-600 dark:text-slate-400">{feature.description}</p>
                             </article>
                         ))}
+                        <article className="bg-gradient-to-br from-white/90 to-slate-100/90 dark:from-slate-900/70 dark:to-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-3xl p-8">
+                            <div className="mb-6">
+                                <h3 className="text-2xl font-semibold mb-2">{featureVideo.title}</h3>
+                                <p className="text-slate-600 dark:text-slate-400">{featureVideo.description}</p>
+                            </div>
+                            <div className="aspect-video w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900/5 dark:bg-slate-950/40">
+                                <iframe
+                                    src={featureVideo.embedUrl}
+                                    title={featureVideo.title}
+                                    loading="lazy"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    className="w-full h-full"
+                                />
+                            </div>
+                        </article>
                     </div>
                 </div>
             </div>
