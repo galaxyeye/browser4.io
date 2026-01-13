@@ -86,8 +86,8 @@ export default function Features() {
                                         <feature.icon className="w-10 h-10 text-slate-900 dark:text-white" />
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-4xl font-bold">{t(feature.statKey!)}</p>
-                                        <p className="text-sm text-slate-500">{t(feature.statLabelKey!)}</p>
+                                        <p className="text-4xl font-bold">{feature.statKey && t(feature.statKey)}</p>
+                                        <p className="text-sm text-slate-500">{feature.statLabelKey && t(feature.statLabelKey)}</p>
                                     </div>
                                 </div>
                                 <h3 className="text-2xl font-semibold mb-2">{t(feature.titleKey)}</h3>
