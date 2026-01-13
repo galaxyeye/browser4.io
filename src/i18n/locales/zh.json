@@ -196,24 +196,49 @@
     }
   },
   "codeExamples": {
-    "title": "快速集成",
-    "subtitle": "几行代码，5分钟内开始抓取",
-    "simple": {
-      "title": "简单抓取",
-      "description": "加载、渲染和提取——三行代码。"
+    "badge": "代码示例",
+    "title": "开发者友好的API",
+    "subtitle": "优雅的代码片段，助您快速上手Browser4",
+    "browserAgents": {
+      "title": "浏览器智能体",
+      "description": "自主推理、规划和执行复杂的浏览器任务"
     },
-    "agent": {
-      "title": "基于智能体",
-      "description": "让AI智能体自主导航和提取复杂数据。"
+    "workflowAutomation": {
+      "title": "工作流自动化",
+      "description": "精确的元素交互和快速数据提取"
     },
-    "dataCollection": {
-      "title": "数据采集",
-      "description": "零配置并行采集数千页面。"
+    "llmXsql": {
+      "title": "LLM + X-SQL",
+      "description": "由LLM智能和选择器驱动的高效数据提取"
     },
-    "mlParsing": {
-      "title": "机器学习解析",
-      "description": "让机器学习自动理解页面结构。"
-    }
+    "highSpeedParallel": {
+      "title": "高速并行处理",
+      "description": "并行浏览器控制，单节点每天处理10万~20万页面"
+    },
+    "youtube": {
+      "label": "YouTube演示",
+      "title": "Browser4智能体实战",
+      "description": "涵盖自动化研究、提取和报告的完整工作流程。",
+      "watchVideo": "观看视频"
+    },
+    "bilibili": {
+      "label": "Bilibili演示",
+      "title": "深度中文演练",
+      "description": "面向中文开发者的详细教程，涵盖部署、运行时和实际使用。",
+      "watchNow": "立即观看"
+    },
+    "quickstart": {
+      "label": "快速开始",
+      "title": "10分钟内完成设置",
+      "description": "Browser4需要Java 17+和Maven。克隆仓库，配置您的LLM API，然后运行示例。",
+      "visitGithub": "访问GitHub"
+    },
+    "developerToolbox": {
+      "title": "开发者工具箱",
+      "description": "IDE模板、脚本和CLI助手即将推出——申请beta版以获得首次访问权限。"
+    },
+    "copy": "复制",
+    "copied": "已复制"
   },
   "useCases": {
     "label": "真实场景",

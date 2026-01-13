@@ -196,24 +196,49 @@
     }
   },
   "codeExamples": {
-    "title": "Fast Integration",
-    "subtitle": "Start scraping in under 5 minutes with a few lines of code",
-    "simple": {
-      "title": "Simple Scraping",
-      "description": "Load, render, and extract—three lines of code."
+    "badge": "Code Examples",
+    "title": "Developer-Friendly APIs",
+    "subtitle": "Elegant snippets that help you start fast with Browser4",
+    "browserAgents": {
+      "title": "Browser Agents",
+      "description": "Autonomous reasoning, planning, and execution for complex browser tasks"
     },
-    "agent": {
-      "title": "Agent-Based",
-      "description": "Let an AI agent navigate and extract complex data autonomously."
+    "workflowAutomation": {
+      "title": "Workflow Automation",
+      "description": "Precision element interaction and rapid data extraction"
     },
-    "dataCollection": {
-      "title": "Data Collection",
-      "description": "Harvest thousands of pages in parallel with zero config."
+    "llmXsql": {
+      "title": "LLM + X-SQL",
+      "description": "Efficient data extraction powered by LLM intelligence plus selectors"
     },
-    "mlParsing": {
-      "title": "ML Parsing",
-      "description": "Let machine learning automatically understand page structure."
-    }
+    "highSpeedParallel": {
+      "title": "High-Speed Parallel Processing",
+      "description": "Parallel browser control that handles 100k ~ 200k pages per node per day"
+    },
+    "youtube": {
+      "label": "YouTube Demo",
+      "title": "Browser4 Agents in Action",
+      "description": "Full workflow covering automated research, extraction, and reporting.",
+      "watchVideo": "Watch the video"
+    },
+    "bilibili": {
+      "label": "Bilibili Demo",
+      "title": "In-depth Chinese Walkthrough",
+      "description": "Detailed session for Mandarin developers covering deployment, runtime, and real usage.",
+      "watchNow": "Watch now"
+    },
+    "quickstart": {
+      "label": "Quickstart",
+      "title": "Set up in 10 minutes",
+      "description": "Browser4 requires Java 17+ and Maven. Clone the repo, configure your LLM API, and run the examples.",
+      "visitGithub": "Visit GitHub"
+    },
+    "developerToolbox": {
+      "title": "Developer Toolbox",
+      "description": "IDE templates, scripts, and CLI helpers are on the way—apply for the beta to get first access."
+    },
+    "copy": "Copy",
+    "copied": "Copied"
   },
   "useCases": {
     "label": "real-world plays",
