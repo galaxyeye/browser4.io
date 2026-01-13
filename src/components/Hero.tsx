@@ -1,24 +1,30 @@
 import { useEffect, useState } from 'react';
 import { Bot } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-const VERB_TOKENS = ['browse', 'automate', 'observe', 'scrape', 'study', 'investigate', 'extract', 'browse', 'monitor',
+const VERB_KEYS = ['browse', 'automate', 'observe', 'scrape', 'study', 'investigate', 'extract', 'browse', 'monitor',
     'crawl', 'automate', 'extract', 'browse', 'automate', 'study', 'understand', 'investigate'];
-const VERB_SLOT_WIDTH_CH = Math.max(...VERB_TOKENS.map((token) => token.length));
-const VERB_TEMPO_WAVE_MS = [
-    520, 360, 220, 160, 140, 180, 260, 420, 640, 420, 260, 180,
-    5200, 3600, 2200, 1600, 1400, 1800, 2600, 4200, 6400, 4200, 2600, 1800,
-    150, 150, 150, 100, 100, 100, 100, 100, 150, 150, 150, 150,
-];
-const ADJECTIVE_TOKENS = ['fast', 'powerful', 'intelligent', 'optimized'];
+const ADJECTIVE_KEYS = ['fast', 'powerful', 'intelligent', 'optimized'];
 const ADJECTIVE_ROTATION_INTERVAL_MS = 15_000;
 
 export default function Hero() {
+    const { t } = useTranslation();
     const [verbIndex, setVerbIndex] = useState(0);
-    const [adjectiveIndex, setAdjectiveIndex] = useState(() => Math.floor(Math.random() * ADJECTIVE_TOKENS.length));
+    const [adjectiveIndex, setAdjectiveIndex] = useState(() => Math.floor(Math.random() * ADJECTIVE_KEYS.length));
+    
+    // Get translated verbs and calculate max width
+    const verbs = VERB_KEYS.map(key => t(`hero.verbs.${key}`));
+    const VERB_SLOT_WIDTH_CH = Math.max(...verbs.map((token) => token.length));
+    const VERB_TEMPO_WAVE_MS = [
+        520, 360, 220, 160, 140, 180, 260, 420, 640, 420, 260, 180,
+        5200, 3600, 2200, 1600, 1400, 1800, 2600, 4200, 6400, 4200, 2600, 1800,
+        150, 150, 150, 100, 100, 100, 100, 100, 150, 150, 150, 150,
+    ];
+    
     const milestones = [
-        { label: 'Founded in 2014', detail: 'Dedicated to browser automation and agents' },
-        { label: 'Evolving 2020+', detail: 'Operationalizing large-scale AI agents' },
-        { label: 'Future ready', detail: 'Embracing AI agent networks' },
+        { label: t('hero.milestones.founded.label'), detail: t('hero.milestones.founded.detail') },
+        { label: t('hero.milestones.evolving.label'), detail: t('hero.milestones.evolving.detail') },
+        { label: t('hero.milestones.future.label'), detail: t('hero.milestones.future.detail') },
     ];
 
     useEffect(() => {
@@ -37,7 +43,7 @@ export default function Hero() {
             const delay = VERB_TEMPO_WAVE_MS[tempoIndex % VERB_TEMPO_WAVE_MS.length];
             tempoIndex += 1;
             verbTimeoutId = window.setTimeout(() => {
-                setVerbIndex((prev) => (prev + 1) % VERB_TOKENS.length);
+                setVerbIndex((prev) => (prev + 1) % VERB_KEYS.length);
                 scheduleVerbRotation();
             }, delay);
         };
@@ -45,7 +51,7 @@ export default function Hero() {
         scheduleVerbRotation();
 
         const adjectiveTimer = window.setInterval(() => {
-            setAdjectiveIndex((prev) => (prev + 1) % ADJECTIVE_TOKENS.length);
+            setAdjectiveIndex((prev) => (prev + 1) % ADJECTIVE_KEYS.length);
         }, ADJECTIVE_ROTATION_INTERVAL_MS);
 
         return () => {
@@ -64,21 +70,28 @@ export default function Hero() {
             <div className="relative max-w-5xl mx-auto px-6 py-28 text-center">
                 <div className="inline-flex items-center justify-center gap-2 px-5 py-2 bg-sky-500/10 border border-sky-500/20 text-sky-600 dark:text-sky-400 rounded-full mb-8">
                     <Bot className="w-4 h-4" />
-                    <span className="text-sm font-medium">Infrastructure for the ultra-fast browser + agent era</span>
+                    <span className="text-sm font-medium">{t('hero.badge')}</span>
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 dark:text-white mb-6 leading-tight tracking-tight dark:drop-shadow-[0_10px_35px_rgba(45,212,191,0.15)]">
-                    Enable AI to <span
+                    {t('hero.title').split('{{verb}}')[0]}
+                    <span
                         className="inline-flex text-sky-600 dark:text-sky-300"
                         aria-live="polite"
                         style={{ width: `${VERB_SLOT_WIDTH_CH}ch` }}
                     >
-                        {VERB_TOKENS[verbIndex]}
-                    </span> <div>the web.</div>
+                        {verbs[verbIndex]}
+                    </span>
+                    {t('hero.title').split('{{verb}}').slice(1).join('')}
+                </h1>
                 </h1>
 
                 <p className="text-xl sm:text-2xl md:text-[26px] text-slate-600 dark:text-slate-300 mb-8 font-light max-w-3xl mx-auto">
-                    The Infrastructure & ECOSYSTEM built around the world's most-<span className="text-sky-600 dark:text-sky-300" aria-live="polite">{ADJECTIVE_TOKENS[adjectiveIndex]}</span> browser library.
+                    {t('hero.subtitle').split('{{adjective}}')[0]}
+                    <span className="text-sky-600 dark:text-sky-300" aria-live="polite">
+                        {t(`hero.adjectives.${ADJECTIVE_KEYS[adjectiveIndex]}`)}
+                    </span>
+                    {t('hero.subtitle').split('{{adjective}}').slice(1).join('')}
                 </p>
 
                 <div className="flex flex-wrap justify-center items-center gap-4 mb-14">
@@ -86,7 +99,7 @@ export default function Hero() {
                         href="#code-examples"
                         className="px-10 py-4 bg-sky-500 hover:bg-sky-400 text-white rounded-xl font-semibold transition-all transform hover:scale-[1.03] shadow-lg shadow-sky-500/30"
                     >
-                        GET STARTED
+                        {t('hero.getStarted')}
                     </a>
                     <a
                         href="https://github.com/platonai/Browser4"
@@ -94,13 +107,13 @@ export default function Hero() {
                         rel="noopener noreferrer"
                         className="px-10 py-4 border border-slate-200 dark:border-slate-700/80 text-slate-700 dark:text-white/80 rounded-xl font-semibold transition-all hover:border-slate-400 dark:hover:border-slate-500/80"
                     >
-                        GITHUB
+                        {t('hero.github')}
                     </a>
                 </div>
 
                 <div className="bg-white/80 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 backdrop-blur">
                     <p className="text-slate-500 dark:text-slate-500 text-xs tracking-[0.3em] uppercase mb-4">
-                        Milestones
+                        {t('hero.milestones.title')}
                     </p>
                     <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-center md:gap-12">
                         {milestones.map((item) => (

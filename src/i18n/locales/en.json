@@ -1,0 +1,278 @@
+{
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "capabilities": "Capabilities",
+    "code": "Code",
+    "useCases": "Use Cases",
+    "vision": "Vision",
+    "github": "GitHub",
+    "getStarted": "Get Started"
+  },
+  "hero": {
+    "badge": "Infrastructure for the ultra-fast browser + agent era",
+    "title": "Enable AI to {{verb}} the web.",
+    "subtitle": "The Infrastructure & ECOSYSTEM built around the world's most-{{adjective}} browser library.",
+    "getStarted": "GET STARTED",
+    "github": "GITHUB",
+    "milestones": {
+      "title": "Milestones",
+      "founded": {
+        "label": "Founded in 2014",
+        "detail": "Dedicated to browser automation and agents"
+      },
+      "evolving": {
+        "label": "Evolving 2020+",
+        "detail": "Operationalizing large-scale AI agents"
+      },
+      "future": {
+        "label": "Future ready",
+        "detail": "Embracing AI agent networks"
+      }
+    },
+    "verbs": {
+      "browse": "browse",
+      "automate": "automate",
+      "observe": "observe",
+      "scrape": "scrape",
+      "study": "study",
+      "investigate": "investigate",
+      "extract": "extract",
+      "monitor": "monitor",
+      "crawl": "crawl",
+      "understand": "understand"
+    },
+    "adjectives": {
+      "fast": "fast",
+      "powerful": "powerful",
+      "intelligent": "intelligent",
+      "optimized": "optimized"
+    }
+  },
+  "features": {
+    "title": "Core Capabilities",
+    "subtitle": "Browser infrastructure engineered for the agent era",
+    "browserAgents": {
+      "title": "Browser Agents",
+      "subtitle": "Autonomous browser agents",
+      "description": "Agents that can reason, plan, and complete tasks directly inside the browser"
+    },
+    "browserAutomation": {
+      "title": "Browser Automation",
+      "subtitle": "High-precision automation",
+      "description": "High-performance workflows, navigation, and data extraction"
+    },
+    "machineLearning": {
+      "title": "Machine Learning Agent",
+      "subtitle": "Machine-learning agents",
+      "description": "Automatically learns complex page structures without tokens"
+    },
+    "webUnderstanding": {
+      "title": "Web Understanding",
+      "subtitle": "Deep web understanding",
+      "description": "Understands dynamic, script-driven, and interactive pages",
+      "stat": "99%+",
+      "statLabel": "Structured accuracy"
+    },
+    "extremePerformance": {
+      "title": "Extreme Performance",
+      "subtitle": "Extreme performance",
+      "description": "Coroutine-safe engine; 100k ~ 200k complex pages per machine per day",
+      "stat": "100k+",
+      "statLabel": "Pages per day"
+    },
+    "video": {
+      "title": "See Browser Agents in Action",
+      "description": "Watch how browser-native agents plan and execute complex tasks end to end."
+    }
+  },
+  "capabilities": {
+    "title": "Technical Architecture",
+    "subtitle": "Four technical pillars for next-gen browser agents",
+    "aiAgents": {
+      "tag": "AI & Agents",
+      "title": "Autonomous Browser Agents",
+      "summary": "Real-time perception, reasoning, and multi-agent orchestration keep the agent on course.",
+      "bullet1": "Chain-of-thought planning",
+      "bullet2": "LLM + vision mixed context",
+      "bullet3": "Multi-agent collaboration",
+      "stat": "99.2%",
+      "statLabel": "Task completion rate"
+    },
+    "workflow": {
+      "tag": "Workflow Engine",
+      "title": "Orchestration Engine",
+      "summary": "Manage large-scale, parallel task flows with built-in scheduling and monitoring.",
+      "bullet1": "Distributed coroutines",
+      "bullet2": "Parallel scheduling",
+      "bullet3": "Progress tracking",
+      "stat": "200k+",
+      "statLabel": "Pages per day"
+    },
+    "intelligence": {
+      "tag": "ML Intelligence",
+      "title": "ML-Driven Data Intelligence",
+      "summary": "Automatic page analysis and field extraction with no manual rules.",
+      "bullet1": "Zero-config extraction",
+      "bullet2": "Auto schema learning",
+      "bullet3": "Multi-modal parsing",
+      "stat": "99%+",
+      "statLabel": "Accuracy"
+    },
+    "security": {
+      "tag": "Security & Scale",
+      "title": "Enterprise-Grade Security",
+      "summary": "Isolated sandboxes, anti-detection, and privacy-first architecture.",
+      "bullet1": "Isolated sandboxes",
+      "bullet2": "Anti-bot bypass",
+      "bullet3": "Compliance ready",
+      "stat": "24/7",
+      "statLabel": "Uptime"
+    },
+    "demoTitle": "Live Demo",
+    "demoDescription": "See Browser4 harvest real data in real time",
+    "demoSummary": "Summary"
+  },
+  "codeExamples": {
+    "title": "Fast Integration",
+    "subtitle": "Start scraping in under 5 minutes with a few lines of code",
+    "simple": {
+      "title": "Simple Scraping",
+      "description": "Load, render, and extract—three lines of code."
+    },
+    "agent": {
+      "title": "Agent-Based",
+      "description": "Let an AI agent navigate and extract complex data autonomously."
+    },
+    "dataCollection": {
+      "title": "Data Collection",
+      "description": "Harvest thousands of pages in parallel with zero config."
+    },
+    "mlParsing": {
+      "title": "ML Parsing",
+      "description": "Let machine learning automatically understand page structure."
+    }
+  },
+  "useCases": {
+    "title": "Real-World Use Cases",
+    "subtitle": "From research to enterprise automation—Browser4 handles it all",
+    "case1": {
+      "number": "01",
+      "title": "Automated Research & Massive Data Collection",
+      "description": "Agents auto-search across platforms, pull prices, and monitor changes. A single Browser4 node can visit 100k ~ 200k pages per day and structure data with built-in ML, boosting research efficiency by thousands of times.",
+      "example": "An e-commerce team collects hundreds of thousands of product records daily and auto-builds reports to guide merchandising.",
+      "tag": "Data Collection"
+    },
+    "case2": {
+      "number": "02",
+      "title": "AI-Driven Agent Automation",
+      "description": "Let browser agents reason, plan, and execute tasks autonomously—from filling forms to multi-step workflows—freeing humans from repetitive clicks.",
+      "example": "A financial team uses agents to log in, navigate dashboards, export reports, and deliver results to Slack.",
+      "tag": "Agent Automation"
+    },
+    "case3": {
+      "number": "03",
+      "title": "Integration with LLM Workflows",
+      "description": "Feed real-time web data into LLMs or RAG pipelines—agents retrieve context, screenshots, and structured results on demand.",
+      "example": "A customer-support bot fetches live docs and screenshots to answer user questions with up-to-date info.",
+      "tag": "LLM Integration"
+    },
+    "case4": {
+      "number": "04",
+      "title": "Competitive Intelligence & Market Monitoring",
+      "description": "Continuously track competitor pricing, product launches, and reviews. Browser4 handles scale and complexity so you focus on insights.",
+      "example": "A retail brand monitors thousands of SKUs across e-commerce sites in real time and triggers alerts on price changes.",
+      "tag": "Monitoring"
+    },
+    "case5": {
+      "number": "05",
+      "title": "QA & Testing at Scale",
+      "description": "Simulate user journeys across browsers and devices. Catch regressions before customers do.",
+      "example": "A SaaS company runs nightly tests across 50 scenarios, ensuring every release is regression-free.",
+      "tag": "Testing"
+    }
+  },
+  "vision": {
+    "label": "vision 2030",
+    "title": "Future Vision",
+    "subtitle": "Build a fair, sustainable ecosystem for every agent participant",
+    "painPoints": {
+      "label": "Current ecosystem pain points",
+      "bullet1": "No unified app store or discovery channels",
+      "bullet2": "Lack of searchable directories to match needs",
+      "bullet3": "Fragmented publishing + distribution with no standards"
+    },
+    "snapshot": {
+      "label": "Agent capability snapshot",
+      "bullet1": "LLMs generate actions in real time",
+      "bullet2": "Vision agents browse like humans",
+      "bullet3": "OS-level agents take over complex flows"
+    },
+    "roadmap": {
+      "label": "Three-year roadmap",
+      "agentHub": {
+        "title": "Agent Hub",
+        "text": "Unified agent marketplace with categories, search, ratings, and versioning"
+      },
+      "segmentedMarkets": {
+        "title": "Segmented Markets",
+        "text": "Scenario-based catalogs (data collection, automation, analytics) with transparent quality bars"
+      },
+      "prebuiltCatalog": {
+        "title": "Prebuilt Catalog",
+        "text": "Prepackaged agents for booking, expense management, competitive monitoring—ready out of the box"
+      },
+      "coevolution": {
+        "title": "Co-evolution",
+        "text": "Websites proactively support agents with friendlier data surfaces and interactions"
+      }
+    },
+    "mission": {
+      "title": "Browser4 Mission",
+      "text": "The agent era is already here. Browser4 is building a fair, sustainable ecosystem where AI can make autonomous decisions and act reliably, accelerating the shift toward an agentic internet.",
+      "stat1": "180+",
+      "stat1Label": "Enterprise scenarios already connected",
+      "stat2": "800+",
+      "stat2Label": "Agent modules in training",
+      "stat3": "24/7",
+      "stat3Label": "Always-on execution and monitoring",
+      "cta": "Let's build the future together"
+    }
+  },
+  "footer": {
+    "cta": {
+      "label": "Ready to launch",
+      "title": "Build the agent era with Browser4",
+      "subtitle": "Book a demo or request a POC to see how Browser4 plugs into your workflows.",
+      "bookDemo": "Book a demo",
+      "downloadWhitepaper": "Download whitepaper"
+    },
+    "description": "Browser infrastructure engineered for the agent era—building a fair, sustainable ecosystem.",
+    "product": {
+      "title": "Product",
+      "browserAgents": "Browser Agents",
+      "automationPlatform": "Automation Platform",
+      "dataExtraction": "Data Extraction",
+      "pricing": "Pricing"
+    },
+    "resources": {
+      "title": "Resources",
+      "documentation": "Documentation",
+      "apiReference": "API Reference",
+      "caseStudies": "Case Studies",
+      "blog": "Blog"
+    },
+    "company": {
+      "title": "Company",
+      "aboutUs": "About Us",
+      "partners": "Partners",
+      "careers": "Careers",
+      "mediaKit": "Media Kit"
+    },
+    "copyright": "© {{year}} Browser4. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "contact": "Contact",
+    "editOnGithub": "Edit on GitHub"
+  }
+}

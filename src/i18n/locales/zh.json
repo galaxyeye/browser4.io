@@ -1,0 +1,278 @@
+{
+  "nav": {
+    "home": "首页",
+    "features": "特性",
+    "capabilities": "能力",
+    "code": "代码",
+    "useCases": "使用案例",
+    "vision": "愿景",
+    "github": "GitHub",
+    "getStarted": "开始使用"
+  },
+  "hero": {
+    "badge": "超高速浏览器 + 智能体时代的基础设施",
+    "title": "让AI能够{{verb}}网络。",
+    "subtitle": "围绕世界上最{{adjective}}的浏览器库构建的基础设施和生态系统。",
+    "getStarted": "开始使用",
+    "github": "GITHUB",
+    "milestones": {
+      "title": "里程碑",
+      "founded": {
+        "label": "2014年成立",
+        "detail": "致力于浏览器自动化和智能体"
+      },
+      "evolving": {
+        "label": "2020+持续演进",
+        "detail": "大规模AI智能体落地运营"
+      },
+      "future": {
+        "label": "面向未来",
+        "detail": "拥抱AI智能体网络"
+      }
+    },
+    "verbs": {
+      "browse": "浏览",
+      "automate": "自动化",
+      "observe": "观察",
+      "scrape": "抓取",
+      "study": "研究",
+      "investigate": "调查",
+      "extract": "提取",
+      "monitor": "监控",
+      "crawl": "爬取",
+      "understand": "理解"
+    },
+    "adjectives": {
+      "fast": "快速",
+      "powerful": "强大",
+      "intelligent": "智能",
+      "optimized": "优化"
+    }
+  },
+  "features": {
+    "title": "核心能力",
+    "subtitle": "为智能体时代打造的浏览器基础设施",
+    "browserAgents": {
+      "title": "浏览器智能体",
+      "subtitle": "自主浏览器智能体",
+      "description": "能够在浏览器内直接推理、规划和完成任务的智能体"
+    },
+    "browserAutomation": {
+      "title": "浏览器自动化",
+      "subtitle": "高精度自动化",
+      "description": "高性能工作流、导航和数据提取"
+    },
+    "machineLearning": {
+      "title": "机器学习智能体",
+      "subtitle": "机器学习智能体",
+      "description": "无需token即可自动学习复杂页面结构"
+    },
+    "webUnderstanding": {
+      "title": "网页理解",
+      "subtitle": "深度网页理解",
+      "description": "理解动态、脚本驱动和交互式页面",
+      "stat": "99%+",
+      "statLabel": "结构化准确率"
+    },
+    "extremePerformance": {
+      "title": "极致性能",
+      "subtitle": "极致性能",
+      "description": "协程安全引擎；单机每天处理10万~20万复杂页面",
+      "stat": "10万+",
+      "statLabel": "每日页面数"
+    },
+    "video": {
+      "title": "浏览器智能体实战演示",
+      "description": "观看浏览器原生智能体如何端到端规划和执行复杂任务。"
+    }
+  },
+  "capabilities": {
+    "title": "技术架构",
+    "subtitle": "支撑下一代浏览器智能体的四大技术支柱",
+    "aiAgents": {
+      "tag": "AI与智能体",
+      "title": "自主浏览器智能体",
+      "summary": "实时感知、推理和多智能体编排，保持智能体在正确轨道上。",
+      "bullet1": "思维链规划",
+      "bullet2": "LLM + 视觉混合上下文",
+      "bullet3": "多智能体协作",
+      "stat": "99.2%",
+      "statLabel": "任务完成率"
+    },
+    "workflow": {
+      "tag": "工作流引擎",
+      "title": "编排引擎",
+      "summary": "管理大规模并行任务流，内置调度和监控。",
+      "bullet1": "分布式协程",
+      "bullet2": "并行调度",
+      "bullet3": "进度跟踪",
+      "stat": "20万+",
+      "statLabel": "每日页面数"
+    },
+    "intelligence": {
+      "tag": "机器学习智能",
+      "title": "ML驱动的数据智能",
+      "summary": "自动页面分析和字段提取，无需手动规则。",
+      "bullet1": "零配置提取",
+      "bullet2": "自动模式学习",
+      "bullet3": "多模态解析",
+      "stat": "99%+",
+      "statLabel": "准确率"
+    },
+    "security": {
+      "tag": "安全与规模",
+      "title": "企业级安全",
+      "summary": "隔离沙箱、反检测和隐私优先架构。",
+      "bullet1": "隔离沙箱",
+      "bullet2": "反机器人绕过",
+      "bullet3": "合规就绪",
+      "stat": "24/7",
+      "statLabel": "运行时间"
+    },
+    "demoTitle": "实时演示",
+    "demoDescription": "实时查看Browser4采集真实数据",
+    "demoSummary": "汇总"
+  },
+  "codeExamples": {
+    "title": "快速集成",
+    "subtitle": "几行代码，5分钟内开始抓取",
+    "simple": {
+      "title": "简单抓取",
+      "description": "加载、渲染和提取——三行代码。"
+    },
+    "agent": {
+      "title": "基于智能体",
+      "description": "让AI智能体自主导航和提取复杂数据。"
+    },
+    "dataCollection": {
+      "title": "数据采集",
+      "description": "零配置并行采集数千页面。"
+    },
+    "mlParsing": {
+      "title": "机器学习解析",
+      "description": "让机器学习自动理解页面结构。"
+    }
+  },
+  "useCases": {
+    "title": "真实应用场景",
+    "subtitle": "从研究到企业自动化——Browser4全面覆盖",
+    "case1": {
+      "number": "01",
+      "title": "自动化研究与海量数据采集",
+      "description": "智能体自动跨平台搜索、抓取价格和监控变化。单个Browser4节点每天可访问10万~20万页面，并使用内置ML结构化数据，将研究效率提升数千倍。",
+      "example": "某电商团队每天采集数十万条商品记录，自动生成报表指导选品。",
+      "tag": "数据采集"
+    },
+    "case2": {
+      "number": "02",
+      "title": "AI驱动的智能体自动化",
+      "description": "让浏览器智能体自主推理、规划和执行任务——从填写表单到多步骤工作流——将人类从重复点击中解放出来。",
+      "example": "某金融团队使用智能体登录、导航仪表板、导出报告并将结果发送到Slack。",
+      "tag": "智能体自动化"
+    },
+    "case3": {
+      "number": "03",
+      "title": "与LLM工作流集成",
+      "description": "将实时网络数据输入LLM或RAG管道——智能体按需检索上下文、截图和结构化结果。",
+      "example": "某客服机器人获取实时文档和截图，用最新信息回答用户问题。",
+      "tag": "LLM集成"
+    },
+    "case4": {
+      "number": "04",
+      "title": "竞争情报与市场监控",
+      "description": "持续跟踪竞争对手的定价、产品发布和评论。Browser4处理规模和复杂性，让您专注于洞察。",
+      "example": "某零售品牌实时监控电商网站上数千个SKU，并在价格变化时触发警报。",
+      "tag": "监控"
+    },
+    "case5": {
+      "number": "05",
+      "title": "大规模质量保证与测试",
+      "description": "跨浏览器和设备模拟用户旅程。在客户发现之前捕获回归问题。",
+      "example": "某SaaS公司每晚运行50个场景的测试，确保每个版本无回归。",
+      "tag": "测试"
+    }
+  },
+  "vision": {
+    "label": "2030愿景",
+    "title": "未来愿景",
+    "subtitle": "为每个智能体参与者构建公平、可持续的生态系统",
+    "painPoints": {
+      "label": "当前生态系统痛点",
+      "bullet1": "没有统一的应用商店或发现渠道",
+      "bullet2": "缺乏可搜索的目录来匹配需求",
+      "bullet3": "发布和分发碎片化，没有标准"
+    },
+    "snapshot": {
+      "label": "智能体能力快照",
+      "bullet1": "LLM实时生成操作",
+      "bullet2": "视觉智能体像人类一样浏览",
+      "bullet3": "操作系统级智能体接管复杂流程"
+    },
+    "roadmap": {
+      "label": "三年路线图",
+      "agentHub": {
+        "title": "智能体中心",
+        "text": "统一的智能体市场，具有分类、搜索、评级和版本控制"
+      },
+      "segmentedMarkets": {
+        "title": "细分市场",
+        "text": "基于场景的目录（数据采集、自动化、分析），具有透明的质量标准"
+      },
+      "prebuiltCatalog": {
+        "title": "预构建目录",
+        "text": "预打包的智能体，用于预订、费用管理、竞争监控——开箱即用"
+      },
+      "coevolution": {
+        "title": "共同进化",
+        "text": "网站主动支持智能体，提供更友好的数据表面和交互"
+      }
+    },
+    "mission": {
+      "title": "Browser4使命",
+      "text": "智能体时代已经到来。Browser4正在构建一个公平、可持续的生态系统，让AI能够自主决策并可靠行动，加速向智能体互联网的转变。",
+      "stat1": "180+",
+      "stat1Label": "已连接的企业场景",
+      "stat2": "800+",
+      "stat2Label": "训练中的智能体模块",
+      "stat3": "24/7",
+      "stat3Label": "全天候执行和监控",
+      "cta": "让我们一起构建未来"
+    }
+  },
+  "footer": {
+    "cta": {
+      "label": "准备启动",
+      "title": "用Browser4构建智能体时代",
+      "subtitle": "预约演示或申请POC，了解Browser4如何融入您的工作流程。",
+      "bookDemo": "预约演示",
+      "downloadWhitepaper": "下载白皮书"
+    },
+    "description": "为智能体时代打造的浏览器基础设施——构建公平、可持续的生态系统。",
+    "product": {
+      "title": "产品",
+      "browserAgents": "浏览器智能体",
+      "automationPlatform": "自动化平台",
+      "dataExtraction": "数据提取",
+      "pricing": "价格"
+    },
+    "resources": {
+      "title": "资源",
+      "documentation": "文档",
+      "apiReference": "API参考",
+      "caseStudies": "案例研究",
+      "blog": "博客"
+    },
+    "company": {
+      "title": "公司",
+      "aboutUs": "关于我们",
+      "partners": "合作伙伴",
+      "careers": "招聘",
+      "mediaKit": "媒体资料"
+    },
+    "copyright": "© {{year}} Browser4. 保留所有权利。",
+    "privacy": "隐私",
+    "terms": "条款",
+    "contact": "联系我们",
+    "editOnGithub": "在GitHub上编辑"
+  }
+}
