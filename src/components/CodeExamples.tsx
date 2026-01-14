@@ -255,7 +255,7 @@ session.submitAll(links)`,
                             </p>
                             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 font-mono text-sm text-slate-100 space-y-2 overflow-x-auto dark:bg-slate-950">
                                 <div>git clone https://github.com/platonai/browser4.git</div>
-                                <div>cd browser4 && ./mvnw -q -DskipTests</div>
+                                <div>cd browser4 && ./mvnw -DskipTests</div>
                             </div>
                             <a
                                 href="https://github.com/platonai/browser4"
