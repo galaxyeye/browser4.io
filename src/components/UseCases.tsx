@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Search, Sparkles, Users, Workflow, TestTube } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const colorClasses = {
     sky: {
@@ -39,76 +40,78 @@ const colorClasses = {
     }
 } as const;
 
-const cases = [
-    {
-        icon: Search,
-        number: '01',
-        title: 'Automated Research & Massive Data Collection',
-        description: 'Agents auto-search across platforms, pull prices, and monitor changes. A single Browser4 node can visit 100k ~ 200k pages per day and structure data with built-in ML, boosting research efficiency by thousands of times.',
-        example: 'An e-commerce team collects hundreds of thousands of product records daily and auto-builds reports to guide merchandising.',
-        color: 'sky'
-    },
-    {
-        icon: Sparkles,
-        number: '02',
-        title: 'AI-Driven Interactive Experiences',
-        description: 'Pair LLMs with browser agents to read, summarize, and act on content. Agents reason across pages, compare insights, and behave like a 24/7 AI analyst.',
-        example: 'Many viral social videos showcase agents autonomously completing complex browsing, comparison, and synthesis tasks.',
-        color: 'violet'
-    },
-    {
-        icon: Users,
-        number: '03',
-        title: 'Prospecting & Data Enrichment',
-        description: 'Crawl directories, event registries, and company sites to build or enrich CRM records and surface prospects fast.',
-        example: 'One customer gathers 30k leads daily from Google, merges multilingual sources automatically, and accelerates sales coverage.',
-        color: 'emerald'
-    },
-    {
-        icon: Workflow,
-        number: '04',
-        title: 'Workflow Automation (WFA)',
-        description: 'Hands-off flows for login, invoice downloads, forms, uploads, and system-to-system sync.',
-        example: 'A finance team automates bank reconciliation with Browser4, saving dozens of hours monthly and driving error rates to zero.',
-        color: 'amber'
-    },
-    {
-        icon: TestTube,
-        number: '05',
-        title: 'Quality Assurance & Testing',
-        description: 'Run E2E tests in production-like environments, simulate geo-specific users, and monitor critical paths 24/7.',
-        example: 'Automated tests for payments, auth, and cross-border checkout keep customer journeys safe.',
-        color: 'pink'
-    }
-];
-
-const videos = [
-    {
-        id: 'WO3M7g35Zt4',
-        title: 'Browser4 demo - product comparison',
-        description: 'Demonstrates how Browser4 agents search Amazon, capture product specs, and stack-rank items side by side.',
-        notes: [
-            'Live navigation across Amazon results pages',
-            'Automatic attribute extraction and comparison highlights',
-            'Great fit for commerce and sourcing analysts'
-        ],
-        color: 'sky'
-    },
-    {
-        id: 'qoXbnL4wdtc',
-        title: 'Browser4: Build an Army of Virtual Agents',
-        description: 'Shows PulsarAgents automating web data extraction and annotation so teams can export into Excel, HTML, or SQL instantly.',
-        notes: [
-            'Provide a list page link, then crawl every product detail',
-            'Generate structured tables with zero manual tagging',
-            'Ideal for turning messy sites into business-ready datasets'
-        ],
-        color: 'violet'
-    }
-];
-
 export default function UseCases() {
+    const { t } = useTranslation();
     const [activeIndex, setActiveIndex] = useState(0);
+    
+    const cases = [
+        {
+            icon: Search,
+            number: t('useCases.case1.number'),
+            title: t('useCases.case1.title'),
+            description: t('useCases.case1.description'),
+            example: t('useCases.case1.example'),
+            color: 'sky'
+        },
+        {
+            icon: Sparkles,
+            number: t('useCases.case2.number'),
+            title: t('useCases.case2.title'),
+            description: t('useCases.case2.description'),
+            example: t('useCases.case2.example'),
+            color: 'violet'
+        },
+        {
+            icon: Users,
+            number: t('useCases.case3.number'),
+            title: t('useCases.case3.title'),
+            description: t('useCases.case3.description'),
+            example: t('useCases.case3.example'),
+            color: 'emerald'
+        },
+        {
+            icon: Workflow,
+            number: t('useCases.case4.number'),
+            title: t('useCases.case4.title'),
+            description: t('useCases.case4.description'),
+            example: t('useCases.case4.example'),
+            color: 'amber'
+        },
+        {
+            icon: TestTube,
+            number: t('useCases.case5.number'),
+            title: t('useCases.case5.title'),
+            description: t('useCases.case5.description'),
+            example: t('useCases.case5.example'),
+            color: 'pink'
+        }
+    ];
+    
+    const videos = [
+        {
+            id: 'WO3M7g35Zt4',
+            title: t('useCases.videoDemos.video1.title'),
+            description: t('useCases.videoDemos.video1.description'),
+            notes: [
+                t('useCases.videoDemos.video1.note1'),
+                t('useCases.videoDemos.video1.note2'),
+                t('useCases.videoDemos.video1.note3')
+            ],
+            color: 'sky'
+        },
+        {
+            id: 'qoXbnL4wdtc',
+            title: t('useCases.videoDemos.video2.title'),
+            description: t('useCases.videoDemos.video2.description'),
+            notes: [
+                t('useCases.videoDemos.video2.note1'),
+                t('useCases.videoDemos.video2.note2'),
+                t('useCases.videoDemos.video2.note3')
+            ],
+            color: 'violet'
+        }
+    ];
+    
     const active = cases[activeIndex];
     const palette = colorClasses[active.color as keyof typeof colorClasses];
 
@@ -118,9 +121,9 @@ export default function UseCases() {
 
             <div className="relative max-w-7xl mx-auto px-6">
                 <div className="text-center mb-12">
-                    <p className="text-sm tracking-[0.5em] text-slate-500 uppercase mb-4">real-world plays</p>
-                    <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">Use Cases</h2>
-                    <p className="text-xl text-slate-600 dark:text-slate-400">Typical Browser4 AI Agent deployments</p>
+                    <p className="text-sm tracking-[0.5em] text-slate-500 uppercase mb-4">{t('useCases.label')}</p>
+                    <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">{t('useCases.title')}</h2>
+                    <p className="text-xl text-slate-600 dark:text-slate-400">{t('useCases.subtitle')}</p>
                 </div>
 
                 <div className="mb-10 flex flex-wrap gap-3 justify-center">
@@ -146,24 +149,24 @@ export default function UseCases() {
                                 <active.icon className={`w-8 h-8 ${palette.accent}`} />
                             </div>
                             <div>
-                                <p className="text-sm text-slate-500 dark:text-slate-400">Scenario {active.number}</p>
+                                <p className="text-sm text-slate-500 dark:text-slate-400">{t('useCases.scenario')} {active.number}</p>
                                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white">{active.title}</h3>
                             </div>
                         </div>
                         <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">{active.description}</p>
                         <div className={`rounded-2xl border px-5 py-4 bg-gradient-to-br ${palette.gradient} ${palette.border}`}>
-                            <p className={`text-sm font-semibold mb-2 ${palette.accent}`}>Example</p>
+                            <p className={`text-sm font-semibold mb-2 ${palette.accent}`}>{t('useCases.example')}</p>
                             <p className="text-slate-700 dark:text-white/80 leading-relaxed">{active.example}</p>
                         </div>
                     </article>
 
                     <div className="space-y-6">
                         <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-lg shadow-slate-200/30 dark:bg-slate-900/60 dark:border-slate-800 dark:shadow-none">
-                            <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">Why Browser4</p>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">{t('useCases.whyBrowser4')}</p>
                             <ul className="space-y-3 text-slate-600 dark:text-slate-300">
-                                <li>✦ Agents navigate, extract, and stitch data automatically</li>
-                                <li>✦ 100k ~ 200k pages/day per node with near-real-time monitoring</li>
-                                <li>✦ Full API + workflow tooling for systems integration</li>
+                                <li>✦ {t('useCases.benefit1')}</li>
+                                <li>✦ {t('useCases.benefit2')}</li>
+                                <li>✦ {t('useCases.benefit3')}</li>
                             </ul>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
@@ -200,9 +203,9 @@ export default function UseCases() {
 
                 <div className="mt-20">
                     <div className="text-center mb-10">
-                        <p className="text-sm tracking-[0.5em] text-slate-500 uppercase mb-3">video demos</p>
-                        <h3 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">See Browser4 in Action</h3>
-                        <p className="text-slate-600 dark:text-slate-400 text-lg">Real footage of agents collecting data and comparing products.</p>
+                        <p className="text-sm tracking-[0.5em] text-slate-500 uppercase mb-3">{t('useCases.videoDemos.label')}</p>
+                        <h3 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">{t('useCases.videoDemos.title')}</h3>
+                        <p className="text-slate-600 dark:text-slate-400 text-lg">{t('useCases.videoDemos.subtitle')}</p>
                     </div>
                     <div className="grid gap-10 md:grid-cols-2">
                         {videos.map((video) => {
@@ -211,7 +214,7 @@ export default function UseCases() {
                                 <article key={video.id} className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-lg shadow-slate-200/30 dark:bg-slate-900/60 dark:border-slate-800 dark:shadow-none">
                                     <div className="flex items-center gap-3">
                                         <div className={`px-3 py-1 rounded-full text-xs font-semibold ${tone.badge}`}>
-                                            Video
+                                            {t('useCases.videoDemos.video')}
                                         </div>
                                         <h4 className="text-slate-900 dark:text-white text-xl font-semibold">{video.title}</h4>
                                     </div>
@@ -236,7 +239,7 @@ export default function UseCases() {
                                         rel="noreferrer"
                                         className="inline-flex items-center gap-2 text-sm font-semibold text-sky-600 hover:text-sky-500 dark:text-sky-300 dark:hover:text-sky-200"
                                     >
-                                        Watch on YouTube
+                                        {t('useCases.videoDemos.watchOnYouTube')}
                                         <span aria-hidden="true">↗</span>
                                     </a>
                                 </article>

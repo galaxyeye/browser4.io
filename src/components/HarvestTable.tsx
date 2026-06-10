@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { HarvestRow, HarvestSummary } from '../lib/harvestData';
 
 interface HarvestTableProps {
@@ -7,23 +8,25 @@ interface HarvestTableProps {
 }
 
 export function HarvestTable({ rows }: HarvestTableProps) {
+    const { t } = useTranslation();
+
     return (
         <section id="harvest" className="py-1">
             <div className="table w-full text-[12px]">
                 <table className="table-auto w-full text-slate-700 dark:text-slate-200 whitespace-nowrap">
                      <thead>
                         <tr className="text-left border-b border-slate-200 dark:border-slate-800">
-                            <th className="py-1 pr-3">#</th>
-                            <th className="py-1 pr-3">URL</th>
-                            <th className="py-1 pr-3">Title</th>
-                            <th className="py-1 pr-3">Brand</th>
-                            <th className="py-1 pr-3">Stars</th>
-                            <th className="py-1 pr-3">Ratings</th>
-                            <th className="py-1 pr-3">Q&A</th>
-                            <th className="py-1 pr-3">Fees</th>
-                            <th className="py-1 pr-3">Other Sellers</th>
-                            <th className="py-1 pr-3">Price</th>
-                            <th className="py-1 pr-3">Notes</th>
+                            <th className="py-1 pr-3">{t('capabilities.harvestTable.number')}</th>
+                            <th className="py-1 pr-3">{t('capabilities.harvestTable.url')}</th>
+                            <th className="py-1 pr-3">{t('capabilities.harvestTable.title')}</th>
+                            <th className="py-1 pr-3">{t('capabilities.harvestTable.brand')}</th>
+                            <th className="py-1 pr-3">{t('capabilities.harvestTable.stars')}</th>
+                            <th className="py-1 pr-3">{t('capabilities.harvestTable.ratings')}</th>
+                            <th className="py-1 pr-3">{t('capabilities.harvestTable.qa')}</th>
+                            <th className="py-1 pr-3">{t('capabilities.harvestTable.fees')}</th>
+                            <th className="py-1 pr-3">{t('capabilities.harvestTable.otherSellers')}</th>
+                            <th className="py-1 pr-3">{t('capabilities.harvestTable.price')}</th>
+                            <th className="py-1 pr-3">{t('capabilities.harvestTable.notes')}</th>
                          </tr>
                      </thead>
                      <tbody>

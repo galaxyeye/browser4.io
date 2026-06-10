@@ -1,19 +1,22 @@
 import { useState } from 'react';
 import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useTheme } from '../theme/ThemeProvider';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export const navLinks = [
-    { label: 'Home', href: '#hero' },
-    { label: 'Features', href: '#features' },
-    { label: 'Capabilities', href: '#capabilities' },
-    { label: 'Code', href: '#code-examples' },
-    { label: 'Use Cases', href: '#use-cases' },
-    { label: 'Vision', href: '#vision' }
+    { label: 'nav.home', href: '#hero' },
+    { label: 'nav.features', href: '#features' },
+    { label: 'nav.capabilities', href: '#capabilities' },
+    { label: 'nav.code', href: '#code-examples' },
+    { label: 'nav.useCases', href: '#use-cases' },
+    { label: 'nav.vision', href: '#vision' }
 ];
 
 export default function NavBar() {
     const [open, setOpen] = useState(false);
     const { isDark, toggleTheme } = useTheme();
+    const { t } = useTranslation();
 
     const toggle = () => setOpen((prev) => !prev);
     const handleNavClick = () => setOpen(false);
@@ -29,11 +32,12 @@ export default function NavBar() {
                 <nav className={`hidden md:flex items-center gap-8 text-sm ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
                     {navLinks.map((link) => (
                         <a key={link.href} href={link.href} className="transition hover:text-current">
-                            {link.label}
+                            {t(link.label)}
                         </a>
                     ))}
                 </nav>
                 <div className="hidden md:flex items-center gap-3">
+                    <LanguageSwitcher />
                     <button
                         type="button"
                         onClick={toggleTheme}
@@ -52,13 +56,13 @@ export default function NavBar() {
                         rel="noopener noreferrer"
                         className="px-4 py-2 text-sm font-semibold text-slate-300 border border-slate-700/70 rounded-xl hover:text-white hover:border-slate-500/70"
                     >
-                        GitHub
+                        {t('nav.github')}
                     </a>
                     <a
                         href="#code-examples"
                         className="px-5 py-2 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-sky-500 to-violet-500 hover:from-sky-400 hover:to-violet-400"
                     >
-                        Get Started
+                        {t('nav.getStarted')}
                     </a>
                 </div>
                 <button
@@ -77,7 +81,7 @@ export default function NavBar() {
                 }`}>
                     {navLinks.map((link) => (
                         <a key={link.href} href={link.href} onClick={handleNavClick} className="py-1">
-                            {link.label}
+                            {t(link.label)}
                         </a>
                     ))}
                     <a
@@ -85,7 +89,7 @@ export default function NavBar() {
                         onClick={handleNavClick}
                         className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-violet-500 text-white text-center font-semibold"
                     >
-                        Get Started
+                        {t('nav.getStarted')}
                     </a>
                 </div>
             )}

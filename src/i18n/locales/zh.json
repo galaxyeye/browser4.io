@@ -1,0 +1,388 @@
+{
+  "nav": {
+    "home": "首页",
+    "features": "特性",
+    "capabilities": "能力",
+    "code": "代码",
+    "useCases": "使用案例",
+    "vision": "愿景",
+    "github": "GitHub",
+    "getStarted": "开始使用"
+  },
+  "hero": {
+    "badge": "超高速浏览器 + 智能体时代的基础设施",
+    "title": "让AI能够{{verb}}网络。",
+    "subtitle": "围绕世界上最{{adjective}}的浏览器库构建的基础设施和生态系统。",
+    "getStarted": "开始使用",
+    "github": "GITHUB",
+    "milestones": {
+      "title": "里程碑",
+      "founded": {
+        "label": "2014年成立",
+        "detail": "致力于浏览器自动化和智能体"
+      },
+      "evolving": {
+        "label": "2020+持续演进",
+        "detail": "大规模AI智能体落地运营"
+      },
+      "future": {
+        "label": "面向未来",
+        "detail": "拥抱AI智能体网络"
+      }
+    },
+    "verbs": {
+      "browse": "浏览",
+      "automate": "自动化",
+      "observe": "观察",
+      "scrape": "抓取",
+      "study": "研究",
+      "investigate": "调查",
+      "extract": "提取",
+      "monitor": "监控",
+      "crawl": "爬取",
+      "understand": "理解"
+    },
+    "adjectives": {
+      "fast": "快速",
+      "powerful": "强大",
+      "intelligent": "智能",
+      "optimized": "优化"
+    }
+  },
+  "features": {
+    "title": "核心能力",
+    "subtitle": "为智能体时代打造的浏览器基础设施",
+    "browserAgents": {
+      "title": "浏览器智能体",
+      "subtitle": "自主浏览器智能体",
+      "description": "能够在浏览器内直接推理、规划和完成任务的智能体"
+    },
+    "browserAutomation": {
+      "title": "浏览器自动化",
+      "subtitle": "高精度自动化",
+      "description": "高性能工作流、导航和数据提取"
+    },
+    "machineLearning": {
+      "title": "机器学习智能体",
+      "subtitle": "机器学习智能体",
+      "description": "无需token即可自动学习复杂页面结构"
+    },
+    "webUnderstanding": {
+      "title": "网页理解",
+      "subtitle": "深度网页理解",
+      "description": "理解动态、脚本驱动和交互式页面",
+      "stat": "99%+",
+      "statLabel": "结构化准确率"
+    },
+    "extremePerformance": {
+      "title": "极致性能",
+      "subtitle": "极致性能",
+      "description": "协程安全引擎；单机每天处理10万~20万复杂页面",
+      "stat": "10万+",
+      "statLabel": "每日页面数"
+    },
+    "video": {
+      "title": "浏览器智能体实战演示",
+      "description": "观看浏览器原生智能体如何端到端规划和执行复杂任务。"
+    }
+  },
+  "capabilities": {
+    "title": "技术架构",
+    "subtitle": "支撑下一代浏览器智能体的四大技术支柱",
+    "sectionTitle": "四大能力支柱",
+    "sectionSubtitle": "智能体 · 自动化 · 数据 · 可靠性",
+    "copyCode": "复制代码",
+    "copied": "已复制",
+    "aiAgents": {
+      "tag": "AI与智能体",
+      "title": "自主浏览器智能体",
+      "summary": "实时感知、推理和多智能体编排，保持智能体在正确轨道上。",
+      "bullet1": "思维链规划",
+      "bullet2": "LLM + 视觉混合上下文",
+      "bullet3": "多智能体协作",
+      "stat": "99.2%",
+      "statLabel": "任务完成率"
+    },
+    "workflow": {
+      "tag": "工作流引擎",
+      "title": "编排引擎",
+      "summary": "管理大规模并行任务流，内置调度和监控。",
+      "bullet1": "分布式协程",
+      "bullet2": "并行调度",
+      "bullet3": "进度跟踪",
+      "stat": "20万+",
+      "statLabel": "每日页面数"
+    },
+    "intelligence": {
+      "tag": "机器学习智能",
+      "title": "ML驱动的数据智能",
+      "summary": "自动页面分析和字段提取，无需手动规则。",
+      "bullet1": "零配置提取",
+      "bullet2": "自动模式学习",
+      "bullet3": "多模态解析",
+      "stat": "99%+",
+      "statLabel": "准确率"
+    },
+    "security": {
+      "tag": "安全与规模",
+      "title": "企业级安全",
+      "summary": "隔离沙箱、反检测和隐私优先架构。",
+      "bullet1": "隔离沙箱",
+      "bullet2": "反机器人绕过",
+      "bullet3": "合规就绪",
+      "stat": "24/7",
+      "statLabel": "运行时间"
+    },
+    "demoTitle": "实时演示",
+    "demoDescription": "实时查看Browser4采集真实数据",
+    "demoSummary": "汇总",
+    "harvestTable": {
+      "number": "#",
+      "url": "链接",
+      "title": "标题",
+      "brand": "品牌",
+      "stars": "评分",
+      "ratings": "评价数",
+      "qa": "问答",
+      "fees": "费用",
+      "otherSellers": "其他卖家",
+      "price": "价格",
+      "notes": "备注"
+    },
+    "pillars": {
+      "aiAgents": {
+        "tag": "AI与智能体",
+        "title": "自主浏览器智能体",
+        "summary": "实时感知、推理和多智能体编排，保持智能体在正确轨道上。",
+        "bullet1": "思维链规划",
+        "bullet2": "LLM + 视觉混合上下文",
+        "bullet3": "多智能体协作",
+        "stat": "50+",
+        "statLabel": "单节点并发智能体数",
+        "footnote": "核心价值：端到端推理加可靠执行循环"
+      },
+      "workflow": {
+        "tag": "自动化与RPA",
+        "title": "高精度工作流自动化",
+        "summary": "可组合的原语、协程级安全性和弹性恢复，适用于长时间运行的工作。",
+        "bullet1": "毫秒级协程控制",
+        "bullet2": "事件驱动的恢复能力",
+        "stat": "99.2%",
+        "statLabel": "完成率",
+        "footnote": "优势：始终在线的自动化与优雅恢复"
+      },
+      "intelligence": {
+        "tag": "数据提取",
+        "title": "一键规模化提取",
+        "summary": "LLM、ML和选择器的混合，在混乱页面中获取干净数据。",
+        "bullet1": "无token ML提取",
+        "bullet2": "X-SQL扩展查询",
+        "bullet3": "批量实体采集",
+        "stat": "99.9%+",
+        "statLabel": "字段准确率",
+        "footnote": "无脆弱规则——自动适配每个网站"
+      },
+      "security": {
+        "tag": "性能与可靠性",
+        "title": "规模化 + 反检测",
+        "summary": "行为模拟、多层防御和弹性调度保持高吞吐量。",
+        "bullet1": "单节点每天渲染10万~20万页面",
+        "bullet2": "智能反封锁 + 重试",
+        "bullet3": "配置文件/IP/行为防护",
+        "stat": "10万+",
+        "statLabel": "每日页面数",
+        "footnote": "同时保证吞吐量和反检测"
+      }
+    }
+  },
+  "codeExamples": {
+    "badge": "代码示例",
+    "title": "开发者友好的API",
+    "subtitle": "优雅的代码片段，助您快速上手Browser4",
+    "browserAgents": {
+      "title": "浏览器智能体",
+      "description": "自主推理、规划和执行复杂的浏览器任务"
+    },
+    "workflowAutomation": {
+      "title": "工作流自动化",
+      "description": "精确的元素交互和快速数据提取"
+    },
+    "llmXsql": {
+      "title": "LLM + X-SQL",
+      "description": "由LLM智能和选择器驱动的高效数据提取"
+    },
+    "highSpeedParallel": {
+      "title": "高速并行处理",
+      "description": "并行浏览器控制，单节点每天处理10万~20万页面"
+    },
+    "youtube": {
+      "label": "YouTube演示",
+      "title": "Browser4智能体实战",
+      "description": "涵盖自动化研究、提取和报告的完整工作流程。",
+      "watchVideo": "观看视频"
+    },
+    "bilibili": {
+      "label": "Bilibili演示",
+      "title": "深度中文演练",
+      "description": "面向中文开发者的详细教程，涵盖部署、运行时和实际使用。",
+      "watchNow": "立即观看"
+    },
+    "quickstart": {
+      "label": "快速开始",
+      "title": "10分钟内完成设置",
+      "description": "Browser4需要Java 17+和Maven。克隆仓库，配置您的LLM API，然后运行示例。",
+      "visitGithub": "访问GitHub"
+    },
+    "developerToolbox": {
+      "title": "开发者工具箱",
+      "description": "IDE模板、脚本和CLI助手即将推出——申请beta版以获得首次访问权限。"
+    },
+    "copy": "复制",
+    "copied": "已复制"
+  },
+  "useCases": {
+    "label": "真实场景",
+    "title": "使用案例",
+    "subtitle": "典型的Browser4 AI智能体部署",
+    "whyBrowser4": "为什么选择Browser4",
+    "scenario": "场景",
+    "example": "示例",
+    "benefit1": "智能体自动导航、提取和拼接数据",
+    "benefit2": "单节点每天处理10万~20万页面，近实时监控",
+    "benefit3": "完整API + 工作流工具用于系统集成",
+    "case1": {
+      "number": "01",
+      "title": "自动化研究与海量数据采集",
+      "description": "智能体自动跨平台搜索、抓取价格和监控变化。单个Browser4节点每天可访问10万~20万页面，并使用内置ML结构化数据，将研究效率提升数千倍。",
+      "example": "某电商团队每天采集数十万条商品记录，自动生成报表指导选品。"
+    },
+    "case2": {
+      "number": "02",
+      "title": "AI驱动的交互体验",
+      "description": "将LLM与浏览器智能体配对，读取、总结和处理内容。智能体跨页面推理、比较见解，像24/7 AI分析师一样工作。",
+      "example": "许多爆款社交视频展示了智能体自主完成复杂的浏览、比较和综合任务。"
+    },
+    "case3": {
+      "number": "03",
+      "title": "潜在客户开发与数据丰富化",
+      "description": "爬取目录、活动注册表和公司网站，快速构建或丰富CRM记录并发现潜在客户。",
+      "example": "某客户每天从Google收集3万条线索，自动合并多语言来源，加速销售覆盖。"
+    },
+    "case4": {
+      "number": "04",
+      "title": "工作流自动化(WFA)",
+      "description": "无需人工的登录、发票下载、表单、上传和系统间同步流程。",
+      "example": "某财务团队使用Browser4自动化银行对账，每月节省数十小时，错误率降至零。"
+    },
+    "case5": {
+      "number": "05",
+      "title": "质量保证与测试",
+      "description": "在类生产环境中运行端到端测试，模拟特定地理位置的用户，24/7监控关键路径。",
+      "example": "支付、认证和跨境结账的自动化测试确保客户旅程安全。"
+    },
+    "videoDemos": {
+      "label": "视频演示",
+      "title": "Browser4实战演示",
+      "subtitle": "智能体采集数据和比较产品的真实视频。",
+      "video": "视频",
+      "watchOnYouTube": "在YouTube上观看",
+      "video1": {
+        "title": "Browser4演示 - 产品比较",
+        "description": "演示Browser4智能体如何搜索亚马逊、捕获产品规格并并排排列项目。",
+        "note1": "实时导航亚马逊结果页面",
+        "note2": "自动提取属性和比较亮点",
+        "note3": "非常适合商业和采购分析师"
+      },
+      "video2": {
+        "title": "Browser4：构建虚拟智能体大军",
+        "description": "展示PulsarAgents自动化网络数据提取和注释，团队可以立即导出到Excel、HTML或SQL。",
+        "note1": "提供列表页链接，然后爬取每个产品详情",
+        "note2": "零手动标记生成结构化表格",
+        "note3": "非常适合将混乱的网站转换为业务就绪的数据集"
+      }
+    }
+  },
+  "vision": {
+    "label": "2030愿景",
+    "title": "未来愿景",
+    "subtitle": "为每个智能体参与者构建公平、可持续的生态系统",
+    "painPoints": {
+      "label": "当前生态系统痛点",
+      "bullet1": "没有统一的应用商店或发现渠道",
+      "bullet2": "缺乏可搜索的目录来匹配需求",
+      "bullet3": "发布和分发碎片化，没有标准"
+    },
+    "snapshot": {
+      "label": "智能体能力快照",
+      "bullet1": "LLM实时生成操作",
+      "bullet2": "视觉智能体像人类一样浏览",
+      "bullet3": "操作系统级智能体接管复杂流程"
+    },
+    "roadmap": {
+      "label": "三年路线图",
+      "agentHub": {
+        "title": "智能体中心",
+        "text": "统一的智能体市场，具有分类、搜索、评级和版本控制"
+      },
+      "segmentedMarkets": {
+        "title": "细分市场",
+        "text": "基于场景的目录（数据采集、自动化、分析），具有透明的质量标准"
+      },
+      "prebuiltCatalog": {
+        "title": "预构建目录",
+        "text": "预打包的智能体，用于预订、费用管理、竞争监控——开箱即用"
+      },
+      "coevolution": {
+        "title": "共同进化",
+        "text": "网站主动支持智能体，提供更友好的数据表面和交互"
+      }
+    },
+    "mission": {
+      "title": "Browser4使命",
+      "text": "智能体时代已经到来。Browser4正在构建一个公平、可持续的生态系统，让AI能够自主决策并可靠行动，加速向智能体互联网的转变。",
+      "stat1": "180+",
+      "stat1Label": "已连接的企业场景",
+      "stat2": "800+",
+      "stat2Label": "训练中的智能体模块",
+      "stat3": "24/7",
+      "stat3Label": "全天候执行和监控",
+      "cta": "让我们一起构建未来"
+    }
+  },
+  "footer": {
+    "cta": {
+      "label": "准备启动",
+      "title": "用Browser4构建智能体时代",
+      "subtitle": "预约演示或申请POC，了解Browser4如何融入您的工作流程。",
+      "bookDemo": "预约演示",
+      "downloadWhitepaper": "下载白皮书"
+    },
+    "description": "为智能体时代打造的浏览器基础设施——构建公平、可持续的生态系统。",
+    "product": {
+      "title": "产品",
+      "browserAgents": "浏览器智能体",
+      "automationPlatform": "自动化平台",
+      "dataExtraction": "数据提取",
+      "pricing": "价格"
+    },
+    "resources": {
+      "title": "资源",
+      "documentation": "文档",
+      "apiReference": "API参考",
+      "caseStudies": "案例研究",
+      "blog": "博客"
+    },
+    "company": {
+      "title": "公司",
+      "aboutUs": "关于我们",
+      "partners": "合作伙伴",
+      "careers": "招聘",
+      "mediaKit": "媒体资料"
+    },
+    "copyright": "© {{year}} Browser4. 保留所有权利。",
+    "privacy": "隐私",
+    "terms": "条款",
+    "contact": "联系我们",
+    "editOnGithub": "在GitHub上编辑"
+  }
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { BrainCircuit, Workflow, Database, Shield } from 'lucide-react';
 import { useTheme } from '../theme/ThemeProvider';
+import { useTranslation } from 'react-i18next';
 import { Highlight, type Language, themes } from 'prism-react-renderer';
 import HarvestTable from './HarvestTable';
 import { harvestRows, harvestSummary } from '../lib/harvestData';
@@ -40,17 +41,21 @@ const accentStyles = {
     }
 } as const;
 
-const pillars = [
+const getPillars = (t: (key: string) => string) => [
     {
         icon: BrainCircuit,
-        accent: 'sky',
-        tag: 'AI & Agents',
-        title: 'Autonomous Browser Agents',
-        summary: 'Real-time perception, reasoning, and multi-agent orchestration keep the agent on course.',
-        bullets: ['Chain-of-thought planning', 'LLM + vision mixed context', 'Multi-agent collaboration'],
-        stat: '50+',
-        statLabel: 'Concurrent agents per node',
-        footnote: 'Core value: end-to-end reasoning plus reliable execution loops',
+        accent: 'sky' as const,
+        tag: t('capabilities.pillars.aiAgents.tag'),
+        title: t('capabilities.pillars.aiAgents.title'),
+        summary: t('capabilities.pillars.aiAgents.summary'),
+        bullets: [
+            t('capabilities.pillars.aiAgents.bullet1'),
+            t('capabilities.pillars.aiAgents.bullet2'),
+            t('capabilities.pillars.aiAgents.bullet3')
+        ],
+        stat: t('capabilities.pillars.aiAgents.stat'),
+        statLabel: t('capabilities.pillars.aiAgents.statLabel'),
+        footnote: t('capabilities.pillars.aiAgents.footnote'),
         codeSamples: [
             {
                 label: 'Agent run',
@@ -70,14 +75,17 @@ agent.run(task)`
     },
     {
         icon: Workflow,
-        accent: 'emerald',
-        tag: 'Automation & RPA',
-        title: 'High-Precision Workflow Automation',
-        summary: 'Composable primitives, coroutine-level safety, and elastic recovery for long-running work.',
-        bullets: ['Millisecond coroutine controls', 'Event-driven resilience'],
-        stat: '99.2%',
-        statLabel: 'Completion rate',
-        footnote: 'Strength: always-on automation with graceful recovery',
+        accent: 'emerald' as const,
+        tag: t('capabilities.pillars.workflow.tag'),
+        title: t('capabilities.pillars.workflow.title'),
+        summary: t('capabilities.pillars.workflow.summary'),
+        bullets: [
+            t('capabilities.pillars.workflow.bullet1'),
+            t('capabilities.pillars.workflow.bullet2')
+        ],
+        stat: t('capabilities.pillars.workflow.stat'),
+        statLabel: t('capabilities.pillars.workflow.statLabel'),
+        footnote: t('capabilities.pillars.workflow.footnote'),
         codeSamples: [
             {
                 label: 'Automation loop',
@@ -102,14 +110,18 @@ var history = agent.run(
     },
     {
         icon: Database,
-        accent: 'violet',
-        tag: 'Data Extraction',
-        title: 'One-Command Scale Extraction',
-        summary: 'Hybrid of LLM, ML, and selectors for clean data across chaotic pages.',
-        bullets: ['Token-free ML extraction', 'X-SQL extended queries', 'Mass entity harvesting'],
-        stat: '99.9%+',
-        statLabel: 'Field accuracy',
-        footnote: 'No brittle rules—auto adapts to each site',
+        accent: 'violet' as const,
+        tag: t('capabilities.pillars.intelligence.tag'),
+        title: t('capabilities.pillars.intelligence.title'),
+        summary: t('capabilities.pillars.intelligence.summary'),
+        bullets: [
+            t('capabilities.pillars.intelligence.bullet1'),
+            t('capabilities.pillars.intelligence.bullet2'),
+            t('capabilities.pillars.intelligence.bullet3')
+        ],
+        stat: t('capabilities.pillars.intelligence.stat'),
+        statLabel: t('capabilities.pillars.intelligence.statLabel'),
+        footnote: t('capabilities.pillars.intelligence.footnote'),
         codeSamples: [
             {
                 label: 'Harvest API',
@@ -143,14 +155,18 @@ println(ResultSetFormatter(rs, withHeader = true))`
     },
     {
         icon: Shield,
-        accent: 'amber',
-        tag: 'Performance & Reliability',
-        title: 'Scale + Anti-Detection',
-        summary: 'Behavioral simulation, multi-layer defense, and elastic scheduling keep throughput high.',
-        bullets: ['100k ~ 200k page renders per node/day', 'Smart anti-block + retries', 'Profile/IP/behavior shields'],
-        stat: '100k+',
-        statLabel: 'Pages per day',
-        footnote: 'Throughput and anti-detection guaranteed together',
+        accent: 'amber' as const,
+        tag: t('capabilities.pillars.security.tag'),
+        title: t('capabilities.pillars.security.title'),
+        summary: t('capabilities.pillars.security.summary'),
+        bullets: [
+            t('capabilities.pillars.security.bullet1'),
+            t('capabilities.pillars.security.bullet2'),
+            t('capabilities.pillars.security.bullet3')
+        ],
+        stat: t('capabilities.pillars.security.stat'),
+        statLabel: t('capabilities.pillars.security.statLabel'),
+        footnote: t('capabilities.pillars.security.footnote'),
         codeSamples: [
             {
                 label: 'Throughput controls',
@@ -171,14 +187,21 @@ session.submitAll(links)`
             }
         ]
     }
-] as const;
+];
 
 export default function Capabilities() {
     const [activeIndex, setActiveIndex] = useState(0);
     const [copied, setCopied] = useState(false);
-    const [tabIndices, setTabIndices] = useState(() => pillars.map(() => 0));
+    const [tabIndices, setTabIndices] = useState<number[]>([]);
     const { isDark } = useTheme();
+    const { t } = useTranslation();
     const prismTheme = isDark ? themes.vsDark : themes.duotoneLight;
+
+    const pillars = getPillars(t);
+
+    useEffect(() => {
+        setTabIndices(pillars.map(() => 0));
+    }, [pillars.length]);
 
     const active = pillars[activeIndex];
     const activeTabIndex = tabIndices[activeIndex] ?? 0;
@@ -227,10 +250,10 @@ export default function Capabilities() {
                 <div className="text-center mb-16">
                     <p className="text-sm tracking-[0.5em] text-slate-400 dark:text-slate-500 uppercase mb-4">browser4 stack</p>
                     <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                        Four Capability Pillars
+                        {t('capabilities.sectionTitle')}
                     </h2>
                     <p className="text-xl text-slate-600 dark:text-slate-400">
-                        Agents · Automation · Data · Reliability
+                        {t('capabilities.sectionSubtitle')}
                     </p>
                 </div>
 
@@ -308,7 +331,7 @@ export default function Capabilities() {
                                     copied ? 'border-sky-500/50 text-sky-500 dark:text-sky-300' : 'border-slate-200 dark:border-slate-800'
                                 }`}
                             >
-                                {copied ? 'Copied' : 'Copy code'}
+                                {copied ? t('capabilities.copied') : t('capabilities.copyCode')}
                             </button>
                         </div>
 
