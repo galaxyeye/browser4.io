@@ -1,0 +1,105 @@
+name: Sync Skill Directory
+
+on:
+  schedule:
+    - cron: '7 * * * *'  # hourly, on the 7th minute to avoid peak
+  workflow_dispatch:      # manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+
+      - name: Check for upstream changes
+        id: check
+        env:
+          SOURCE_REPO: platonai/Browser4
+          SOURCE_PATH: cli/skill
+          SHA_FILE: public/.skill-sha
+        run: |
+          set -euo pipefail
+
+          LATEST_SHA=$(curl -fsSL \
+            "https://api.github.com/repos/${SOURCE_REPO}/commits?path=${SOURCE_PATH}&per_page=1" \
+            | jq -r '.[0].sha // ""')
+
+          if [ -z "$LATEST_SHA" ] || [ "$LATEST_SHA" = "null" ]; then
+            echo "ERROR: Could not fetch latest commit SHA"
+            exit 1
+          fi
+
+          echo "Latest source SHA: $LATEST_SHA"
+
+          STORED_SHA=""
+          if [ -f "$SHA_FILE" ]; then
+            STORED_SHA=$(cat "$SHA_FILE")
+          fi
+          echo "Stored SHA:       ${STORED_SHA:-none}"
+
+          if [ "$LATEST_SHA" = "$STORED_SHA" ]; then
+            echo "No upstream changes — skipping."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Upstream changes detected."
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "sha=$LATEST_SHA" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Sync cli/skill from Browser4 into public/
+        if: steps.check.outputs.skip != 'true'
+        env:
+          SOURCE_REPO: platonai/Browser4
+          SOURCE_PATH: cli/skill
+          TARGET_DIR: public
+        run: |
+          set -euo pipefail
+
+          rm -rf "$TARGET_DIR/SKILL.md" "$TARGET_DIR/references"
+
+          download_dir() {
+            local repo="$1"
+            local path="$2"
+            local dest="$3"
+
+            mkdir -p "$dest"
+
+            local url="https://api.github.com/repos/${repo}/contents/${path}?per_page=1000"
+            local items
+            items=$(curl -fsSL -H "Accept: application/vnd.github+json" "$url")
+
+            echo "$items" | jq -r '.[]? | "\(.type)\t\(.name)\t\(.download_url // "")"' | while IFS=$'\t' read -r type name download_url; do
+              if [ "$type" = "file" ]; then
+                echo "  Downloading: $path/$name → $dest/$name"
+                curl -fsSL -o "$dest/$name" "$download_url"
+              elif [ "$type" = "dir" ]; then
+                echo "  Entering:  $path/$name/"
+                download_dir "$repo" "$path/$name" "$dest/$name"
+              fi
+            done
+          }
+
+          echo "Syncing from $SOURCE_REPO:$SOURCE_PATH → $TARGET_DIR/"
+          download_dir "$SOURCE_REPO" "$SOURCE_PATH" "$TARGET_DIR"
+          echo "Sync complete."
+
+      - name: Commit and push changes
+        if: steps.check.outputs.skip != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          echo "${{ steps.check.outputs.sha }}" > public/.skill-sha
+
+          git add public/SKILL.md public/references/ public/.skill-sha
+
+          if git diff --cached --quiet; then
+            echo "No changes — nothing to commit."
+          else
+            git commit -m "chore: sync cli/skill from platonai/Browser4 (${{ steps.check.outputs.sha }})"
+            git push origin main
+            echo "Pushed."
+          fi
