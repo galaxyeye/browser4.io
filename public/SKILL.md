@@ -42,7 +42,7 @@ browser4-cli install
 # open new browser
 browser4-cli open
 # navigate to a page with the current active session
-browser4-cli goto https://browser4.io/
+browser4-cli goto https://browser4.io
 # take a snapshot
 browser4-cli snapshot
 # interact with the page using refs from the snapshot
@@ -74,9 +74,9 @@ The sections below cover the standard browser workflow commands that are surface
 ```bash
 browser4-cli open
 # open and navigate right away in one step
-browser4-cli open https://browser4.io/
+browser4-cli open https://browser4.io
 # navigate to a URL using the current active session
-browser4-cli goto https://playwright.dev
+browser4-cli goto https://browser4.io
 browser4-cli type "search query"
 browser4-cli click e3
 browser4-cli dblclick e7
@@ -89,6 +89,22 @@ browser4-cli uncheck e12
 browser4-cli snapshot
 browser4-cli snapshot --filename=after-click.yaml
 browser4-cli eval "document.title"
+browser4-cli eval --file=script.js
+browser4-cli eval --file=script.js e5
+browser4-cli get text e5
+browser4-cli get html "#main"
+browser4-cli get box e5
+browser4-cli get styles e5
+browser4-cli get property e5 value
+browser4-cli get attr e5 href
+browser4-cli scroll down 300
+browser4-cli scroll up 200
+browser4-cli wait 1000
+browser4-cli wait e5
+browser4-cli wait --text="Success"
+browser4-cli wait --url="**/dashboard"
+browser4-cli wait --load=networkidle
+browser4-cli wait --fn="document.readyState === 'complete'"
 browser4-cli resize 1920 1080
 browser4-cli close
 ```
@@ -132,7 +148,50 @@ browser4-cli screenshot e5
 browser4-cli screenshot --filename=page.png
 ```
 
+### Element Data Extraction (get)
+
+Extract data from a page element. The first argument is the mode, the second is a CSS selector or snapshot ref (`e5`).
+
+```bash
+browser4-cli get text e5            # visible text content
+browser4-cli get html "#main"       # innerHTML of the element
+browser4-cli get box e5             # bounding box (x, y, width, height)
+browser4-cli get styles e5          # all computed CSS styles as JSON
+browser4-cli get property e5 value  # JavaScript property value
+browser4-cli get attr e5 href       # HTML attribute value
+```
+
+- Output distinguishes `null` (element/attribute missing), `""` (exists but empty), and normal values.
+- `property` and `attr` modes require a third positional argument (the property/attribute name).
+
+### Scroll
+
+Scroll the page in a given direction by the specified number of pixels.
+
+```bash
+browser4-cli scroll down 300   # scroll down 300px
+browser4-cli scroll up 200     # scroll up 200px
+browser4-cli scroll right 150  # scroll right 150px (horizontal)
+browser4-cli scroll left 100   # scroll left 100px (horizontal)
+```
+
+### Wait
+
+Wait for a condition before proceeding. Without options, the positional argument is interpreted as a CSS selector to wait for, or as milliseconds if numeric.
+
+```bash
+browser4-cli wait 1000                   # wait 1 second (fixed delay)
+browser4-cli wait e5                     # wait for element to appear
+browser4-cli wait --text="Success"       # wait for text to appear on page
+browser4-cli wait --url="**/dashboard"   # wait for URL to match glob
+browser4-cli wait --load=networkidle     # wait for page load (networkidle or domcontentloaded)
+browser4-cli wait --fn="document.querySelector('.loaded') !== null"  # wait for JS expression
+```
+
 ### Tabs
+
+Tab commands use **zero-based indices** (position in the tab list, starting at 0).
+Run `tab-list` first — each tab shows its `index` (e.g., `index=0` for the first tab).
 
 ```bash
 browser4-cli tab-list
@@ -142,8 +201,6 @@ browser4-cli tab-close
 browser4-cli tab-close 2
 browser4-cli tab-select 0
 ```
-
-Use `browser4-cli tab-list` to obtain the current zero-based tab index before calling `tab-select` or `tab-close` with a specific target.
 
 ### Storage
 
@@ -217,6 +274,19 @@ You can also take a snapshot on demand using `browser4-cli snapshot` command.
 
 If `--filename` is not provided, a new snapshot file is created with a timestamp. Default to automatic file naming, use `--filename=` when artifact is a part of the workflow result.
 
+## DOM Snapshot
+
+The `domsnapshot` family of commands operates on a **static DOM snapshot** — the raw HTML of the current page parsed into a queryable document object model. Unlike the interactive `snapshot` command (which captures accessibility-tree refs for `click`/`type`/`fill`), `domsnapshot` extracts structured data from the DOM using CSS selectors and X-SQL queries.
+
+```bash
+browser4-cli domsnapshot                           # capture a fresh static DOM snapshot
+browser4-cli domsnapshot get <field> [selector] [name]  # extract text/html/attr via CSS selectors
+browser4-cli domsnapshot query [url] --sql <query>       # run X-SQL against the DOM
+browser4-cli domsnapshot export [--file <path>]         # save snapshot HTML to a file
+```
+
+See **[references/domsnapshot.md](references/domsnapshot.md)** for the full command reference, field tables, X-SQL query examples, and the comparison with interactive `snapshot`.
+
 ## Browser Sessions
 
 ```bash
@@ -241,70 +311,20 @@ Query them explicitly when needed:
 
 ```bash
 browser4-cli help batch
-browser4-cli help console
 browser4-cli help extract
-browser4-cli help summarize
-browser4-cli help agent run
 browser4-cli help swarm create
 ```
 
-## Agent and Swarm CLI
+## Swarm CLI
 
-Browser4 CLI offers two high-level interfaces for complex, multi-step browser tasks beyond the standard single-action commands:
-
-**Agent CLI** (`agent <subcommand>`) — Submit a natural-language task and let Browser4's backend AI agent plan and execute it autonomously. The agent reasons about the page, decides which actions to take, and completes the task asynchronously. Best for exploratory tasks, multi-step workflows where you don't know the exact page structure ahead of time, or delegating an entire goal to the backend.
+Browser4 CLI offers a high-level interface for complex, multi-step browser tasks beyond the standard single-action commands:
 
 **Swarm CLI** (`swarm <subcommand>`) — Orchestrate parallel scraping and structured data extraction across multiple browser contexts. Designed for high-throughput jobs like refreshing a curated URL list, supervised fan-out browsing, or repeatable selector-based scraping with explicit output artifacts. Supports X-SQL for structured queries against loaded webpages.
 
 | Interface | Model | Use when |
 |---|---|---|
 | Standard commands | Single action per invocation | You know the exact refs/selectors and want precise control |
-| Agent CLI | Natural-language task → autonomous execution | You have a goal but don't know the page structure; multi-step exploration |
 | Swarm CLI | Parallel contexts + X-SQL queries | High-throughput scraping, structured extraction across many pages |
-
-See the sections below for detailed usage of each.
-
-## Agent task commands
-
-Use the `agent` subcommands when you want Browser4's backend agent to execute a
-natural-language task asynchronously.
-
-Use the spaced `agent <subcommand>` form:
-
-```bash
-browser4-cli agent run "Open browser4.io and summarize the hero section"
-browser4-cli agent status agent-task-1
-browser4-cli agent result agent-task-1
-```
-
-Recommended lifecycle:
-
-```bash
-# 1) submit an autonomous task
-browser4-cli agent run "Open browser4.io and summarize the hero section"
-
-# 2) poll progress with the returned task id
-browser4-cli agent status agent-task-1
-
-# 3) read the final result
-browser4-cli agent result agent-task-1
-```
-
-Notes:
-
-- `agent run` returns immediately after the backend accepts the task and prints
-  the generated task ID plus a ready-to-copy `agent status` follow-up command.
-- `agent status` prints the backend status payload as-is. This is typically JSON
-  and may include fields like `id`, `status`, `statusCode`, `processState`,
-  `message`, `agentState`, `agentHistory`, and `commandResult`.
-- `agent result` prints the backend result payload as-is. Depending on the
-  task, that payload may be plain text or structured JSON.
-- The commands are task-ID based, so they do not depend on the current saved
-  CLI browser session slot.
-- `agent` subcommands are advanced commands and are not supported in `batch`
-  mode.
-- `agent run` performs a short status probe after submission so missing LLM/API
-  key configuration errors can fail fast with a clearer message.
 
 ## Swarm workflows
 
@@ -356,70 +376,9 @@ browser4-cli swarm result scrape-task-4
 
 ### X-SQL query submissions
 
-Use `swarm query` to run an X-SQL query that extracts structured data from the
-loaded webpage. The `--sql` flag is **required**. The query uses `@url` as a
-placeholder for the target URL.
+Use `swarm query` to run X-SQL queries that extract structured data from loaded webpages. The `--sql` flag is **required**, and `@url` serves as a placeholder for the target URL. Only simple `SELECT ... FROM load_and_select(@url, cssQuery)` queries are supported (no CTEs, subqueries, `EXPLODE`, or joins).
 
-```bash
-# Inline X-SQL query:
-browser4-cli swarm query "https://www.amazon.com/dp/B08PP5MSVB" --sql "
-  SELECT
-    dom_base_uri(dom) AS url,
-    dom_first_text(dom, '#productTitle') AS title,
-    dom_first_slim_html(dom, 'img:expr(width > 400)') AS img
-  FROM load_and_select(@url, 'body');
-"
-
-# Read query from a file:
-browser4-cli swarm query "https://www.amazon.com/dp/B08PP5MSVB" --sql @query.sql
-
-# With load options and a seed file:
-browser4-cli swarm query --sql @query.sql --seed-file=./urls.txt --refresh
-```
-
-Example `query.sql`:
-
-```sql
-SELECT
-  dom_base_uri(dom) AS url,
-  dom_first_text(dom, '#productTitle') AS title,
-  dom_first_slim_html(dom, 'img:expr(width > 400)') AS img
-FROM load_and_select(@url, 'body');
-```
-
-`swarm query` sends a structured JSON body to `SwarmController.query(query)`.
-The `@url` placeholder is substituted with the target URL (and any load options)
-server-side.
-
-> **Tip:** `swarm submit --sql` also works as a convenience alias, but
-> `swarm query` is the preferred command for X-SQL queries.
-
-Notes:
-
-- `swarm submit` accepts a positional URL, `--seed-file`, or both.
-- `swarm query` accepts `--sql` (required), plus a URL, `--seed-file`, or both.
-- Seed files are plain text, one URL per line. Empty lines and lines beginning
-  with `#` are ignored.
-- Load-option style flags (`--deadline`, `--expires`, `--refresh`, `--parse`,
-  `--store-content`) work with both `swarm submit` and `swarm query`.
-- Capture the job ID printed by `swarm submit` or `swarm query`, then use
-  `swarm status` and `swarm result` to follow the async job via
-  `SwarmController.getStatus(id)` and `SwarmController.getResult(id)`.
-
-Example seed file:
-
-```text
-# urls for the swarm crawler
-https://example.com/seed-1
-https://example.com/seed-2
-```
-
-Typical use cases:
-
-- parallel refresh of a curated URL list
-- supervised fan-out browsing across multiple contexts
-- repeatable selector-based scraping jobs with explicit output artifacts
-- structured data extraction from web pages using X-SQL queries
+See **[references/swarm.md](references/swarm.md#swarm-query)** for inline/file-based query examples, the arguments table, extraction functions reference, and seed file usage.
 
 ## Installation
 
@@ -447,7 +406,6 @@ After installation, use `browser4-cli`.
 - Commands that require a connection to the Browser4 backend (such as `open`, `goto`, `snapshot`, `click`) will fail with a non-zero exit code if the backend is unreachable. Check that the backend is running with `browser4-cli list`.
 - `eval` returns a non-zero exit code when the JavaScript expression throws or cannot be evaluated.
 - `snapshot` returns a non-zero exit code when the page is not ready or the accessibility tree cannot be captured.
-- `agent run` performs a short status probe after submission — missing LLM/API key configuration errors fail fast with a clear message rather than silently queuing a doomed task.
 - When a session goes stale (browser closed externally or backend restarted), `open` and `goto` automatically refresh it. Running commands against a stale session before refreshing will fail — prefer letting `goto` auto-open rather than manually managing session state.
 
 ## Example: Form submission
@@ -476,7 +434,7 @@ browser4-cli close
 
 ## Specific tasks
 
-* **Agent command** [references/agent.md](references/agent.md)
+* **DOM Snapshot** [references/domsnapshot.md](references/domsnapshot.md)
 * **Smarm command** [references/swarm.md](references/swarm.md)
 * **Storage state (cookies, localStorage)** [references/storage-state.md](references/storage-state.md)
 * **X-SQL** [references/x-sql.md](references/x-sql.md)
