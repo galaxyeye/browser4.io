@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browser4 CLI Mock — Page 2</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: #1a1a2e;
+      background: #fef9c3;
+    }
+    .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+
+    header {
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      color: #fff;
+      padding: 20px 0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+    header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 1.3rem; }
+
+    section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 24px;
+      margin: 20px 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    section h2 {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: #92400e;
+      border-bottom: 2px solid #f59e0b;
+      padding-bottom: 6px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 4px 6px 4px 0;
+      transition: transform 0.1s;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: #f59e0b; color: #fff; }
+    .btn-outline { background: transparent; color: #f59e0b; border: 2px solid #f59e0b; }
+    .btn-outline:hover { background: #f59e0b; color: #fff; }
+
+    .card {
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 10px 0;
+      background: #fffbeb;
+    }
+    .card h3 { color: #92400e; font-size: 1rem; margin-bottom: 6px; }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: #999;
+      font-size: 0.85rem;
+    }
+
+    #page2-loaded-ts { font-size: 0.75rem; color: #ccc; text-align: center; margin-top: 8px; }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 12px;
+      background: #f59e0b;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1 id="page2-title" data-testid="page2-title">📄 Page 2</h1>
+    <nav>
+      <a href="./index.html" id="nav-back" class="btn btn-outline" data-testid="nav-back" style="color:#fff;border-color:rgba(255,255,255,0.5);">
+        ← Back to Page 1
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <section id="intro" aria-label="Page 2 intro">
+    <h2>👋 Welcome to Page 2</h2>
+    <p>This is the second page for testing <strong>go-back</strong>, <strong>go-forward</strong>,
+       <strong>tab-new</strong>, <strong>tab-list</strong>, and other multi-page/tab commands.</p>
+    <p style="margin-top:8px; color:#888; font-size:0.9rem;">
+      Navigated here at: <span id="nav-time"></span>
+    </p>
+  </section>
+
+  <section id="page2-content" aria-label="Page 2 content">
+    <h2>📋 Page 2 Content</h2>
+
+    <div class="card" id="card-1" data-testid="card-1" data-card-id="1">
+      <h3>Card Alpha <span class="badge">new</span></h3>
+      <p id="card-1-text">This card contains <strong>rich text</strong> and <em>formatting</em>
+         that can be extracted with <code>get text</code> or <code>get html</code>.</p>
+    </div>
+
+    <div class="card" id="card-2" data-testid="card-2" data-card-id="2">
+      <h3>Card Beta</h3>
+      <p>Another card with different content for DOM snapshot testing.</p>
+      <ul>
+        <li class="feature-item" data-feature="a">Feature A — Fast rendering</li>
+        <li class="feature-item" data-feature="b">Feature B — CDP protocol</li>
+        <li class="feature-item" data-feature="c">Feature C — X-SQL queries</li>
+      </ul>
+    </div>
+
+    <div class="card" id="card-3" data-testid="card-3" data-card-id="3">
+      <h3>Card Gamma</h3>
+      <div id="counter-area">
+        <p>Page 2 counter: <span id="p2-counter" data-testid="p2-counter">0</span></p>
+        <button class="btn btn-primary" id="p2-inc-btn" data-testid="p2-inc-btn">Increment</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="page2-form" aria-label="Page 2 form">
+    <h2>📝 Page 2 Form</h2>
+    <div style="margin-bottom:10px;">
+      <label for="feedback" style="display:block;font-weight:600;margin-bottom:4px;">Feedback</label>
+      <textarea id="feedback" name="feedback"
+                placeholder="Leave your feedback here..."
+                data-testid="p2-feedback"
+                style="width:100%;max-width:400px;padding:8px 12px;border:1px solid #ccc;border-radius:6px;min-height:80px;"></textarea>
+    </div>
+    <div style="margin-bottom:10px;">
+      <label for="rating" style="display:block;font-weight:600;margin-bottom:4px;">Rating</label>
+      <select id="rating" name="rating" data-testid="p2-rating">
+        <option value="">Choose rating</option>
+        <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+        <option value="4">⭐⭐⭐⭐ Good</option>
+        <option value="3">⭐⭐⭐ Average</option>
+        <option value="2">⭐⭐ Poor</option>
+        <option value="1">⭐ Terrible</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" id="p2-submit" data-testid="p2-submit">Submit Feedback</button>
+    <div id="p2-status" style="margin-top:8px;color:#666;"></div>
+  </section>
+
+  <section id="page2-links" aria-label="Links">
+    <h2>🔗 Links</h2>
+    <ul style="list-style:none; display:flex; gap:12px; flex-wrap:wrap;">
+      <li><a href="./index.html" id="link-back" data-testid="link-back">← Page 1 (index.html)</a></li>
+      <li><a href="https://browser4.io" id="link-browser4" data-testid="link-browser4" target="_blank">browser4.io</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <p>Browser4 CLI Mock — Page 2</p>
+  <p id="page2-loaded-ts"></p>
+</footer>
+
+<script>
+  (function() {
+    var now = new Date();
+    document.getElementById('page2-loaded-ts').textContent =
+      'Page loaded at: ' + now.toISOString();
+    document.getElementById('nav-time').textContent = now.toLocaleTimeString();
+  })();
+
+  // Counter
+  (function() {
+    var count = 0;
+    document.getElementById('p2-inc-btn').addEventListener('click', function() {
+      count++;
+      document.getElementById('p2-counter').textContent = String(count);
+    });
+  })();
+
+  // Feedback form
+  document.getElementById('p2-submit').addEventListener('click', function() {
+    var feedback = document.getElementById('feedback').value;
+    var rating = document.getElementById('rating').value;
+    var status = document.getElementById('p2-status');
+    if (feedback || rating) {
+      status.textContent = '✓ Feedback submitted! Rating: ' + (rating || 'none') +
+                           ', Feedback: ' + (feedback || 'none');
+      status.style.color = '#16a34a';
+    } else {
+      status.textContent = '⚠ Please enter feedback or select a rating.';
+      status.style.color = '#ef4444';
+    }
+  });
+
+  // Set some storage specific to page 2
+  sessionStorage.setItem('page2_visited', 'true');
+  document.cookie = 'page=page2; path=/; SameSite=Lax';
+
+  console.log('Browser4 CLI Mock — Page 2 ready');
+</script>
+
+</body>
+</html>

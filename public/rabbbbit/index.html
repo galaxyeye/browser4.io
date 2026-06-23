@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browser4 CLI Mock Test Page</title>
+  <style>
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: #1a1a2e;
+      background: #f0f2f5;
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+
+    /* ===== Header / Nav ===== */
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      padding: 24px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    header h1 { font-size: 1.5rem; font-weight: 700; }
+    header nav { display: flex; gap: 16px; }
+    header nav a {
+      color: #fff;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.3);
+      transition: background 0.2s;
+    }
+    header nav a:hover { background: rgba(255,255,255,0.15); }
+
+    /* ===== Sections ===== */
+    section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 24px;
+      margin: 20px 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    section h2 {
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #667eea;
+      color: #333;
+    }
+
+    /* ===== Form Elements ===== */
+    .form-group { margin-bottom: 14px; }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+      color: #444;
+    }
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="password"],
+    .form-group input[type="number"],
+    .form-group input[type="url"],
+    .form-group input[type="search"],
+    .form-group input[type="tel"],
+    .form-group input[type="date"],
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102,126,234,0.15);
+    }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+
+    .checkbox-group, .radio-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .checkbox-group label, .radio-group label { margin-bottom: 0; font-weight: 400; }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.2s, background 0.2s;
+      margin: 4px 6px 4px 0;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: #667eea; color: #fff; }
+    .btn-primary:hover { background: #5a6fd6; box-shadow: 0 2px 8px rgba(102,126,234,0.4); }
+    .btn-success { background: #22c55e; color: #fff; }
+    .btn-success:hover { background: #16a34a; }
+    .btn-danger { background: #ef4444; color: #fff; }
+    .btn-danger:hover { background: #dc2626; }
+    .btn-warning { background: #f59e0b; color: #fff; }
+    .btn-outline {
+      background: transparent;
+      color: #667eea;
+      border: 2px solid #667eea;
+    }
+    .btn-outline:hover { background: #667eea; color: #fff; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ===== Tooltip / Hover ===== */
+    .tooltip-trigger {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+      color: #667eea;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+    }
+    .tooltip-trigger .tooltip-text {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      bottom: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      font-size: 0.85rem;
+      transition: opacity 0.2s;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .tooltip-trigger:hover .tooltip-text,
+    .tooltip-trigger:focus-within .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* ===== Drag & Drop ===== */
+    .drag-area { display: flex; gap: 20px; flex-wrap: wrap; }
+    .draggable {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      cursor: grab;
+      user-select: none;
+      font-weight: 700;
+      text-align: center;
+      transition: box-shadow 0.2s;
+    }
+    .draggable:active { cursor: grabbing; }
+    .draggable.dragging { opacity: 0.5; box-shadow: 0 4px 20px rgba(102,126,234,0.5); }
+    .drop-zone {
+      width: 200px;
+      min-height: 200px;
+      border: 3px dashed #ccc;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-weight: 600;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .drop-zone.drag-over { border-color: #667eea; background: rgba(102,126,234,0.05); }
+
+    /* ===== Table ===== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+    }
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    th { background: #f8f9fa; font-weight: 700; color: #555; font-size: 0.85rem; text-transform: uppercase; }
+    tr:hover td { background: #f8f9ff; }
+    .price { font-weight: 700; color: #22c55e; }
+    .stock-low { color: #ef4444; font-weight: 600; }
+
+    /* ===== Scrollable ===== */
+    .scroll-container {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 12px;
+      background: #fafafa;
+    }
+    .scroll-item {
+      padding: 10px;
+      margin: 4px 0;
+      background: #fff;
+      border-radius: 4px;
+      border: 1px solid #eee;
+    }
+
+    /* ===== Dynamic Content ===== */
+    #delayed-content, #auto-notification, #typing-output, #loading-result {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      display: none;
+    }
+    #delayed-content { background: #dbeafe; }
+    #auto-notification {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+    }
+    #typing-output { background: #f0fdf4; border: 1px solid #22c55e; white-space: pre-wrap; }
+    #loading-result { background: #fce7f3; border: 1px solid #ec4899; }
+
+    .spinner {
+      display: none;
+      width: 32px;
+      height: 32px;
+      border: 3px solid #e5e7eb;
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin: 10px 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ===== Counter Badge ===== */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #667eea;
+      color: #fff;
+      margin-left: 6px;
+    }
+
+    /* ===== Code Block ===== */
+    pre.code-block {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    pre.code-block .keyword { color: #cba6f7; }
+    pre.code-block .string { color: #a6e3a1; }
+    pre.code-block .function { color: #89b4fa; }
+
+    /* ===== Progress Bar ===== */
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #e5e7eb;
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 6px;
+      transition: width 0.4s ease;
+    }
+
+    /* ===== Status Message ===== */
+    .status { margin-top: 8px; padding: 8px 12px; border-radius: 6px; display: none; }
+    .status.success { background: #dcfce7; color: #166534; display: block; }
+    .status.error { background: #fee2e2; color: #991b1b; display: block; }
+    .status.info { background: #dbeafe; color: #1e40af; display: block; }
+
+    /* ===== Footer ===== */
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: #888;
+      font-size: 0.85rem;
+      border-top: 1px solid #eee;
+      margin-top: 20px;
+    }
+    footer a { color: #667eea; }
+
+    /* ===== Mouse Tracking Area ===== */
+    #mouse-tracker {
+      width: 100%;
+      height: 180px;
+      background: #f8f9fa;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: #888;
+      position: relative;
+      overflow: hidden;
+    }
+    #mouse-coords {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-size: 0.8rem;
+      color: #666;
+      background: rgba(255,255,255,0.8);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* ===== Counter display ===== */
+    #click-count, #dblclick-count {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    /* ===== Tabs (in-page) ===== */
+    .tab-nav { display: flex; gap: 0; border-bottom: 2px solid #e5e7eb; margin-bottom: 16px; }
+    .tab-btn {
+      padding: 8px 20px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-weight: 600;
+      color: #888;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tab-btn.active { color: #667eea; border-bottom-color: #667eea; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="container">
+    <h1 id="page-title" data-testid="main-title">🧪 Browser4 CLI Mock</h1>
+    <nav>
+      <a href="./page2.html" id="nav-page2" data-nav="page2">Page 2 →</a>
+      <a href="#forms" id="nav-forms">Forms</a>
+      <a href="#data" id="nav-data">Data</a>
+      <a href="#dynamic" id="nav-dynamic">Dynamic</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ===== SECTION: Form Elements ===== -->
+  <section id="forms" aria-label="Form elements test section">
+    <h2>📝 Form Elements</h2>
+
+    <!-- Text inputs (covered: type, fill, get attr, get property) -->
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username"
+             placeholder="Enter your username"
+             data-field="username"
+             autocomplete="username"
+             value="testuser" />
+    </div>
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email"
+             placeholder="user@example.com"
+             data-field="email"
+             data-validate="email"
+             value="test@browser4.io" />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password"
+             placeholder="Enter password"
+             data-field="password"
+             value="secret123" />
+    </div>
+    <div class="form-group">
+      <label for="age">Age</label>
+      <input type="number" id="age" name="age"
+             placeholder="Your age"
+             data-field="age"
+             min="1" max="120"
+             value="30" />
+    </div>
+    <div class="form-group">
+      <label for="search">Search</label>
+      <input type="search" id="search" name="search"
+             placeholder="Search..."
+             data-field="search" />
+    </div>
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input type="tel" id="phone" name="phone"
+             placeholder="+1 (555) 000-0000"
+             data-field="phone"
+             value="+1-555-0199" />
+    </div>
+    <div class="form-group">
+      <label for="website">Website URL</label>
+      <input type="url" id="website" name="website"
+             placeholder="https://example.com"
+             data-field="website"
+             value="https://browser4.io" />
+    </div>
+    <div class="form-group">
+      <label for="birthdate">Birth Date</label>
+      <input type="date" id="birthdate" name="birthdate"
+             data-field="birthdate"
+             value="1995-06-15" />
+    </div>
+    <div class="form-group">
+      <label for="bio">Bio</label>
+      <textarea id="bio" name="bio"
+                placeholder="Tell us about yourself..."
+                data-field="bio">Sample biography text for testing.</textarea>
+    </div>
+
+    <!-- Checkboxes (covered: check, uncheck) -->
+    <fieldset style="border: 1px solid #eee; border-radius: 8px; padding: 14px; margin-bottom: 14px;">
+      <legend style="font-weight:700; padding: 0 8px;">Interests (checkboxes)</legend>
+      <div class="checkbox-group">
+        <input type="checkbox" id="interest-tech" name="interests" value="tech" checked />
+        <label for="interest-tech">Technology</label>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="interest-science" name="interests" value="science" />
+        <label for="interest-science">Science</label>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="interest-art" name="interests" value="art" />
+        <label for="interest-art">Art</label>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="terms" name="terms" value="accepted" />
+        <label for="terms">I agree to the <a href="#">Terms of Service</a></label>
+      </div>
+    </fieldset>
+
+    <!-- Radio buttons -->
+    <fieldset style="border: 1px solid #eee; border-radius: 8px; padding: 14px; margin-bottom: 14px;">
+      <legend style="font-weight:700; padding: 0 8px;">Subscription Plan</legend>
+      <div class="radio-group">
+        <input type="radio" id="plan-free" name="plan" value="free" checked />
+        <label for="plan-free">Free</label>
+      </div>
+      <div class="radio-group">
+        <input type="radio" id="plan-pro" name="plan" value="pro" />
+        <label for="plan-pro">Pro ($9.99/month)</label>
+      </div>
+      <div class="radio-group">
+        <input type="radio" id="plan-enterprise" name="plan" value="enterprise" />
+        <label for="plan-enterprise">Enterprise ($49.99/month)</label>
+      </div>
+    </fieldset>
+
+    <!-- Select dropdown (covered: select) -->
+    <div class="form-group">
+      <label for="country">Country</label>
+      <select id="country" name="country" data-field="country">
+        <option value="">-- Select your country --</option>
+        <option value="us">United States</option>
+        <option value="uk">United Kingdom</option>
+        <option value="ca">Canada</option>
+        <option value="de">Germany</option>
+        <option value="jp">Japan</option>
+        <option value="cn">China</option>
+        <option value="br" selected>Brazil</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="color">Favorite Color</label>
+      <select id="color" name="color" data-field="color" multiple size="4" style="max-width:250px;">
+        <option value="red">Red</option>
+        <option value="green" selected>Green</option>
+        <option value="blue" selected>Blue</option>
+        <option value="yellow">Yellow</option>
+        <option value="purple">Purple</option>
+      </select>
+    </div>
+
+    <!-- Buttons -->
+    <div style="margin-top: 12px;">
+      <button class="btn btn-primary" id="submit-btn" type="button" data-action="submit">
+        Submit Form
+      </button>
+      <button class="btn btn-outline" id="reset-btn" type="reset" data-action="reset">
+        Reset
+      </button>
+      <button class="btn btn-success" id="save-btn" type="button" data-action="save">
+        Save Draft
+      </button>
+      <button class="btn btn-danger" id="delete-btn" type="button" data-action="delete" disabled>
+        Delete (disabled)
+      </button>
+    </div>
+
+    <div id="form-status" class="status"></div>
+  </section>
+
+  <!-- ===== SECTION: Click & Interaction ===== -->
+  <section id="interactions" aria-label="Click and interaction test section">
+    <h2>🖱️ Click &amp; Interaction</h2>
+
+    <!-- Click counter -->
+    <div style="margin-bottom: 16px;">
+      <button class="btn btn-primary" id="click-counter-btn" data-testid="click-counter">
+        Click Me
+      </button>
+      <span style="margin-left: 12px;">
+        Clicks: <span id="click-count">0</span>
+      </span>
+    </div>
+
+    <!-- Double-click area -->
+    <div style="margin-bottom: 16px;">
+      <div id="dblclick-area"
+           style="display:inline-block; padding:16px 24px; background:#ede9fe; border-radius:8px; cursor:pointer; border:2px solid #c4b5fd; user-select:none;"
+           data-testid="dblclick-area"
+           title="Double-click me!">
+        ⚡ Double-click here
+      </div>
+      <span style="margin-left: 12px;">
+        DblClicks: <span id="dblclick-count">0</span>
+      </span>
+    </div>
+
+    <!-- Hover / Tooltip -->
+    <div style="margin-bottom: 16px;">
+      <span class="tooltip-trigger" id="hover-trigger" data-testid="hover-trigger" tabindex="0">
+        Hover over me for a tooltip
+        <span class="tooltip-text" id="tooltip">🎉 This is a tooltip! I appear on hover.</span>
+      </span>
+    </div>
+
+    <!-- Drag & Drop -->
+    <div style="margin-bottom: 16px;">
+      <h3 style="font-size:1rem; margin-bottom:8px;">Drag &amp; Drop</h3>
+      <div class="drag-area">
+        <div class="draggable" id="drag-source" draggable="true" data-testid="drag-source">
+          Drag me!
+        </div>
+        <div class="draggable" id="drag-source-2" draggable="true" data-testid="drag-source-2"
+             style="background: linear-gradient(135deg, #f59e0b, #ef4444);">
+          Drag me too!
+        </div>
+        <div class="drop-zone" id="drop-zone" data-testid="drop-zone">
+          Drop here
+        </div>
+      </div>
+      <p id="drop-status" style="margin-top:8px; color:#888; font-size:0.9rem;"></p>
+    </div>
+
+    <!-- Mouse tracking area -->
+    <div>
+      <h3 style="font-size:1rem; margin-bottom:8px;">Mouse Tracking Area</h3>
+      <div id="mouse-tracker" data-testid="mouse-tracker">
+        Move your mouse here
+        <div id="mouse-coords">x: 0, y: 0</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION: Keyboard Input ===== -->
+  <section id="keyboard" aria-label="Keyboard input test section">
+    <h2>⌨️ Keyboard Input</h2>
+    <div class="form-group">
+      <label for="key-input">Type here and watch live output:</label>
+      <input type="text" id="key-input" name="key-input"
+             placeholder="Start typing..."
+             data-testid="key-input"
+             style="max-width:100%;" />
+    </div>
+    <div class="form-group">
+      <label for="key-textarea">Or type in this textarea:</label>
+      <textarea id="key-textarea" name="key-textarea"
+                placeholder="Type multi-line text here..."
+                data-testid="key-textarea"></textarea>
+    </div>
+    <div>
+      <span>Last key pressed: </span>
+      <code id="last-key" style="background:#eee;padding:2px 8px;border-radius:4px;">—</code>
+    </div>
+    <div id="typing-output" data-testid="typing-output"></div>
+  </section>
+
+  <!-- ===== SECTION: Data Display ===== -->
+  <section id="data" aria-label="Data display test section">
+    <h2>📊 Data Display</h2>
+
+    <!-- Product table -->
+    <h3 style="font-size:1rem; margin-bottom:8px;">Product Catalog</h3>
+    <table id="product-table" data-testid="product-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Product</th>
+          <th>Category</th>
+          <th class="price">Price</th>
+          <th>Stock</th>
+          <th>Rating</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="product-row" data-product-id="P001" data-category="electronics">
+          <td>P001</td>
+          <td class="product-name">Wireless Mouse</td>
+          <td>Electronics</td>
+          <td class="price">$29.99</td>
+          <td class="stock">142</td>
+          <td>⭐⭐⭐⭐☆ (4.2)</td>
+        </tr>
+        <tr class="product-row" data-product-id="P002" data-category="electronics">
+          <td>P002</td>
+          <td class="product-name">USB-C Hub</td>
+          <td>Electronics</td>
+          <td class="price">$49.99</td>
+          <td class="stock stock-low">3</td>
+          <td>⭐⭐⭐⭐⭐ (4.8)</td>
+        </tr>
+        <tr class="product-row" data-product-id="P003" data-category="furniture">
+          <td>P003</td>
+          <td class="product-name">Standing Desk</td>
+          <td>Furniture</td>
+          <td class="price">$399.00</td>
+          <td class="stock">27</td>
+          <td>⭐⭐⭐⭐☆ (4.5)</td>
+        </tr>
+        <tr class="product-row" data-product-id="P004" data-category="accessories">
+          <td>P004</td>
+          <td class="product-name">Laptop Sleeve</td>
+          <td>Accessories</td>
+          <td class="price">$24.99</td>
+          <td class="stock">0</td>
+          <td>⭐⭐⭐☆☆ (3.9)</td>
+        </tr>
+        <tr class="product-row" data-product-id="P005" data-category="electronics">
+          <td>P005</td>
+          <td class="product-name">Mechanical Keyboard</td>
+          <td>Electronics</td>
+          <td class="price">$149.99</td>
+          <td class="stock">58</td>
+          <td>⭐⭐⭐⭐⭐ (4.9)</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:4px; font-size:0.85rem; color:#888;">
+      Total products: <span id="product-count">5</span>
+    </p>
+
+    <!-- Code block -->
+    <h3 style="font-size:1rem; margin:16px 0 8px;">Code Example</h3>
+    <pre class="code-block" id="code-block" data-testid="code-block"><code><span class="keyword">async function</span> <span class="function">fetchUserData</span>(userId) {
+      <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(<span class="string">`/api/users/${userId}`</span>);
+      <span class="keyword">if</span> (!response.ok) {
+        <span class="keyword">throw new</span> Error(<span class="string">`HTTP ${response.status}`</span>);
+      }
+      <span class="keyword">return</span> response.json();
+    }</code></pre>
+
+    <!-- Progress bar -->
+    <h3 style="font-size:1rem; margin:16px 0 8px;">Progress</h3>
+    <div class="progress-bar" id="progress-bar" data-testid="progress-bar" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">
+      <div class="progress-fill" id="progress-fill" style="width:65%;"></div>
+    </div>
+    <span id="progress-label">65% Complete</span>
+    <br/>
+    <button class="btn btn-outline" id="progress-btn" style="margin-top:8px;">Update Progress</button>
+
+    <!-- Scrollable content -->
+    <h3 style="font-size:1rem; margin:16px 0 8px;">Scrollable List (50 items)</h3>
+    <div class="scroll-container" id="scroll-list" data-testid="scroll-list">
+      <!-- Generated by JS -->
+    </div>
+  </section>
+
+  <!-- ===== SECTION: Dynamic Content ===== -->
+  <section id="dynamic" aria-label="Dynamic content test section">
+    <h2>⚡ Dynamic Content</h2>
+
+    <!-- Button-triggered delayed content -->
+    <div style="margin-bottom:16px;">
+      <button class="btn btn-warning" id="show-delayed-btn" data-testid="show-delayed-btn">
+        Show Delayed Content (1.5s)
+      </button>
+      <div id="delayed-content" data-testid="delayed-content">
+        ✅ <strong>Success!</strong> This content appeared after a 1.5 second delay.
+        <span id="delayed-timestamp"></span>
+      </div>
+    </div>
+
+    <!-- Auto-appearing notification (5s after page load) -->
+    <div style="margin-bottom:16px;">
+      <div id="auto-notification" data-testid="auto-notification">
+        🔔 <strong>Auto Notification:</strong> This appeared automatically after page load.
+      </div>
+    </div>
+
+    <!-- Loading simulation -->
+    <div style="margin-bottom:16px;">
+      <button class="btn btn-primary" id="load-btn" data-testid="load-btn">
+        Simulate Loading (2s)
+      </button>
+      <div class="spinner" id="loading-spinner" data-testid="loading-spinner"></div>
+      <div id="loading-result" data-testid="loading-result">
+        🎯 <strong>Done!</strong> Data loaded successfully. <span id="load-timestamp"></span>
+      </div>
+    </div>
+
+    <!-- Wait for text element -->
+    <div style="margin-bottom:16px;">
+      <button class="btn btn-success" id="trigger-text-btn" data-testid="trigger-text-btn">
+        Trigger "Success" Text
+      </button>
+      <div id="text-wait-target"></div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION: In-Page Tabs ===== -->
+  <section id="tabs-section" aria-label="In-page tabs">
+    <h2>📑 In-Page Tabs</h2>
+    <div class="tab-nav" role="tablist">
+      <button class="tab-btn active" id="tab-btn-1" role="tab" aria-selected="true" data-tab="1">Tab One</button>
+      <button class="tab-btn" id="tab-btn-2" role="tab" aria-selected="false" data-tab="2">Tab Two</button>
+      <button class="tab-btn" id="tab-btn-3" role="tab" aria-selected="false" data-tab="3">Tab Three</button>
+    </div>
+    <div class="tab-panel active" id="tab-panel-1" role="tabpanel" data-tab-content="1">
+      <p>📌 <strong>Tab One Content</strong> — This is the first tab panel.</p>
+    </div>
+    <div class="tab-panel" id="tab-panel-2" role="tabpanel" data-tab-content="2">
+      <p>🔖 <strong>Tab Two Content</strong> — This is the second tab panel with different content.</p>
+    </div>
+    <div class="tab-panel" id="tab-panel-3" role="tabpanel" data-tab-content="3">
+      <p>🏷️ <strong>Tab Three Content</strong> — This is the third tab panel.</p>
+    </div>
+  </section>
+
+  <!-- ===== SECTION: Storage (Cookies, localStorage, sessionStorage) ===== -->
+  <section id="storage" aria-label="Storage test section">
+    <h2>💾 Storage</h2>
+
+    <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px;">
+      <button class="btn btn-outline" id="set-cookie-btn" data-testid="set-cookie-btn">Set Cookie</button>
+      <button class="btn btn-outline" id="get-cookie-btn" data-testid="get-cookie-btn">Get Cookies</button>
+      <button class="btn btn-outline" id="delete-cookie-btn" data-testid="delete-cookie-btn">Delete Cookie</button>
+    </div>
+    <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px;">
+      <button class="btn btn-outline" id="set-ls-btn" data-testid="set-ls-btn">Set localStorage</button>
+      <button class="btn btn-outline" id="get-ls-btn" data-testid="get-ls-btn">Get localStorage</button>
+      <button class="btn btn-outline" id="clear-ls-btn" data-testid="clear-ls-btn">Clear localStorage</button>
+    </div>
+    <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:12px;">
+      <button class="btn btn-outline" id="set-ss-btn" data-testid="set-ss-btn">Set sessionStorage</button>
+      <button class="btn btn-outline" id="get-ss-btn" data-testid="get-ss-btn">Get sessionStorage</button>
+      <button class="btn btn-outline" id="clear-ss-btn" data-testid="clear-ss-btn">Clear sessionStorage</button>
+    </div>
+    <div id="storage-output" style="background:#f8f9fa;padding:10px;border-radius:6px;font-family:monospace;font-size:0.85rem;white-space:pre-wrap;min-height:40px;"></div>
+  </section>
+
+  <!-- ===== SECTION: Links ===== -->
+  <section id="links" aria-label="External links">
+    <h2>🔗 Navigation Links</h2>
+    <ul style="list-style:none; display:flex; gap:16px; flex-wrap:wrap;">
+      <li><a href="./page2.html" id="link-page2" class="btn btn-outline" data-testid="link-page2">Go to Page 2</a></li>
+      <li><a href="https://example.com" id="link-external" target="_blank" rel="noopener" class="btn btn-outline" data-testid="link-external">example.com (external)</a></li>
+      <li><a href="#top" id="link-top" class="btn btn-outline">Back to Top ↑</a></li>
+      <li><a href="/rabbbbit/nonexistent.html" id="link-404" class="btn btn-outline">Broken Link (404)</a></li>
+    </ul>
+  </section>
+
+  <!-- ===== SECTION: Nested DOM Structure ===== -->
+  <section id="nested" aria-label="Nested DOM structure">
+    <h2>🏗️ Nested DOM Structure</h2>
+    <div id="nested-container" data-level="0" data-testid="nested-container">
+      <div class="level-1" data-level="1" id="level-1">
+        <span class="level-label">Level 1</span>
+        <div class="level-2" data-level="2" id="level-2a">
+          <span class="level-label">Level 2a</span>
+          <p class="nested-text" id="nested-text-a">
+            The <strong>quick</strong> brown fox jumps over the <em>lazy</em> dog.
+          </p>
+        </div>
+        <div class="level-2" data-level="2" id="level-2b">
+          <span class="level-label">Level 2b</span>
+          <ul id="nested-list" data-testid="nested-list">
+            <li class="list-item" data-index="0">Alpha</li>
+            <li class="list-item" data-index="1">Beta</li>
+            <li class="list-item" data-index="2">Gamma</li>
+            <li class="list-item" data-index="3">Delta</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    Browser4 CLI Mock Test Page —
+    <a href="https://browser4.io" id="footer-link" data-testid="footer-link">browser4.io</a>
+    —
+    <span id="current-year">2025</span>
+  </p>
+  <p id="page-loaded-ts" style="font-size:0.75rem; color:#bbb;"></p>
+</footer>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+  // =============================================
+  // Page load timestamp
+  // =============================================
+  (function() {
+    var now = new Date();
+    document.getElementById('page-loaded-ts').textContent =
+      'Page loaded at: ' + now.toISOString();
+    document.getElementById('current-year').textContent = String(now.getFullYear());
+  })();
+
+  // =============================================
+  // Click Counter
+  // =============================================
+  (function() {
+    var count = 0;
+    var btn = document.getElementById('click-counter-btn');
+    var display = document.getElementById('click-count');
+    btn.addEventListener('click', function() {
+      count++;
+      display.textContent = String(count);
+    });
+  })();
+
+  // =============================================
+  // Double-click Counter
+  // =============================================
+  (function() {
+    var count = 0;
+    var area = document.getElementById('dblclick-area');
+    var display = document.getElementById('dblclick-count');
+    area.addEventListener('dblclick', function() {
+      count++;
+      display.textContent = String(count);
+    });
+  })();
+
+  // =============================================
+  // Form Submit
+  // =============================================
+  document.getElementById('submit-btn').addEventListener('click', function() {
+    var status = document.getElementById('form-status');
+    var username = document.getElementById('username').value;
+    var email = document.getElementById('email').value;
+    status.textContent = '✓ Form submitted! Username: ' + username + ', Email: ' + email;
+    status.className = 'status success';
+  });
+
+  // =============================================
+  // Save Draft
+  // =============================================
+  document.getElementById('save-btn').addEventListener('click', function() {
+    var status = document.getElementById('form-status');
+    status.textContent = '💾 Draft saved at ' + new Date().toLocaleTimeString();
+    status.className = 'status info';
+  });
+
+  // =============================================
+  // Drag & Drop
+  // =============================================
+  (function() {
+    var sources = document.querySelectorAll('.draggable');
+    var dropZone = document.getElementById('drop-zone');
+    var status = document.getElementById('drop-status');
+
+    sources.forEach(function(src) {
+      src.addEventListener('dragstart', function(e) {
+        e.dataTransfer.setData('text/plain', src.id);
+        src.classList.add('dragging');
+      });
+      src.addEventListener('dragend', function() {
+        src.classList.remove('dragging');
+      });
+    });
+
+    dropZone.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      dropZone.classList.add('drag-over');
+    });
+    dropZone.addEventListener('dragleave', function() {
+      dropZone.classList.remove('drag-over');
+    });
+    dropZone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      var id = e.dataTransfer.getData('text/plain');
+      var src = document.getElementById(id);
+      status.textContent = '✓ Dropped: ' + (src ? src.textContent.trim() : id);
+    });
+  })();
+
+  // =============================================
+  // Mouse Tracking
+  // =============================================
+  (function() {
+    var tracker = document.getElementById('mouse-tracker');
+    var coords = document.getElementById('mouse-coords');
+    tracker.addEventListener('mousemove', function(e) {
+      var rect = tracker.getBoundingClientRect();
+      var x = Math.round(e.clientX - rect.left);
+      var y = Math.round(e.clientY - rect.top);
+      coords.textContent = 'x: ' + x + ', y: ' + y;
+    });
+  })();
+
+  // =============================================
+  // Keyboard
+  // =============================================
+  (function() {
+    var input = document.getElementById('key-input');
+    var lastKey = document.getElementById('last-key');
+    var output = document.getElementById('typing-output');
+    input.addEventListener('keydown', function(e) {
+      lastKey.textContent = e.key;
+    });
+    input.addEventListener('input', function() {
+      if (input.value) {
+        output.style.display = 'block';
+        output.textContent = 'You typed: ' + input.value;
+      } else {
+        output.style.display = 'none';
+      }
+    });
+    var textarea = document.getElementById('key-textarea');
+    textarea.addEventListener('keydown', function(e) {
+      lastKey.textContent = e.key;
+    });
+  })();
+
+  // =============================================
+  // Generate Scrollable List
+  // =============================================
+  (function() {
+    var container = document.getElementById('scroll-list');
+    var html = '';
+    for (var i = 1; i <= 50; i++) {
+      html += '<div class="scroll-item" id="scroll-item-' + i + '" data-scroll-index="' + i + '">' +
+        '<strong>Item #' + i + '</strong> — ' +
+        'This is scrollable list item number ' + i + '.' +
+        '</div>';
+    }
+    container.innerHTML = html;
+  })();
+
+  // =============================================
+  // Delayed Content
+  // =============================================
+  document.getElementById('show-delayed-btn').addEventListener('click', function() {
+    var el = document.getElementById('delayed-content');
+    el.style.display = 'none';
+    setTimeout(function() {
+      document.getElementById('delayed-timestamp').textContent =
+        ' (at ' + new Date().toLocaleTimeString() + ')';
+      el.style.display = 'block';
+    }, 1500);
+  });
+
+  // =============================================
+  // Auto Notification (appears after 4 seconds)
+  // =============================================
+  setTimeout(function() {
+    var notif = document.getElementById('auto-notification');
+    notif.style.display = 'block';
+  }, 4000);
+
+  // =============================================
+  // Loading Simulation
+  // =============================================
+  document.getElementById('load-btn').addEventListener('click', function() {
+    var spinner = document.getElementById('loading-spinner');
+    var result = document.getElementById('loading-result');
+    result.style.display = 'none';
+    spinner.style.display = 'block';
+    setTimeout(function() {
+      spinner.style.display = 'none';
+      document.getElementById('load-timestamp').textContent =
+        '(loaded at ' + new Date().toLocaleTimeString() + ')';
+      result.style.display = 'block';
+    }, 2000);
+  });
+
+  // =============================================
+  // Trigger "Success" Text (for wait --text)
+  // =============================================
+  document.getElementById('trigger-text-btn').addEventListener('click', function() {
+    var target = document.getElementById('text-wait-target');
+    setTimeout(function() {
+      target.innerHTML = '<span id="success-msg" style="color:#22c55e;font-weight:700;">Success</span>';
+    }, 800);
+    target.innerHTML = '<span style="color:#888;">Loading...</span>';
+  });
+
+  // =============================================
+  // In-Page Tabs
+  // =============================================
+  (function() {
+    var tabBtns = document.querySelectorAll('.tab-btn');
+    var panels = document.querySelectorAll('.tab-panel');
+
+    tabBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var tabId = btn.getAttribute('data-tab');
+        tabBtns.forEach(function(b) { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+        panels.forEach(function(p) { p.classList.remove('active'); });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        var panel = document.querySelector('[data-tab-content="' + tabId + '"]');
+        if (panel) panel.classList.add('active');
+      });
+    });
+  })();
+
+  // =============================================
+  // Progress Bar
+  // =============================================
+  document.getElementById('progress-btn').addEventListener('click', function() {
+    var bar = document.getElementById('progress-bar');
+    var fill = document.getElementById('progress-fill');
+    var label = document.getElementById('progress-label');
+    var current = parseInt(bar.getAttribute('aria-valuenow'), 10);
+    var next = current >= 100 ? 0 : current + 10;
+    bar.setAttribute('aria-valuenow', String(next));
+    fill.style.width = next + '%';
+    label.textContent = next + '% Complete';
+  });
+
+  // =============================================
+  // Storage Operations
+  // =============================================
+  var storageOutput = document.getElementById('storage-output');
+
+  // --- Cookies ---
+  document.getElementById('set-cookie-btn').addEventListener('click', function() {
+    document.cookie = 'test_session=abc123; path=/; max-age=3600; SameSite=Lax';
+    document.cookie = 'theme=dark; path=/; max-age=86400; SameSite=Lax';
+    document.cookie = 'user_id=42; path=/; max-age=3600; SameSite=Lax';
+    storageOutput.textContent = '✓ Cookies set: test_session=abc123, theme=dark, user_id=42';
+  });
+
+  document.getElementById('get-cookie-btn').addEventListener('click', function() {
+    storageOutput.textContent = '📋 Current cookies:\n' + (document.cookie || '(none)');
+  });
+
+  document.getElementById('delete-cookie-btn').addEventListener('click', function() {
+    document.cookie = 'test_session=; path=/; max-age=0';
+    storageOutput.textContent = '✓ Deleted cookie: test_session\nRemaining: ' + document.cookie;
+  });
+
+  // --- localStorage ---
+  document.getElementById('set-ls-btn').addEventListener('click', function() {
+    localStorage.setItem('browser4_test_key', 'hello-world');
+    localStorage.setItem('browser4_prefs', JSON.stringify({ lang: 'en', theme: 'dark', fontSize: 14 }));
+    storageOutput.textContent = '✓ localStorage set: browser4_test_key, browser4_prefs';
+  });
+
+  document.getElementById('get-ls-btn').addEventListener('click', function() {
+    var items = [];
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      items.push(k + ' = ' + localStorage.getItem(k));
+    }
+    storageOutput.textContent = '📋 localStorage:\n' + (items.join('\n') || '(empty)');
+  });
+
+  document.getElementById('clear-ls-btn').addEventListener('click', function() {
+    localStorage.clear();
+    storageOutput.textContent = '✓ localStorage cleared';
+  });
+
+  // --- sessionStorage ---
+  document.getElementById('set-ss-btn').addEventListener('click', function() {
+    sessionStorage.setItem('session_step', '3');
+    sessionStorage.setItem('session_data', JSON.stringify({ page: 'mock', timestamp: Date.now() }));
+    storageOutput.textContent = '✓ sessionStorage set: session_step, session_data';
+  });
+
+  document.getElementById('get-ss-btn').addEventListener('click', function() {
+    var items = [];
+    for (var i = 0; i < sessionStorage.length; i++) {
+      var k = sessionStorage.key(i);
+      items.push(k + ' = ' + sessionStorage.getItem(k));
+    }
+    storageOutput.textContent = '📋 sessionStorage:\n' + (items.join('\n') || '(empty)');
+  });
+
+  document.getElementById('clear-ss-btn').addEventListener('click', function() {
+    sessionStorage.clear();
+    storageOutput.textContent = '✓ sessionStorage cleared';
+  });
+
+  // =============================================
+  // Set some initial storage for testing
+  // =============================================
+  localStorage.setItem('browser4_app', 'mock-test-page');
+  sessionStorage.setItem('session_start', new Date().toISOString());
+  document.cookie = 'page=mock-index; path=/; SameSite=Lax';
+
+  console.log('Browser4 CLI Mock Test Page ready');
+  console.log('Try: browser4-cli open http://localhost:5173/rabbbbit/index.html');
+</script>
+
+</body>
+</html>
