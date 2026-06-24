@@ -229,8 +229,8 @@
     },
     "quickstart": {
       "label": "Quickstart",
-      "title": "One command to start",
-      "description": "Install the native CLI globally, then run browser4-cli install to download the runtime. Requires Chrome and Java 17+.",
+      "title": "Install in seconds",
+      "description": "Install the native CLI, then run browser4-cli install to download the runtime. Chrome is auto-detected and auto-installed if needed. Also available via standalone one-liner scripts — no Node.js required.",
       "visitGithub": "Visit GitHub"
     },
     "developerToolbox": {

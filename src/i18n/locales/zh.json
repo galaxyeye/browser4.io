@@ -229,8 +229,8 @@
     },
     "quickstart": {
       "label": "快速开始",
-      "title": "一条命令即可开始",
-      "description": "全局安装原生CLI，然后运行 browser4-cli install 下载运行时。需要 Chrome 和 Java 17+。",
+      "title": "几秒内完成安装",
+      "description": "安装原生CLI，然后运行 browser4-cli install 下载运行时。Chrome 自动检测并在需要时自动安装。也可通过独立一行脚本安装——无需 Node.js。",
       "visitGithub": "访问GitHub"
     },
     "developerToolbox": {

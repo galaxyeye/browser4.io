@@ -503,9 +503,14 @@ browser4-cli swarm result scrape-task-4`,
                                 {t('codeExamples.quickstart.description')}
                             </p>
                             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 font-mono text-sm text-slate-100 space-y-2 overflow-x-auto dark:bg-slate-950">
+                                <div className="text-slate-500 text-xs mb-1"># Via npm (requires Node.js)</div>
                                 <div><span className="text-slate-500">$</span> npm install -g browser4-cli</div>
                                 <div><span className="text-slate-500">$</span> browser4-cli install</div>
-                                <div><span className="text-slate-500">$</span> browser4-cli open https://browser4.io</div>
+                                <div className="mt-3 pt-3 border-t border-slate-700 text-slate-500 text-xs mb-1"># Or one-liner — no prerequisites</div>
+                                <div className="text-slate-400 text-xs"># Linux / macOS:</div>
+                                <div><span className="text-slate-500">$</span> curl -fsSL https://browser4.oss-cn-beijing.aliyuncs.com/scripts/install-browser4-cli.sh | bash</div>
+                                <div className="text-slate-400 text-xs mt-1"># Windows PowerShell:</div>
+                                <div><span className="text-slate-500">$</span> irm https://browser4.oss-cn-beijing.aliyuncs.com/scripts/install-browser4-cli.ps1 | iex</div>
                             </div>
                             <a
                                 href="https://github.com/platonai/browser4"
