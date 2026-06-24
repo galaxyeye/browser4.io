@@ -234,8 +234,44 @@
       "visitGithub": "访问GitHub"
     },
     "developerToolbox": {
-      "title": "开发者工具箱",
-      "description": "IDE模板、脚本和CLI助手即将推出——申请beta版以获得首次访问权限。"
+      "title": "CLI优先",
+      "description": "browser4-cli — 原生Rust二进制文件。在任意终端中安装、运行和控制浏览器。无需JVM，无需IDE。"
+    },
+    "cli": {
+      "label": "CLI参考",
+      "title": "browser4-cli 命令",
+      "description": "从命令行控制真实浏览器。一次安装，随处运行——CI、脚本或交互式Shell皆可。",
+      "installLabel": "安装",
+      "installCommand": "npm install -g browser4-cli",
+      "installNote": "也支持 Homebrew、Cargo 或独立安装脚本。",
+      "categories": {
+        "core": "核心",
+        "screenshots": "截图",
+        "tabs": "标签页",
+        "storage": "存储",
+        "advanced": "高级"
+      },
+      "examples": {
+        "open": "打开浏览器会话",
+        "goto": "导航到URL",
+        "click": "按引用点击元素",
+        "type": "在元素中输入文本",
+        "snapshot": "捕获无障碍树",
+        "eval": "在页面上执行JavaScript",
+        "fill": "填充表单字段",
+        "screenshot": "截取页面截图",
+        "pdf": "将页面保存为PDF",
+        "tabList": "列出所有标签页",
+        "tabSelect": "按索引切换标签页",
+        "cookieSet": "设置Cookie",
+        "localstorageGet": "读取localStorage值",
+        "batch": "一次运行多个命令",
+        "agentRun": "自主智能体任务",
+        "extract": "提取结构化数据",
+        "swarmCreate": "并行集群抓取"
+      },
+      "tryIt": "安装并试用：",
+      "docsLink": "完整CLI文档 →"
     },
     "copy": "复制",
     "copied": "已复制"

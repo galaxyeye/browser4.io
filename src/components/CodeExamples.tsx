@@ -1,4 +1,4 @@
-import { Code, Play, Copy, Check } from 'lucide-react';
+import { Code, Play, Copy, Check, Terminal, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { useTheme } from '../theme/ThemeProvider';
@@ -246,6 +246,152 @@ session.submitAll(links)`,
                         </article>
                     </div>
 
+                    {/* CLI Commands Reference */}
+                    <div className="space-y-6">
+                        <div className="text-center">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 border border-emerald-200 rounded-full mb-4 text-emerald-600 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-300">
+                                <Terminal className="w-4 h-4" />
+                                <span className="text-sm font-medium">{t('codeExamples.cli.label')}</span>
+                            </div>
+                            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+                                {t('codeExamples.cli.title')}
+                            </h3>
+                            <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                                {t('codeExamples.cli.description')}
+                            </p>
+                        </div>
+
+                        {/* Install banner */}
+                        <div className="bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-700 rounded-2xl p-6 shadow-lg dark:from-slate-950 dark:to-slate-900 dark:border-slate-800">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                                <span className="shrink-0 px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-semibold uppercase tracking-wide">
+                                    {t('codeExamples.cli.installLabel')}
+                                </span>
+                                <code className="flex-1 font-mono text-sm text-emerald-300 bg-black/40 rounded-lg px-4 py-2 select-all">
+                                    {t('codeExamples.cli.installCommand')}
+                                </code>
+                                <button
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(t('codeExamples.cli.installCommand'));
+                                        setCopiedIndex(-1);
+                                        setTimeout(() => setCopiedIndex(null), 2000);
+                                    }}
+                                    className="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-600 text-slate-300 hover:border-slate-400 hover:text-white transition-colors text-sm"
+                                >
+                                    {copiedIndex === -1 ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                                    <span>{copiedIndex === -1 ? t('codeExamples.copied') : t('codeExamples.copy')}</span>
+                                </button>
+                            </div>
+                            <p className="mt-3 text-xs text-slate-500">{t('codeExamples.cli.installNote')}</p>
+                        </div>
+
+                        {/* Command categories */}
+                        <div className="grid gap-6 md:grid-cols-2">
+                            {/* Core Commands */}
+                            <div className="bg-white/85 border border-slate-200 rounded-2xl p-5 dark:bg-slate-900/50 dark:border-slate-800">
+                                <h4 className="text-sm font-semibold text-sky-600 dark:text-sky-400 uppercase tracking-wide mb-3">
+                                    {t('codeExamples.cli.categories.core')}
+                                </h4>
+                                <div className="space-y-1.5 font-mono text-xs">
+                                    {[
+                                        ['open', 'open [url]'],
+                                        ['goto', 'goto <url>'],
+                                        ['click', 'click <ref>'],
+                                        ['type', 'type <text> [ref]'],
+                                        ['fill', 'fill <ref> <text>'],
+                                        ['snapshot', 'snapshot'],
+                                        ['eval', 'eval <expr> [ref]'],
+                                        ['scroll', 'scroll <dir> <px>'],
+                                    ].map(([cmd, sig]) => (
+                                        <div key={cmd} className="flex items-center gap-2 text-slate-300">
+                                            <span className="text-sky-400 dark:text-sky-300 shrink-0">{cmd}</span>
+                                            <span className="text-slate-600 dark:text-slate-500 truncate">{sig}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Screenshots & Storage */}
+                            <div className="space-y-6">
+                                <div className="bg-white/85 border border-slate-200 rounded-2xl p-5 dark:bg-slate-900/50 dark:border-slate-800">
+                                    <h4 className="text-sm font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wide mb-3">
+                                        {t('codeExamples.cli.categories.screenshots')}
+                                    </h4>
+                                    <div className="space-y-1.5 font-mono text-xs">
+                                        {[
+                                            ['screenshot', 'screenshot [ref]'],
+                                            ['pdf', 'pdf'],
+                                        ].map(([cmd, sig]) => (
+                                            <div key={cmd} className="flex items-center gap-2 text-slate-300">
+                                                <span className="text-amber-400 dark:text-amber-300 shrink-0">{cmd}</span>
+                                                <span className="text-slate-600 dark:text-slate-500 truncate">{sig}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="bg-white/85 border border-slate-200 rounded-2xl p-5 dark:bg-slate-900/50 dark:border-slate-800">
+                                    <h4 className="text-sm font-semibold text-violet-600 dark:text-violet-400 uppercase tracking-wide mb-3">
+                                        {t('codeExamples.cli.categories.storage')}
+                                    </h4>
+                                    <div className="space-y-1.5 font-mono text-xs">
+                                        {[
+                                            ['cookie-set', 'cookie-set <name> <val>'],
+                                            ['cookie-get', 'cookie-get <name>'],
+                                            ['ls-get', 'localstorage-get <key>'],
+                                            ['state-save', 'state-save <path>'],
+                                        ].map(([cmd, sig]) => (
+                                            <div key={cmd} className="flex items-center gap-2 text-slate-300">
+                                                <span className="text-violet-400 dark:text-violet-300 shrink-0">{cmd}</span>
+                                                <span className="text-slate-600 dark:text-slate-500 truncate">{sig}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Tabs */}
+                            <div className="bg-white/85 border border-slate-200 rounded-2xl p-5 dark:bg-slate-900/50 dark:border-slate-800">
+                                <h4 className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide mb-3">
+                                    {t('codeExamples.cli.categories.tabs')}
+                                </h4>
+                                <div className="space-y-1.5 font-mono text-xs">
+                                    {[
+                                        ['tab-list', 'tab-list'],
+                                        ['tab-new', 'tab-new [url]'],
+                                        ['tab-select', 'tab-select <idx>'],
+                                        ['tab-close', 'tab-close [idx]'],
+                                    ].map(([cmd, sig]) => (
+                                        <div key={cmd} className="flex items-center gap-2 text-slate-300">
+                                            <span className="text-emerald-400 dark:text-emerald-300 shrink-0">{cmd}</span>
+                                            <span className="text-slate-600 dark:text-slate-500 truncate">{sig}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Advanced */}
+                            <div className="bg-white/85 border border-slate-200 rounded-2xl p-5 dark:bg-slate-900/50 dark:border-slate-800">
+                                <h4 className="text-sm font-semibold text-rose-600 dark:text-rose-400 uppercase tracking-wide mb-3">
+                                    {t('codeExamples.cli.categories.advanced')}
+                                </h4>
+                                <div className="space-y-1.5 font-mono text-xs">
+                                    {[
+                                        ['batch', 'batch <cmd> [cmd...]'],
+                                        ['agent run', 'agent run <task>'],
+                                        ['extract', 'extract <instruction>'],
+                                        ['swarm create', 'swarm create'],
+                                        ['dom snapshot', 'domsnapshot'],
+                                    ].map(([cmd, sig]) => (
+                                        <div key={cmd} className="flex items-center gap-2 text-slate-300">
+                                            <span className="text-rose-400 dark:text-rose-300 shrink-0">{cmd}</span>
+                                            <span className="text-slate-600 dark:text-slate-500 truncate">{sig}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_320px] items-center">
                         <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-xl shadow-slate-200/30 dark:bg-slate-900/70 dark:border-slate-800 dark:shadow-none">
                             <p className="text-sm text-slate-500 uppercase tracking-[0.3em] mb-3">{t('codeExamples.quickstart.label')}</p>
@@ -267,12 +413,21 @@ session.submitAll(links)`,
                             </a>
                         </div>
 
-                        <div className="bg-gradient-to-br from-sky-50 via-violet-50 to-emerald-50 border border-sky-200 rounded-3xl p-8 text-center dark:from-sky-500/10 dark:via-violet-500/10 dark:to-emerald-500/10 dark:border-sky-500/20">
-                            <Code className="w-10 h-10 text-sky-500 dark:text-sky-300 mx-auto mb-4" />
+                        <div className="bg-gradient-to-br from-emerald-50 via-sky-50 to-violet-50 border border-emerald-200 rounded-3xl p-8 text-center dark:from-emerald-500/10 dark:via-sky-500/10 dark:to-violet-500/10 dark:border-emerald-500/20">
+                            <Terminal className="w-10 h-10 text-emerald-500 dark:text-emerald-300 mx-auto mb-4" />
                             <p className="text-slate-900 dark:text-white text-xl font-semibold mb-2">{t('codeExamples.developerToolbox.title')}</p>
-                            <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                            <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
                                 {t('codeExamples.developerToolbox.description')}
                             </p>
+                            <a
+                                href="https://github.com/platonai/Browser4/tree/main/cli"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-300 text-sm font-medium hover:underline"
+                            >
+                                <span>{t('codeExamples.cli.docsLink')}</span>
+                                <ChevronRight className="w-4 h-4" />
+                            </a>
                         </div>
                     </div>
                 </div>

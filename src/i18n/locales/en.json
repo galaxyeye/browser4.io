@@ -234,8 +234,44 @@
       "visitGithub": "Visit GitHub"
     },
     "developerToolbox": {
-      "title": "Developer Toolbox",
-      "description": "IDE templates, scripts, and CLI helpers are on the way—apply for the beta to get first access."
+      "title": "CLI First",
+      "description": "browser4-cli — a native Rust binary. Install, run, and control browsers from any terminal. No JVM, no IDE required."
+    },
+    "cli": {
+      "label": "CLI Reference",
+      "title": "browser4-cli Commands",
+      "description": "Control real browsers from the CLI. Install once, then run commands anywhere — CI, scripts, or interactive shells.",
+      "installLabel": "Install",
+      "installCommand": "npm install -g browser4-cli",
+      "installNote": "Also available via Homebrew, Cargo, or standalone installer scripts.",
+      "categories": {
+        "core": "Core",
+        "screenshots": "Screenshots",
+        "tabs": "Tabs",
+        "storage": "Storage",
+        "advanced": "Advanced"
+      },
+      "examples": {
+        "open": "Open a browser session",
+        "goto": "Navigate to a URL",
+        "click": "Click an element by ref",
+        "type": "Type into an element",
+        "snapshot": "Capture accessibility tree",
+        "eval": "Evaluate JavaScript on the page",
+        "fill": "Fill a form field",
+        "screenshot": "Take a page screenshot",
+        "pdf": "Save page as PDF",
+        "tabList": "List all browser tabs",
+        "tabSelect": "Switch to a tab by index",
+        "cookieSet": "Set a cookie",
+        "localstorageGet": "Read localStorage value",
+        "batch": "Run multiple commands at once",
+        "agentRun": "Autonomous agent task",
+        "extract": "Extract structured data",
+        "swarmCreate": "Parallel swarm scraping"
+      },
+      "tryIt": "Install and try it:",
+      "docsLink": "Full CLI docs →"
     },
     "copy": "Copy",
     "copied": "Copied"
