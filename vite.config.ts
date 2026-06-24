@@ -46,8 +46,12 @@ function directoryListing() {
                 next();
             });
 
-            // Middleware: directory listing
+            // Middleware: directory listing (skip root to serve index.html)
             server.middlewares.use((req: any, res: any, next: any) => {
+                if (req.url === '/' || req.url === '/index.html') {
+                    next();
+                    return;
+                }
                 const requestPath = path.join(publicDir, req.url || '/');
                 if (
                     fs.existsSync(requestPath) &&

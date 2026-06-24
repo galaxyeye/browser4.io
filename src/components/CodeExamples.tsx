@@ -1,4 +1,4 @@
-import { Code, Play, Copy, Check, Terminal, ChevronRight } from 'lucide-react';
+import { Play, Copy, Check, Terminal, ChevronRight, Monitor, MousePointer2, FolderOpen, Server, Globe } from 'lucide-react';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { useTheme } from '../theme/ThemeProvider';
@@ -24,6 +24,37 @@ const accentMap = {
     }
 } as const;
 
+const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+    core: Monitor,
+    navigation: Globe,
+    keyboardMouse: MousePointer2,
+    screenshots: Camera,
+    tabs: FolderOpen,
+    storage: Database,
+    sessions: Server,
+    server: Server,
+    advanced: Terminal,
+};
+
+function Camera({ className }: { className?: string }) {
+    return (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+            <circle cx="12" cy="13" r="4" />
+        </svg>
+    );
+}
+
+function Database({ className }: { className?: string }) {
+    return (
+        <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>
+    );
+}
+
 export default function CodeExamples() {
     const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
     const { isDark } = useTheme();
@@ -32,80 +63,81 @@ export default function CodeExamples() {
 
     const examples = [
         {
-            title: t('codeExamples.browserAgents.title'),
-            description: t('codeExamples.browserAgents.description'),
-            language: 'kotlin',
-            code: `val agent = AgenticContexts.getOrCreateAgent()
+            title: t('codeExamples.autonomousAgent.title'),
+            description: t('codeExamples.autonomousAgent.description'),
+            language: 'bash',
+            code: `# Submit a natural-language task — the agent plans and executes autonomously
+browser4-cli agent run "Go to amazon.com, search for mechanical keyboards, compare the first 4 results, and write a summary to keyboards.md"
 
-val task = """
-    1. go to amazon.com
-    2. search for pens to draw on whiteboards
-    3. compare the first 4 ones
-    4. write the result to a markdown file
-    """
+# Poll progress
+browser4-cli agent status agent-task-1
 
-agent.run(task)`,
+# Retrieve the final result
+browser4-cli agent result agent-task-1`,
             color: 'sky'
         },
         {
-            title: t('codeExamples.workflowAutomation.title'),
-            description: t('codeExamples.workflowAutomation.description'),
-            language: 'kotlin',
-            code: `val session = AgenticContexts.getOrCreateSession()
-val driver = session.getOrCreateBoundDriver()
+            title: t('codeExamples.formAutomation.title'),
+            description: t('codeExamples.formAutomation.description'),
+            language: 'bash',
+            code: `# Open a page, inspect interactive elements, then automate
+browser4-cli open https://example.com/checkout
+browser4-cli snapshot
 
-// Open and parse the page
-var page = session.open(url)
-var document = session.parse(page)
+# Fill the form using refs from the snapshot
+browser4-cli fill e1 "user@example.com"
+browser4-cli fill e2 "John Doe"
+browser4-cli select e3 "US"
+browser4-cli check e4
+browser4-cli click e5
 
-// Interact with the page
-var result = agent.act("scroll to the comment section")
-var content = driver.selectFirstTextOrNull("#comments")
-
-// Complex agent task
-var history = agent.run(
-    "Search for 'smart phone', read the first four products"
-)`,
+# Capture proof and close
+browser4-cli screenshot --filename=checkout-complete.png
+browser4-cli close`,
             color: 'emerald'
         },
         {
-            title: t('codeExamples.llmXsql.title'),
-            description: t('codeExamples.llmXsql.description'),
-            language: 'kotlin',
-            code: `val sql = """
-select
-  llm_extract(dom, 'product name, price, ratings') as llm_data,
-  dom_first_text(dom, '#productTitle') as title,
-  dom_first_text(dom, '#bylineInfo') as brand,
-  str_first_float(dom_first_text(dom,
-    '#reviewsMedley .AverageCustomerReviews span'
-  ), 0.0) as score
-from load_and_select(
-    'https://www.amazon.com/dp/B08PP5MSVB', 'body'
-);
-"""
+            title: t('codeExamples.dataExtraction.title'),
+            description: t('codeExamples.dataExtraction.description'),
+            language: 'bash',
+            code: `# Navigate to a product page and capture the DOM
+browser4-cli goto https://www.amazon.com/dp/B08PP5MSVB
+browser4-cli domsnapshot
 
-val rs = context.executeQuery(sql)
-println(ResultSetFormatter(rs, withHeader = true))`,
+# Extract structured fields with CSS selectors
+browser4-cli domsnapshot get text "#productTitle"
+browser4-cli domsnapshot get attr "#bylineInfo" "href"
+
+# Or run a full X-SQL query for multi-field extraction
+browser4-cli domsnapshot query --sql "
+  SELECT
+    dom_first_text(dom, '#productTitle') AS title,
+    dom_first_text(dom, '#bylineInfo') AS brand,
+    str_first_float(dom_first_text(dom, '.a-price .a-offscreen'), 0.0) AS price
+  FROM dom(dom)
+"`,
             color: 'violet'
         },
         {
-            title: t('codeExamples.highSpeedParallel.title'),
-            description: t('codeExamples.highSpeedParallel.description'),
-            language: 'kotlin',
-            code: `val args = "-refresh -dropContent -interactLevel fastest"
-val blockingUrls = listOf("*.png", "*.jpg")
+            title: t('codeExamples.swarmScraping.title'),
+            description: t('codeExamples.swarmScraping.description'),
+            language: 'bash',
+            code: `# Create a swarm session with parallel browser contexts
+browser4-cli swarm create \\
+  --profile-mode=TEMPORARY \\
+  --max-open-tabs=12 \\
+  --max-browser-contexts=3 \\
+  --display-mode=HEADLESS
 
-val links = LinkExtractors.fromResource("urls.txt")
-    .map { ListenableHyperlink(it, "", args = args) }
-    .onEach {
-        it.eventHandlers.browseEventHandlers
-          .onWillNavigate.addLast { page, driver ->
-            driver.addBlockedURLs(blockingUrls)
-        }
-    }
+# Submit a batch of URLs for high-throughput scraping
+browser4-cli swarm submit \\
+  --seed-file=./urls.txt \\
+  --refresh --store-content \\
+  --deadline=2026-06-30T00:00:00Z
 
-session.submitAll(links)`,
+# Poll and fetch results per job
+browser4-cli swarm status scrape-task-4
+browser4-cli swarm result scrape-task-4`,
             color: 'amber'
         }
     ];
@@ -116,6 +148,156 @@ session.submitAll(links)`,
         setTimeout(() => setCopiedIndex(null), 2000);
     };
 
+    // CLI command categories for the reference grid
+    const commandCategories = [
+        {
+            catKey: 'core',
+            color: 'sky' as const,
+            commands: [
+                ['open', 'open [url]'],
+                ['goto', 'goto <url>'],
+                ['click', 'click <ref>'],
+                ['dblclick', 'dblclick <ref>'],
+                ['type', 'type <text> [ref]'],
+                ['fill', 'fill <ref> <text>'],
+                ['hover', 'hover <ref>'],
+                ['select', 'select <ref> <val>'],
+                ['check', 'check <ref>'],
+                ['uncheck', 'uncheck <ref>'],
+                ['drag', 'drag <src> <dst>'],
+                ['upload', 'upload <ref> <file>'],
+                ['snapshot', 'snapshot'],
+                ['eval', 'eval <expr> [ref]'],
+                ['get', 'get <mode> <sel> [name]'],
+                ['scroll', 'scroll <dir> <px>'],
+                ['wait', 'wait [target]'],
+                ['resize', 'resize <w> <h>'],
+            ]
+        },
+        {
+            catKey: 'navigation',
+            color: 'emerald' as const,
+            commands: [
+                ['go-back', 'go-back'],
+                ['go-forward', 'go-forward'],
+                ['reload', 'reload'],
+            ]
+        },
+        {
+            catKey: 'keyboardMouse',
+            color: 'violet' as const,
+            commands: [
+                ['press', 'press <key> [ref]'],
+                ['keydown', 'keydown <key>'],
+                ['keyup', 'keyup <key>'],
+                ['mousemove', 'mousemove <x> <y>'],
+                ['mousedown', 'mousedown [btn]'],
+                ['mouseup', 'mouseup [btn]'],
+                ['mousewheel', 'mousewheel <dx> <dy>'],
+            ]
+        },
+        {
+            catKey: 'screenshots',
+            color: 'amber' as const,
+            commands: [
+                ['screenshot', 'screenshot [ref]'],
+                ['pdf', 'pdf'],
+            ]
+        },
+        {
+            catKey: 'tabs',
+            color: 'sky' as const,
+            commands: [
+                ['tab-list', 'tab-list'],
+                ['tab-new', 'tab-new [url]'],
+                ['tab-select', 'tab-select <idx>'],
+                ['tab-close', 'tab-close [idx]'],
+            ]
+        },
+        {
+            catKey: 'storage',
+            color: 'emerald' as const,
+            commands: [
+                ['cookie-list', 'cookie-list'],
+                ['cookie-get', 'cookie-get <name>'],
+                ['cookie-set', 'cookie-set <n> <v>'],
+                ['cookie-delete', 'cookie-delete <name>'],
+                ['cookie-clear', 'cookie-clear'],
+                ['ls-get', 'localstorage-get <key>'],
+                ['ls-set', 'localstorage-set <k> <v>'],
+                ['state-save', 'state-save <path>'],
+                ['state-load', 'state-load <path>'],
+            ]
+        },
+        {
+            catKey: 'sessions',
+            color: 'violet' as const,
+            commands: [
+                ['list', 'list'],
+                ['close', 'close'],
+                ['close-all', 'close-all'],
+                ['kill-all', 'kill-all'],
+            ]
+        },
+        {
+            catKey: 'server',
+            color: 'amber' as const,
+            commands: [
+                ['install', 'install'],
+                ['upgrade', 'upgrade'],
+                ['uninstall', 'uninstall'],
+                ['stop', 'stop'],
+                ['status', 'status'],
+            ]
+        },
+        {
+            catKey: 'advanced',
+            color: 'rose' as const,
+            commands: [
+                ['batch', 'batch <cmd> [cmd...]'],
+                ['agent run', 'agent run <task>'],
+                ['agent status', 'agent status <id>'],
+                ['agent result', 'agent result <id>'],
+                ['domsnapshot', 'domsnapshot'],
+                ['domsnapshot get', 'domsnapshot get <...>'],
+                ['domsnapshot query', 'domsnapshot query --sql'],
+                ['extract', 'extract <instruction>'],
+                ['summarize', 'summarize [instruction]'],
+                ['swarm create', 'swarm create'],
+                ['swarm submit', 'swarm submit [url]'],
+                ['swarm query', 'swarm query <url> --sql'],
+            ]
+        },
+    ];
+
+    const categoryColorMap: Record<string, { light: string; dark: string; badge: string; icon: string }> = {
+        sky: {
+            light: 'text-sky-600', dark: 'text-sky-400',
+            badge: 'bg-sky-100 border-sky-200 text-sky-600 dark:bg-sky-500/10 dark:border-sky-500/20 dark:text-sky-300',
+            icon: 'text-sky-500 dark:text-sky-400',
+        },
+        emerald: {
+            light: 'text-emerald-600', dark: 'text-emerald-400',
+            badge: 'bg-emerald-100 border-emerald-200 text-emerald-600 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-300',
+            icon: 'text-emerald-500 dark:text-emerald-400',
+        },
+        violet: {
+            light: 'text-violet-600', dark: 'text-violet-400',
+            badge: 'bg-violet-100 border-violet-200 text-violet-600 dark:bg-violet-500/10 dark:border-violet-500/20 dark:text-violet-300',
+            icon: 'text-violet-500 dark:text-violet-400',
+        },
+        amber: {
+            light: 'text-amber-600', dark: 'text-amber-400',
+            badge: 'bg-amber-100 border-amber-200 text-amber-600 dark:bg-amber-500/10 dark:border-amber-500/20 dark:text-amber-300',
+            icon: 'text-amber-500 dark:text-amber-400',
+        },
+        rose: {
+            light: 'text-rose-600', dark: 'text-rose-400',
+            badge: 'bg-rose-100 border-rose-200 text-rose-600 dark:bg-rose-500/10 dark:border-rose-500/20 dark:text-rose-300',
+            icon: 'text-rose-500 dark:text-rose-400',
+        },
+    };
+
     return (
         <section id="code-examples" className="relative py-24 bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.08),transparent_50%)] dark:bg-[radial-gradient(circle_at_50%_0%,rgba(56,189,248,0.05),transparent_50%)]" />
@@ -123,7 +305,7 @@ session.submitAll(links)`,
             <div className="relative max-w-7xl mx-auto px-6">
                 <div className="text-center mb-16">
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-sky-100 border border-sky-200 rounded-full mb-6 text-sky-600 dark:bg-sky-500/10 dark:border-sky-500/20 dark:text-sky-300">
-                        <Code className="w-4 h-4" />
+                        <Terminal className="w-4 h-4" />
                         <span className="text-sm font-medium">{t('codeExamples.badge')}</span>
                     </div>
                     <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-4">
@@ -135,6 +317,7 @@ session.submitAll(links)`,
                 </div>
 
                 <div className="space-y-12">
+                    {/* 4 CLI Code Example Cards */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         {examples.map((example, index) => (
                             <article
@@ -194,6 +377,7 @@ session.submitAll(links)`,
                         ))}
                     </div>
 
+                    {/* Video Demos */}
                     <div className="grid gap-8 md:grid-cols-2">
                         <article className="group relative overflow-hidden rounded-3xl border bg-white/90 border-slate-200 shadow-lg shadow-slate-200/30 dark:border-slate-900/70 dark:bg-slate-900/50 dark:shadow-none">
                             <div className="aspect-video relative">
@@ -246,7 +430,7 @@ session.submitAll(links)`,
                         </article>
                     </div>
 
-                    {/* CLI Commands Reference */}
+                    {/* Expanded CLI Commands Reference */}
                     <div className="space-y-6">
                         <div className="text-center">
                             <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 border border-emerald-200 rounded-full mb-4 text-emerald-600 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-300">
@@ -285,113 +469,32 @@ session.submitAll(links)`,
                             <p className="mt-3 text-xs text-slate-500">{t('codeExamples.cli.installNote')}</p>
                         </div>
 
-                        {/* Command categories */}
-                        <div className="grid gap-6 md:grid-cols-2">
-                            {/* Core Commands */}
-                            <div className="bg-white/85 border border-slate-200 rounded-2xl p-5 dark:bg-slate-900/50 dark:border-slate-800">
-                                <h4 className="text-sm font-semibold text-sky-600 dark:text-sky-400 uppercase tracking-wide mb-3">
-                                    {t('codeExamples.cli.categories.core')}
-                                </h4>
-                                <div className="space-y-1.5 font-mono text-xs">
-                                    {[
-                                        ['open', 'open [url]'],
-                                        ['goto', 'goto <url>'],
-                                        ['click', 'click <ref>'],
-                                        ['type', 'type <text> [ref]'],
-                                        ['fill', 'fill <ref> <text>'],
-                                        ['snapshot', 'snapshot'],
-                                        ['eval', 'eval <expr> [ref]'],
-                                        ['scroll', 'scroll <dir> <px>'],
-                                    ].map(([cmd, sig]) => (
-                                        <div key={cmd} className="flex items-center gap-2 text-slate-300">
-                                            <span className="text-sky-400 dark:text-sky-300 shrink-0">{cmd}</span>
-                                            <span className="text-slate-600 dark:text-slate-500 truncate">{sig}</span>
+                        {/* Command category grid */}
+                        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            {commandCategories.map((cat) => {
+                                const cc = categoryColorMap[cat.color];
+                                const Icon = categoryIcons[cat.catKey] ?? Terminal;
+                                return (
+                                    <div key={cat.catKey} className="bg-white/85 border border-slate-200 rounded-2xl p-5 dark:bg-slate-900/50 dark:border-slate-800">
+                                        <div className={clsx('inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold mb-3 border', cc.badge)}>
+                                            <Icon className={clsx('w-3.5 h-3.5', cc.icon)} />
+                                            <span>{t(`codeExamples.cli.categories.${cat.catKey}`)}</span>
                                         </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Screenshots & Storage */}
-                            <div className="space-y-6">
-                                <div className="bg-white/85 border border-slate-200 rounded-2xl p-5 dark:bg-slate-900/50 dark:border-slate-800">
-                                    <h4 className="text-sm font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wide mb-3">
-                                        {t('codeExamples.cli.categories.screenshots')}
-                                    </h4>
-                                    <div className="space-y-1.5 font-mono text-xs">
-                                        {[
-                                            ['screenshot', 'screenshot [ref]'],
-                                            ['pdf', 'pdf'],
-                                        ].map(([cmd, sig]) => (
-                                            <div key={cmd} className="flex items-center gap-2 text-slate-300">
-                                                <span className="text-amber-400 dark:text-amber-300 shrink-0">{cmd}</span>
-                                                <span className="text-slate-600 dark:text-slate-500 truncate">{sig}</span>
-                                            </div>
-                                        ))}
+                                        <div className="space-y-1.5 font-mono text-xs">
+                                            {cat.commands.map(([cmd, sig]) => (
+                                                <div key={cmd} className="flex items-center gap-2">
+                                                    <span className={clsx('shrink-0', isDark ? cc.dark : cc.light)}>{cmd}</span>
+                                                    <span className="text-slate-500 dark:text-slate-600 truncate">{sig}</span>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="bg-white/85 border border-slate-200 rounded-2xl p-5 dark:bg-slate-900/50 dark:border-slate-800">
-                                    <h4 className="text-sm font-semibold text-violet-600 dark:text-violet-400 uppercase tracking-wide mb-3">
-                                        {t('codeExamples.cli.categories.storage')}
-                                    </h4>
-                                    <div className="space-y-1.5 font-mono text-xs">
-                                        {[
-                                            ['cookie-set', 'cookie-set <name> <val>'],
-                                            ['cookie-get', 'cookie-get <name>'],
-                                            ['ls-get', 'localstorage-get <key>'],
-                                            ['state-save', 'state-save <path>'],
-                                        ].map(([cmd, sig]) => (
-                                            <div key={cmd} className="flex items-center gap-2 text-slate-300">
-                                                <span className="text-violet-400 dark:text-violet-300 shrink-0">{cmd}</span>
-                                                <span className="text-slate-600 dark:text-slate-500 truncate">{sig}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Tabs */}
-                            <div className="bg-white/85 border border-slate-200 rounded-2xl p-5 dark:bg-slate-900/50 dark:border-slate-800">
-                                <h4 className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wide mb-3">
-                                    {t('codeExamples.cli.categories.tabs')}
-                                </h4>
-                                <div className="space-y-1.5 font-mono text-xs">
-                                    {[
-                                        ['tab-list', 'tab-list'],
-                                        ['tab-new', 'tab-new [url]'],
-                                        ['tab-select', 'tab-select <idx>'],
-                                        ['tab-close', 'tab-close [idx]'],
-                                    ].map(([cmd, sig]) => (
-                                        <div key={cmd} className="flex items-center gap-2 text-slate-300">
-                                            <span className="text-emerald-400 dark:text-emerald-300 shrink-0">{cmd}</span>
-                                            <span className="text-slate-600 dark:text-slate-500 truncate">{sig}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Advanced */}
-                            <div className="bg-white/85 border border-slate-200 rounded-2xl p-5 dark:bg-slate-900/50 dark:border-slate-800">
-                                <h4 className="text-sm font-semibold text-rose-600 dark:text-rose-400 uppercase tracking-wide mb-3">
-                                    {t('codeExamples.cli.categories.advanced')}
-                                </h4>
-                                <div className="space-y-1.5 font-mono text-xs">
-                                    {[
-                                        ['batch', 'batch <cmd> [cmd...]'],
-                                        ['agent run', 'agent run <task>'],
-                                        ['extract', 'extract <instruction>'],
-                                        ['swarm create', 'swarm create'],
-                                        ['dom snapshot', 'domsnapshot'],
-                                    ].map(([cmd, sig]) => (
-                                        <div key={cmd} className="flex items-center gap-2 text-slate-300">
-                                            <span className="text-rose-400 dark:text-rose-300 shrink-0">{cmd}</span>
-                                            <span className="text-slate-600 dark:text-slate-500 truncate">{sig}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                                );
+                            })}
                         </div>
                     </div>
 
+                    {/* Quickstart + Developer Toolbox */}
                     <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_320px] items-center">
                         <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-xl shadow-slate-200/30 dark:bg-slate-900/70 dark:border-slate-800 dark:shadow-none">
                             <p className="text-sm text-slate-500 uppercase tracking-[0.3em] mb-3">{t('codeExamples.quickstart.label')}</p>
@@ -400,8 +503,9 @@ session.submitAll(links)`,
                                 {t('codeExamples.quickstart.description')}
                             </p>
                             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 font-mono text-sm text-slate-100 space-y-2 overflow-x-auto dark:bg-slate-950">
-                                <div>git clone https://github.com/platonai/browser4.git</div>
-                                <div>cd browser4 && ./mvnw -DskipTests</div>
+                                <div><span className="text-slate-500">$</span> npm install -g browser4-cli</div>
+                                <div><span className="text-slate-500">$</span> browser4-cli install</div>
+                                <div><span className="text-slate-500">$</span> browser4-cli open https://browser4.io</div>
                             </div>
                             <a
                                 href="https://github.com/platonai/browser4"

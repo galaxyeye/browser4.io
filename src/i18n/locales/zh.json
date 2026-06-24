@@ -10,9 +10,9 @@
     "getStarted": "开始使用"
   },
   "hero": {
-    "badge": "超高速浏览器 + 智能体时代的基础设施",
+    "badge": "CLI优先的浏览器智能体时代基础设施",
     "title": "让AI能够{{verb}}网络。",
-    "subtitle": "围绕世界上最{{adjective}}的浏览器库构建的基础设施和生态系统。",
+    "subtitle": "一个CLI。一个二进制。世界上最{{adjective}}的浏览器自动化 — 就在你的终端里。",
     "getStarted": "开始使用",
     "github": "GITHUB",
     "milestones": {
@@ -196,24 +196,24 @@
     }
   },
   "codeExamples": {
-    "badge": "代码示例",
-    "title": "开发者友好的API",
-    "subtitle": "优雅的代码片段，助您快速上手Browser4",
-    "browserAgents": {
-      "title": "浏览器智能体",
-      "description": "自主推理、规划和执行复杂的浏览器任务"
+    "badge": "CLI示例",
+    "title": "开发者友好的CLI",
+    "subtitle": "一个二进制。每个终端。完全的浏览器控制。",
+    "autonomousAgent": {
+      "title": "自主智能体",
+      "description": "自然语言任务 — CLI提交、轮询并获取结果"
     },
-    "workflowAutomation": {
-      "title": "工作流自动化",
-      "description": "精确的元素交互和快速数据提取"
+    "formAutomation": {
+      "title": "表单自动化",
+      "description": "打开、快照、填写、点击、截图 — 精确的逐步控制"
     },
-    "llmXsql": {
-      "title": "LLM + X-SQL",
-      "description": "由LLM智能和选择器驱动的高效数据提取"
+    "dataExtraction": {
+      "title": "结构化数据提取",
+      "description": "DOM快照 + X-SQL查询精准提取所需字段"
     },
-    "highSpeedParallel": {
-      "title": "高速并行处理",
-      "description": "并行浏览器控制，单节点每天处理10万~20万页面"
+    "swarmScraping": {
+      "title": "集群并行抓取",
+      "description": "编排并行浏览器上下文进行高吞吐量抓取"
     },
     "youtube": {
       "label": "YouTube演示",
@@ -229,13 +229,13 @@
     },
     "quickstart": {
       "label": "快速开始",
-      "title": "10分钟内完成设置",
-      "description": "Browser4需要Java 17+和Maven。克隆仓库，配置您的LLM API，然后运行示例。",
+      "title": "一条命令即可开始",
+      "description": "全局安装原生CLI，然后运行 browser4-cli install 下载运行时。需要 Chrome 和 Java 17+。",
       "visitGithub": "访问GitHub"
     },
     "developerToolbox": {
       "title": "CLI优先",
-      "description": "browser4-cli — 原生Rust二进制文件。在任意终端中安装、运行和控制浏览器。无需JVM，无需IDE。"
+      "description": "browser4-cli — 原生Rust二进制文件，通过npm、Homebrew和Cargo分发。一次安装，从任意终端控制真实浏览器。无需JVM，无需IDE。"
     },
     "cli": {
       "label": "CLI参考",
@@ -243,32 +243,88 @@
       "description": "从命令行控制真实浏览器。一次安装，随处运行——CI、脚本或交互式Shell皆可。",
       "installLabel": "安装",
       "installCommand": "npm install -g browser4-cli",
-      "installNote": "也支持 Homebrew、Cargo 或独立安装脚本。",
+      "installNote": "也支持 Homebrew (brew install browser4-cli)、Cargo (cargo install browser4-cli) 或适用于 Windows、Linux 和 macOS 的独立安装脚本。",
+      "altInstallMethods": {
+        "homebrew": "brew install browser4-cli",
+        "cargo": "cargo install browser4-cli",
+        "standalone": "独立脚本：curl/irm 从 browser4.oss-cn-beijing.aliyuncs.com 获取"
+      },
       "categories": {
         "core": "核心",
+        "navigation": "导航",
+        "keyboardMouse": "键鼠",
         "screenshots": "截图",
         "tabs": "标签页",
         "storage": "存储",
+        "sessions": "会话",
+        "server": "服务",
         "advanced": "高级"
       },
       "examples": {
         "open": "打开浏览器会话",
         "goto": "导航到URL",
         "click": "按引用点击元素",
+        "dblclick": "双击元素",
         "type": "在元素中输入文本",
+        "fill": "填充表单字段",
+        "hover": "悬停在元素上",
+        "select": "选择下拉选项",
+        "check": "勾选复选框",
+        "uncheck": "取消勾选复选框",
+        "drag": "拖放元素",
+        "upload": "上传文件",
         "snapshot": "捕获无障碍树",
         "eval": "在页面上执行JavaScript",
-        "fill": "填充表单字段",
+        "get": "从元素提取text/html/attr",
+        "scroll": "滚动页面（方向+像素）",
+        "wait": "等待条件或超时",
+        "resize": "调整浏览器窗口大小",
+        "goBack": "后退",
+        "goForward": "前进",
+        "reload": "刷新当前页面",
+        "press": "按下按键",
+        "keydown": "按住按键",
+        "keyup": "释放按键",
+        "mousemove": "移动鼠标到坐标",
+        "mousedown": "按下鼠标按钮",
+        "mouseup": "释放鼠标按钮",
+        "mousewheel": "滚动鼠标滚轮",
         "screenshot": "截取页面截图",
         "pdf": "将页面保存为PDF",
         "tabList": "列出所有标签页",
+        "tabNew": "创建新标签页",
         "tabSelect": "按索引切换标签页",
+        "tabClose": "按索引关闭标签页",
+        "cookieList": "列出所有Cookie",
+        "cookieGet": "按名称获取Cookie",
         "cookieSet": "设置Cookie",
+        "cookieDelete": "删除Cookie",
+        "cookieClear": "清除所有Cookie",
         "localstorageGet": "读取localStorage值",
+        "localstorageSet": "写入localStorage值",
+        "stateSave": "保存Cookie + localStorage",
+        "stateLoad": "恢复Cookie + localStorage",
+        "list": "列出浏览器会话",
+        "close": "关闭当前会话",
+        "closeAll": "关闭所有会话",
+        "killAll": "终止后端 + 停止所有浏览器",
+        "install": "下载运行时包",
+        "upgrade": "升级运行时包",
+        "uninstall": "移除CLI + 运行时数据",
+        "stop": "停止Browser4后端",
+        "status": "检查后端健康状态",
         "batch": "一次运行多个命令",
         "agentRun": "自主智能体任务",
-        "extract": "提取结构化数据",
-        "swarmCreate": "并行集群抓取"
+        "agentStatus": "轮询智能体任务进度",
+        "agentResult": "获取智能体任务结果",
+        "domsnapshot": "捕获静态DOM快照",
+        "domsnapshotGet": "从DOM快照提取元素",
+        "domsnapshotQuery": "在DOM快照上运行X-SQL",
+        "extract": "用AI提取结构化数据",
+        "summarize": "摘要页面内容",
+        "swarmCreate": "创建集群抓取会话",
+        "swarmSubmit": "提交URL进行抓取",
+        "swarmQuery": "在集群中运行X-SQL查询"
       },
       "tryIt": "安装并试用：",
       "docsLink": "完整CLI文档 →"

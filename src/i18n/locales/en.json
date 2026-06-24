@@ -10,9 +10,9 @@
     "getStarted": "Get Started"
   },
   "hero": {
-    "badge": "Infrastructure for the ultra-fast browser + agent era",
+    "badge": "CLI-first infrastructure for the browser agent era",
     "title": "Enable AI to {{verb}} the web.",
-    "subtitle": "The Infrastructure & ECOSYSTEM built around the world's most-{{adjective}} browser library.",
+    "subtitle": "One CLI. One binary. The world's most-{{adjective}} browser automation — in your terminal.",
     "getStarted": "GET STARTED",
     "github": "GITHUB",
     "milestones": {
@@ -196,24 +196,24 @@
     }
   },
   "codeExamples": {
-    "badge": "Code Examples",
-    "title": "Developer-Friendly APIs",
-    "subtitle": "Elegant snippets that help you start fast with Browser4",
-    "browserAgents": {
-      "title": "Browser Agents",
-      "description": "Autonomous reasoning, planning, and execution for complex browser tasks"
+    "badge": "CLI Examples",
+    "title": "Developer-Friendly CLI",
+    "subtitle": "One binary. Every terminal. Complete browser control.",
+    "autonomousAgent": {
+      "title": "Autonomous Agent",
+      "description": "Natural-language tasks — the CLI submits, polls, and retrieves results"
     },
-    "workflowAutomation": {
-      "title": "Workflow Automation",
-      "description": "Precision element interaction and rapid data extraction"
+    "formAutomation": {
+      "title": "Form Automation",
+      "description": "Open, snapshot, fill, click, screenshot — precise step-by-step control"
     },
-    "llmXsql": {
-      "title": "LLM + X-SQL",
-      "description": "Efficient data extraction powered by LLM intelligence plus selectors"
+    "dataExtraction": {
+      "title": "Structured Data Extraction",
+      "description": "DOM snapshots + X-SQL queries extract exactly the fields you need"
     },
-    "highSpeedParallel": {
-      "title": "High-Speed Parallel Processing",
-      "description": "Parallel browser control that handles 100k ~ 200k pages per node per day"
+    "swarmScraping": {
+      "title": "Swarm Parallel Scraping",
+      "description": "Orchestrate parallel browser contexts for high-throughput scraping"
     },
     "youtube": {
       "label": "YouTube Demo",
@@ -229,13 +229,13 @@
     },
     "quickstart": {
       "label": "Quickstart",
-      "title": "Set up in 10 minutes",
-      "description": "Browser4 requires Java 17+ and Maven. Clone the repo, configure your LLM API, and run the examples.",
+      "title": "One command to start",
+      "description": "Install the native CLI globally, then run browser4-cli install to download the runtime. Requires Chrome and Java 17+.",
       "visitGithub": "Visit GitHub"
     },
     "developerToolbox": {
       "title": "CLI First",
-      "description": "browser4-cli — a native Rust binary. Install, run, and control browsers from any terminal. No JVM, no IDE required."
+      "description": "browser4-cli — a native Rust binary distributed via npm, Homebrew, and Cargo. Install once, control real browsers from any terminal. No JVM, no IDE required."
     },
     "cli": {
       "label": "CLI Reference",
@@ -243,32 +243,88 @@
       "description": "Control real browsers from the CLI. Install once, then run commands anywhere — CI, scripts, or interactive shells.",
       "installLabel": "Install",
       "installCommand": "npm install -g browser4-cli",
-      "installNote": "Also available via Homebrew, Cargo, or standalone installer scripts.",
+      "installNote": "Also available via Homebrew (brew install browser4-cli), Cargo (cargo install browser4-cli), or standalone installer scripts for Windows, Linux, and macOS.",
+      "altInstallMethods": {
+        "homebrew": "brew install browser4-cli",
+        "cargo": "cargo install browser4-cli",
+        "standalone": "Standalone scripts: curl/irm from browser4.oss-cn-beijing.aliyuncs.com"
+      },
       "categories": {
         "core": "Core",
+        "navigation": "Navigation",
+        "keyboardMouse": "Kbd/Mouse",
         "screenshots": "Screenshots",
         "tabs": "Tabs",
         "storage": "Storage",
+        "sessions": "Sessions",
+        "server": "Server",
         "advanced": "Advanced"
       },
       "examples": {
         "open": "Open a browser session",
         "goto": "Navigate to a URL",
         "click": "Click an element by ref",
+        "dblclick": "Double-click an element",
         "type": "Type into an element",
-        "snapshot": "Capture accessibility tree",
-        "eval": "Evaluate JavaScript on the page",
         "fill": "Fill a form field",
+        "hover": "Hover over an element",
+        "select": "Select a dropdown option",
+        "check": "Check a checkbox",
+        "uncheck": "Uncheck a checkbox",
+        "drag": "Drag and drop",
+        "upload": "Upload a file",
+        "snapshot": "Capture accessibility tree",
+        "eval": "Evaluate JavaScript on page",
+        "get": "Extract text/html/attr from element",
+        "scroll": "Scroll page (direction + pixels)",
+        "wait": "Wait for condition or timeout",
+        "resize": "Resize browser window",
+        "goBack": "Navigate back",
+        "goForward": "Navigate forward",
+        "reload": "Reload current page",
+        "press": "Press a key",
+        "keydown": "Hold a key down",
+        "keyup": "Release a key",
+        "mousemove": "Move mouse to coordinates",
+        "mousedown": "Press mouse button",
+        "mouseup": "Release mouse button",
+        "mousewheel": "Scroll mouse wheel",
         "screenshot": "Take a page screenshot",
         "pdf": "Save page as PDF",
         "tabList": "List all browser tabs",
+        "tabNew": "Create a new tab",
         "tabSelect": "Switch to a tab by index",
+        "tabClose": "Close a tab by index",
+        "cookieList": "List all cookies",
+        "cookieGet": "Get a cookie by name",
         "cookieSet": "Set a cookie",
+        "cookieDelete": "Delete a cookie",
+        "cookieClear": "Clear all cookies",
         "localstorageGet": "Read localStorage value",
+        "localstorageSet": "Write localStorage value",
+        "stateSave": "Save cookies + localStorage",
+        "stateLoad": "Restore cookies + localStorage",
+        "list": "List browser sessions",
+        "close": "Close current session",
+        "closeAll": "Close all sessions",
+        "killAll": "Kill backend + stop all browsers",
+        "install": "Download runtime bundle",
+        "upgrade": "Upgrade runtime bundle",
+        "uninstall": "Remove CLI + runtime data",
+        "stop": "Stop Browser4 backend",
+        "status": "Check backend health",
         "batch": "Run multiple commands at once",
         "agentRun": "Autonomous agent task",
-        "extract": "Extract structured data",
-        "swarmCreate": "Parallel swarm scraping"
+        "agentStatus": "Poll agent task progress",
+        "agentResult": "Fetch agent task result",
+        "domsnapshot": "Capture static DOM snapshot",
+        "domsnapshotGet": "Extract elements from DOM snapshot",
+        "domsnapshotQuery": "Run X-SQL on DOM snapshot",
+        "extract": "Extract structured data with AI",
+        "summarize": "Summarize page content",
+        "swarmCreate": "Create swarm scrape session",
+        "swarmSubmit": "Submit URLs for scraping",
+        "swarmQuery": "Run X-SQL query in swarm"
       },
       "tryIt": "Install and try it:",
       "docsLink": "Full CLI docs →"

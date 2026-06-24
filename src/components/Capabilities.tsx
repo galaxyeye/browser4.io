@@ -1,10 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { BrainCircuit, Workflow, Database, Shield } from 'lucide-react';
 import { useTheme } from '../theme/ThemeProvider';
 import { useTranslation } from 'react-i18next';
 import { Highlight, type Language, themes } from 'prism-react-renderer';
-import HarvestTable from './HarvestTable';
-import { harvestRows, harvestSummary } from '../lib/harvestData';
 
 const accentStyles = {
     sky: {
@@ -59,17 +57,15 @@ const getPillars = (t: (key: string) => string) => [
         codeSamples: [
             {
                 label: 'Agent run',
-                language: 'kotlin',
-                code: `val agent = AgenticContexts.getOrCreateAgent()
+                language: 'bash',
+                code: `# Submit a natural-language task
+browser4-cli agent run "Go to amazon.com, search for pens, compare the first 4, write result to markdown"
 
-val task = """
-    1. go to amazon.com
-    2. search for pens to draw on whiteboards
-    3. compare the first 4 ones
-    4. write the result to a markdown file
-    """
+# Poll progress
+browser4-cli agent status agent-task-1
 
-agent.run(task)`
+# Get final result
+browser4-cli agent result agent-task-1`
             }
         ]
     },
@@ -88,23 +84,18 @@ agent.run(task)`
         footnote: t('capabilities.pillars.workflow.footnote'),
         codeSamples: [
             {
-                label: 'Automation loop',
-                language: 'kotlin',
-                code: `val session = AgenticContexts.getOrCreateSession()
-val driver = session.getOrCreateBoundDriver()
+                label: 'Workflow',
+                language: 'bash',
+                code: `# Open page, inspect, then automate step by step
+browser4-cli open https://example.com/form
+browser4-cli snapshot
 
-// Open and parse the page
-var page = session.open(url)
-var document = session.parse(page)
-
-// Interact with the page
-var result = agent.act("scroll to the comment section")
-var content = driver.selectFirstTextOrNull("#comments")
-
-// Complex agent task
-var history = agent.run(
-    "Search for 'smart phone', read the first four products"
-)`
+# Fill form using refs from snapshot
+browser4-cli fill e1 "user@example.com"
+browser4-cli fill e2 "password123"
+browser4-cli click e3
+browser4-cli screenshot --filename=done.png
+browser4-cli close`
             }
         ]
     },
@@ -124,32 +115,21 @@ var history = agent.run(
         footnote: t('capabilities.pillars.intelligence.footnote'),
         codeSamples: [
             {
-                label: 'Harvest API',
-                language: 'sql',
-                code: `# NO token consumption
+                label: 'X-SQL Query',
+                language: 'bash',
+                code: `# Capture static DOM and run X-SQL
+browser4-cli goto https://www.amazon.com/dp/B08PP5MSVB
+browser4-cli domsnapshot
 
-val result = 
-session.harvest('https://www.amazon.com/b?node=3117954011');
-`
-            },
-            {
-                label: 'Extended X-SQL',
-                language: 'kotlin',
-                code: `val sql = """
-select
-  llm_extract(dom, 'product name, price, ratings') as llm_data,
-  dom_first_text(dom, '#productTitle') as title,
-  dom_first_text(dom, '#bylineInfo') as brand,
-  str_first_float(dom_first_text(dom,
-    '#reviewsMedley .AverageCustomerReviews span'
-  ), 0.0) as score
-from load_and_select(
-    'https://www.amazon.com/dp/B08PP5MSVB', 'body'
-);
-"""
-
-val rs = context.executeQuery(sql)
-println(ResultSetFormatter(rs, withHeader = true))`
+browser4-cli domsnapshot query --sql "
+  SELECT
+    dom_first_text(dom, '#productTitle') AS title,
+    dom_first_text(dom, '#bylineInfo') AS brand,
+    str_first_float(dom_first_text(dom,
+      '#reviewsMedley .AverageCustomerReviews span'
+    ), 0.0) AS score
+  FROM dom(dom)
+"`
             },
         ]
     },
@@ -169,21 +149,22 @@ println(ResultSetFormatter(rs, withHeader = true))`
         footnote: t('capabilities.pillars.security.footnote'),
         codeSamples: [
             {
-                label: 'Throughput controls',
-                language: 'kotlin',
-                code: `val args = "-refresh -dropContent -interactLevel fastest"
-val blockingUrls = listOf("*.png", "*.jpg")
+                label: 'Swarm scraping',
+                language: 'bash',
+                code: `# Create swarm with parallel contexts
+browser4-cli swarm create \\
+  --profile-mode=TEMPORARY \\
+  --max-browser-contexts=3 \\
+  --display-mode=HEADLESS
 
-val links = LinkExtractors.fromResource("urls.txt")
-    .map { ListenableHyperlink(it, "", args = args) }
-    .onEach {
-        it.eventHandlers.browseEventHandlers
-          .onWillNavigate.addLast { page, driver ->
-            driver.addBlockedURLs(blockingUrls)
-        }
-    }
+# Submit URLs at scale
+browser4-cli swarm submit \\
+  --seed-file=urls.txt \\
+  --refresh --store-content
 
-session.submitAll(links)`
+# Poll and retrieve results
+browser4-cli swarm status scrape-task-4
+browser4-cli swarm result scrape-task-4`
             }
         ]
     }
@@ -206,8 +187,6 @@ export default function Capabilities() {
     const active = pillars[activeIndex];
     const activeTabIndex = tabIndices[activeIndex] ?? 0;
     const activeSample = active.codeSamples[activeTabIndex] ?? active.codeSamples[0];
-    const showHarvestTable = active.tag === 'Data Extraction' && activeSample.label === 'Harvest API';
-    const codePaneSize = showHarvestTable ? 'min-h-[165px] max-h-[220px]' : 'min-h-[280px]';
 
     const handleCopy = () => {
         navigator.clipboard.writeText(activeSample.code);
@@ -219,28 +198,6 @@ export default function Capabilities() {
         setTabIndices((prev) => prev.map((current, idx) => (idx === pillarIdx ? tabIdx : current)));
         setCopied(false);
     };
-
-    const harvestScrollRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (!showHarvestTable) {
-            return;
-        }
-
-        const scroller = harvestScrollRef.current;
-        if (!scroller) {
-            return;
-        }
-
-        const frame = requestAnimationFrame(() => {
-            const maxScroll = scroller.scrollWidth - scroller.clientWidth;
-            if (maxScroll > 0) {
-                scroller.scrollLeft = maxScroll * 0.755;
-            }
-        });
-
-        return () => cancelAnimationFrame(frame);
-    }, [showHarvestTable, activeIndex, activeTabIndex]);
 
     return (
         <section id="capabilities" className="relative py-24 bg-gradient-to-b from-white via-slate-50 to-slate-100 text-slate-900 dark:from-slate-950 dark:via-slate-950/80 dark:to-slate-900 dark:text-white">
@@ -357,8 +314,8 @@ export default function Capabilities() {
                         )}
 
                         <div className="flex-1 flex flex-col gap-3 overflow-hidden">
-                            <div className={`relative flex-1 bg-white dark:bg-slate-950 rounded-2xl p-4 border border-slate-200
-                             dark:border-slate-900 shadow-inner overflow-x-auto overflow-y-hidden ${codePaneSize}`}>
+                            <div className="relative flex-1 bg-white dark:bg-slate-950 rounded-2xl p-4 border border-slate-200
+                             dark:border-slate-900 shadow-inner overflow-x-auto overflow-y-hidden min-h-[280px]">
                                 <Highlight
                                     code={activeSample.code.trim()}
                                     language={activeSample.language as Language}
@@ -381,18 +338,6 @@ export default function Capabilities() {
                                 </Highlight>
                             </div>
 
-                            {showHarvestTable && (
-                                <div className="border border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 shadow-sm p-2">
-                                    <div
-                                        ref={harvestScrollRef}
-                                        className="overflow-x-auto overflow-y-hidden pb-1 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-slate-200/60 dark:[&::-webkit-scrollbar-track]:bg-slate-800/60 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-400 dark:[&::-webkit-scrollbar-thumb]:bg-slate-600"
-                                    >
-                                        <div className="min-w-max">
-                                            <HarvestTable summary={harvestSummary} rows={harvestRows} />
-                                        </div>
-                                    </div>
-                                </div>
-                             )}
                         </div>
                     </aside>
                 </div>
