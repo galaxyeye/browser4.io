@@ -22,6 +22,7 @@ browser4-cli domsnapshot             # capture a fresh static DOM snapshot
 browser4-cli domsnapshot get <field> [selector] [name]  # extract data from the snapshot
 browser4-cli domsnapshot query [url] --sql <query>       # run X-SQL against a snapshot (url defaults to current page)
 browser4-cli domsnapshot export [--file <path>]         # save snapshot HTML to a file
+browser4-cli domsnapshot summary                       # generate a compressed page summary (WPSI)
 ```
 
 | Command | Purpose |
@@ -30,15 +31,18 @@ browser4-cli domsnapshot export [--file <path>]         # save snapshot HTML to 
 | `domsnapshot get <field>` | Extract elements from the snapshot (text, html, attr) |
 | `domsnapshot query [url]` | Run X-SQL against the DOM snapshot via the scrape API. URL defaults to the current session's page |
 | `domsnapshot export` | Save full snapshot HTML content to a local file |
+| `domsnapshot summary` | Generate a compressed Web Page Summary Index (WPSI) from the stored DOM snapshot |
 
 ## Capture
+
+Capture a fresh static DOM snapshot of the current page and cache it in the backend for subsequent `get`/`query`/`export` calls.
 
 ```bash
 # Capture a fresh static DOM snapshot of the current page
 browser4-cli domsnapshot
 ```
 
-Returns a JSON metadata object with the page URL, href, content size, capture time, content type, and title. The snapshot is always captured fresh (no caching).
+Returns a JSON metadata object with the page URL, href, content size, capture time, content type, and title. The capture is always fresh — `domsnapshot` forces a new page capture regardless of any previously cached snapshot. The resulting snapshot is stored in the backend and reused by subsequent `get`, `query`, and `export` calls until the next `domsnapshot` capture or a page navigation.
 
 ## Get — Extract data from the snapshot
 
@@ -114,6 +118,29 @@ browser4-cli domsnapshot export --file=page-snapshot.html
 
 > **Note:** The exported HTML is pretty-formatted, so tools like `grep` work directly on the output file.
 
+## Summary — Web Page Summary Index (WPSI)
+
+Generate a compressed page summary from the stored DOM snapshot. The summary is a deterministic, AI-readable index that preserves page structure and key content in typically <1% of the original HTML size.
+
+```bash
+# Generate a summary from the stored DOM snapshot:
+browser4-cli domsnapshot summary
+```
+
+The summary is saved as a YAML file (`.yml`) in the snapshot directory, consistent with the `snapshot` command output format, and includes:
+
+- **Page metadata** — title, URL
+- **Page type** — inferred from DOM structure (product detail, article, search results, form, etc.)
+- **Page structure** — landmark elements (header, nav, main, footer, etc.)
+- **Main content** — key nodes with scores and CSS selector hints
+- **List detection** — repeated structures (product lists, comment lists, etc.) with samples
+- **Table summaries** — large tables summarized with row/col counts and headers
+- **Stats** — node count, link count, button count, form count, table count, image count, input count
+
+All summary nodes include a `box` field (the `vi` attribute — bounding box) that can be used to backtrack to the original DOM element. CSS selector hints (id, class) are provided for key nodes to enable automated data extraction.
+
+> **Requirements:** A DOM snapshot must exist in the page storage (captured via `domsnapshot` or page navigation) before calling `dom snapshot summary`. The summary is generated deterministically — no AI model is involved.
+
 ## Error Handling
 
 - `domsnapshot` capture fails if the backend is unreachable or the page cannot be loaded.
@@ -123,6 +150,6 @@ browser4-cli domsnapshot export --file=page-snapshot.html
 
 ## Notes
 
-- The snapshot is always captured fresh — there is no caching between `domsnapshot` calls.
+- `domsnapshot` (the capture command) always fetches a fresh page snapshot and caches it in the backend. Subsequent `get`, `query`, and `export` calls reuse this cached snapshot — they do not re-capture the page. The cache is invalidated by the next `domsnapshot` capture or a page navigation (`goto`, `reload`, etc.).
 - `domsnapshot get` only accepts CSS selectors. For interactive element interaction (click, type, fill), use the standard `snapshot` + ref-based commands instead.
 - X-SQL queries through `domsnapshot query` follow the same SQL constraints as `swarm query`. See the [X-SQL reference](x-sql.md) for full function documentation.

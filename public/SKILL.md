@@ -18,6 +18,7 @@ Installs browser4-cli globally using npm (Requires Node.js):
 
 ```shell
 npm install -g browser4-cli
+browser4-cli install
 ```
 
 Bootstrap the native binary directly with a single command:
@@ -25,49 +26,16 @@ Bootstrap the native binary directly with a single command:
 **Windows (PowerShell):**
 ```powershell
 irm https://browser4.oss-cn-beijing.aliyuncs.com/scripts/install-browser4-cli.ps1 | iex
+browser4-cli install
 ```
 
 **Linux / macOS (bash):**
 ```bash
 curl -fsSL https://browser4.oss-cn-beijing.aliyuncs.com/scripts/install-browser4-cli.sh | bash
-```
-
-Optional backend runtime install: `browser4-cli install`
-
-## Quick start
-
-```bash
-# install the self-contained Browser4 backend runtime (Browser4.jar + bundled JRE)
 browser4-cli install
-# open new browser
-browser4-cli open
-# navigate to a page with the current active session
-browser4-cli goto https://browser4.io
-# take a snapshot
-browser4-cli snapshot
-# interact with the page using refs from the snapshot
-browser4-cli click e15
-browser4-cli type "page.click"
-browser4-cli press Enter
-# take a screenshot
-browser4-cli screenshot
-# close the browser
-browser4-cli close
 ```
-
-`browser4-cli open` reuses the saved session for the current slot only when the backend still reports it
-as active. If the saved session is stale or missing, `open` refreshes it by creating a new session.
-
-`browser4-cli goto` first tries to reuse the current active session. If no active session is available,
-or the saved session is no longer active, it automatically starts or refreshes the session before
-navigating.
-
-When `browser4-cli install` has been run, `browser4-cli open` uses the bundled `jlink` JRE and
-installed `Browser4.jar` from the CLI state directory instead of requiring a separately installed Java runtime.
 
 ## Commands
-
-The sections below cover the standard browser workflow commands that are surfaced in the global `browser4-cli help` overview.
 
 ### Core
 
@@ -88,6 +56,10 @@ browser4-cli check e12
 browser4-cli uncheck e12
 browser4-cli snapshot
 browser4-cli snapshot --filename=after-click.yaml
+browser4-cli snapshot --boxes
+browser4-cli snapshot -i
+browser4-cli snapshot -i -c -d 5
+browser4-cli snapshot -s "#content"
 browser4-cli eval "document.title"
 browser4-cli eval --file=script.js
 browser4-cli eval --file=script.js e5
@@ -163,6 +135,7 @@ browser4-cli get attr e5 href       # HTML attribute value
 
 - Output distinguishes `null` (element/attribute missing), `""` (exists but empty), and normal values.
 - `property` and `attr` modes require a third positional argument (the property/attribute name).
+- Use `get attr <ref> id` and `get attr <ref> class` to discover identifying attributes from a snapshot ref, then use those values as CSS selectors with `domsnapshot get` (see [references/css-selector-bridge.md](references/css-selector-bridge.md)).
 
 ### Scroll
 
@@ -274,6 +247,20 @@ You can also take a snapshot on demand using `browser4-cli snapshot` command.
 
 If `--filename` is not provided, a new snapshot file is created with a timestamp. Default to automatic file naming, use `--filename=` when artifact is a part of the workflow result.
 
+Use `--boxes` to include each element's bounding box as `[box=x,y,width,height]` in the YAML output. Bounding box coordinates are rounded to 1 decimal place.
+
+Filtering options reduce snapshot output size:
+
+| Flag | Description |
+|---|---|
+| `-i, --interactive` | Only show interactive elements (buttons, links, inputs) |
+| `-u, --urls` | Include href URLs for link elements |
+| `-c, --compact` | Remove empty structural elements |
+| `-d, --depth <n>` | Limit tree depth to n levels |
+| `-s, --selector <sel>` | Scope snapshot to a CSS selector subtree |
+
+All flags compose: `browser4-cli snapshot -i -c -d 5`
+
 ## DOM Snapshot
 
 The `domsnapshot` family of commands operates on a **static DOM snapshot** — the raw HTML of the current page parsed into a queryable document object model. Unlike the interactive `snapshot` command (which captures accessibility-tree refs for `click`/`type`/`fill`), `domsnapshot` extracts structured data from the DOM using CSS selectors and X-SQL queries.
@@ -283,9 +270,37 @@ browser4-cli domsnapshot                           # capture a fresh static DOM 
 browser4-cli domsnapshot get <field> [selector] [name]  # extract text/html/attr via CSS selectors
 browser4-cli domsnapshot query [url] --sql <query>       # run X-SQL against the DOM
 browser4-cli domsnapshot export [--file <path>]         # save snapshot HTML to a file
+browser4-cli domsnapshot summary                       # generate a compressed page summary (WPSI)
 ```
 
 See **[references/domsnapshot.md](references/domsnapshot.md)** for the full command reference, field tables, X-SQL query examples, and the comparison with interactive `snapshot`.
+
+### Bridging Snapshot Refs to CSS Selectors
+
+`domsnapshot get` and `domsnapshot query` require CSS selectors — they reject interactive snapshot refs (`e5`). To bridge from a compact interactive snapshot to a `domsnapshot` query **without ever reading the full DOM snapshot**, use one of these approaches:
+
+1. **Construct from snapshot info** — the interactive snapshot already shows tag, attributes, and text:
+   `@e10 [input type="email"] placeholder="Email"` → use `[placeholder="Email"]`
+2. **Extract attributes from the ref** — `browser4-cli get attr e5 id` or `get attr e5 class`
+3. **Generate a unique selector** — `browser4-cli generate-locator e5`
+
+```bash
+# Tier 1 example: construct selector from snapshot output
+browser4-cli snapshot
+# @e13 [span class="price"] "$19.99"
+browser4-cli domsnapshot get text ".price"
+
+# Tier 2 example: discover class from ref, then query
+CARD_CLASS=$(browser4-cli get attr e11 class)
+browser4-cli domsnapshot query --sql "
+  SELECT dom_first_text(dom, '.price') AS price
+  FROM load_and_select(@url, '.${CARD_CLASS}')
+"
+```
+
+> **Core rule:** Never `cat` the full snapshot file or use `domsnapshot export` just to read it. Always use targeted `domsnapshot get` or `domsnapshot query` to extract only the data you need.
+
+Full reference: **[references/css-selector-bridge.md](references/css-selector-bridge.md)** — three-tier approach, `generate-locator` command, and anti-patterns to avoid.
 
 ## Browser Sessions
 
@@ -435,6 +450,7 @@ browser4-cli close
 ## Specific tasks
 
 * **DOM Snapshot** [references/domsnapshot.md](references/domsnapshot.md)
+* **CSS Selector Bridge** [references/css-selector-bridge.md](references/css-selector-bridge.md)
 * **Smarm command** [references/swarm.md](references/swarm.md)
 * **Storage state (cookies, localStorage)** [references/storage-state.md](references/storage-state.md)
 * **X-SQL** [references/x-sql.md](references/x-sql.md)
