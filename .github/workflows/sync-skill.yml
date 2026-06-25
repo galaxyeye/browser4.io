@@ -18,7 +18,7 @@ jobs:
         id: check
         env:
           SOURCE_REPO: platonai/Browser4
-          SOURCE_PATH: cli/skill
+          SOURCE_PATH: skill
           SHA_FILE: public/.skill-sha
         run: |
           set -euo pipefail
@@ -49,11 +49,11 @@ jobs:
             echo "sha=$LATEST_SHA" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Sync cli/skill from Browser4 into public/
+      - name: Sync skill from Browser4 into public/
         if: steps.check.outputs.skip != 'true'
         env:
           SOURCE_REPO: platonai/Browser4
-          SOURCE_PATH: cli/skill
+          SOURCE_PATH: skill
           TARGET_DIR: public
         run: |
           set -euo pipefail
@@ -82,7 +82,7 @@ jobs:
             done
           }
 
-          echo "Syncing from $SOURCE_REPO:$SOURCE_PATH → $TARGET_DIR/"
+          echo "Syncing from $SOURCE_REPO (path: $SOURCE_PATH) → $TARGET_DIR/"
           download_dir "$SOURCE_REPO" "$SOURCE_PATH" "$TARGET_DIR"
           echo "Sync complete."
 
@@ -99,7 +99,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes — nothing to commit."
           else
-            git commit -m "chore: sync cli/skill from platonai/Browser4 (${{ steps.check.outputs.sha }})"
+            git commit -m "chore: sync skill from platonai/Browser4 (${{ steps.check.outputs.sha }})"
             git push origin main
             echo "Pushed."
           fi
