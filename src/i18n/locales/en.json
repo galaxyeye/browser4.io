@@ -12,7 +12,7 @@
   "hero": {
     "badge": "CLI-first infrastructure for the browser agent era",
     "title": "Enable AI to {{verb}} the web.",
-    "subtitle": "One CLI. One binary. The world's most-{{adjective}} browser automation — in your terminal.",
+    "subtitle": "One CLI. The world's {{adjective}} browser automation — in your terminal.",
     "getStarted": "GET STARTED",
     "github": "GITHUB",
     "milestones": {
@@ -198,7 +198,7 @@
   "codeExamples": {
     "badge": "CLI Examples",
     "title": "Developer-Friendly CLI",
-    "subtitle": "One binary. Every terminal. Complete browser control.",
+    "subtitle": "Every terminal. Complete browser control.",
     "autonomousAgent": {
       "title": "Autonomous Agent",
       "description": "Natural-language tasks — the CLI submits, polls, and retrieves results"
