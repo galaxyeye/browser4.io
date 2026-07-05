@@ -1,6 +1,7 @@
 ---
 title: "X-SQL: DomFunctions — Core DOM Operations"
 description: "Reference for ~65 DOM functions: page loading, state checks, element properties, URL/location, tree navigation, element identity, link/image props, title, text, HTML serialization, regex, and computed features."
+tier: catalog
 ---
 
 # X-SQL: DomFunctions — Core DOM Operations
@@ -65,7 +66,7 @@ SELECT DOM_TEXT(DOM_FETCH('https://example.com/live-prices'));
 
 -- Equivalent via DOM_LOAD_AND_SELECT with refresh option
 SELECT DOM_TEXT(DOM)
-FROM DOM_LOAD_AND_SELECT('https://example.com/live-prices?-expires=0', ':root');
+FROM DOM_LOAD_AND_SELECT('https://example.com/live-prices -expires 0', ':root');
 ```
 
 ---
