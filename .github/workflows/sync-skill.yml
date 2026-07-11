@@ -18,7 +18,7 @@ jobs:
         id: check
         env:
           SOURCE_REPO: platonai/Browser4
-          SOURCE_PATH: skill
+          SOURCE_PATH: skills/browser4-cli
           SHA_FILE: public/.skill-sha
         run: |
           set -euo pipefail
@@ -53,7 +53,7 @@ jobs:
         if: steps.check.outputs.skip != 'true'
         env:
           SOURCE_REPO: platonai/Browser4
-          SOURCE_PATH: skill
+          SOURCE_PATH: skills/browser4-cli
           TARGET_DIR: public
         run: |
           set -euo pipefail
