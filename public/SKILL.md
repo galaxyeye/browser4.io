@@ -1,6 +1,6 @@
 ---
 name: browser4-cli
-title: "Browser4 CLI — AI Agent Skill"
+title: "Browser Automation with browser4-cli"
 description: "Automates browser interactions for web testing, form filling, screenshots, and data extraction. Use when the user needs to navigate websites, interact with web pages, fill forms, take screenshots, test web applications, or extract information from web pages."
 allowed-tools: Bash(browser4-cli:*)
 tier: decision
@@ -36,6 +36,11 @@ browser4-cli snapshot -v 0 --auto-diff  # verify what changed
 browser4-cli htmlsnapshot get text "<css-selector>" --all
 ```
 
+For quick inline viewing without opening a file, add `--stdout`:
+```bash
+browser4-cli snapshot -v 0 --stdout   # print snapshot to stdout instead of file
+```
+
 ## 2. Key Concepts
 
 ### Element Refs
@@ -50,7 +55,7 @@ After commands that modify browser state, browser4-cli saves an **accessibility-
   - button "Search" [ref=e25]
 ```
 
-Each interactive element has a **ref** (`e5`, `e12`) — these are Chrome DevTools Protocol backend node IDs. Use them to target elements in `click`, `fill`, `type`, `get attr`, etc.
+Each interactive element has a **ref** (`e5`, `e12`) — the element's Chrome DevTools Protocol backend node ID, prefixed with `e` (so `e12345` refers to backend node 12345). Use them to target elements in `click`, `fill`, `type`, `get attr`, etc.
 
 ### Ref Lifecycle
 
@@ -141,7 +146,7 @@ Need to process multiple pages?
 
 > **Warning:** CSS selectors are tied to live websites — they break when sites change their HTML. Always discover selectors with `htmlsnapshot inspect` or `htmlsnapshot summary` before extraction. Treat scenario examples as patterns, not copy-paste recipes.
 
-> **Warning:** Shell quoting on Windows — complex JS/SQL with nested quotes causes escaping issues. Prefer `--sql @file.sql` (read from file), `--sql-stdin` (piped), `--sql-base64` (encoded), or `eval --file`/`eval --stdin`/`eval --base64` (JS from file or base64). For `htmlsnapshot inspect`, use `@file`, `--stdin`, or `--selector-base64`. Never inline `--sql "..."` with double-quoted CSS selectors on Windows.
+> **Warning:** Shell quoting on Windows — complex JS/SQL with nested quotes causes escaping issues. Prefer `--sql @file.sql` (read from file), `--sql-stdin` (piped), `--sql-base64` (encoded), or `eval --file`/`eval --stdin`/`eval --base64` (JS from file or base64). For `htmlsnapshot inspect`, use `@file`, `--stdin`, or `--selector-base64`. Never inline `--sql "..."` with double-quoted CSS selectors on Windows. See [shell-quoting.md](references/shell-quoting.md) for the full workaround workflow.
 
 > **Warning:** Don't cat snapshot files — they can exceed 256KB. Use viewport pagination (`snapshot -v 0`), `snapshot grep <pattern>`, or `snapshot --stdout --page 1` instead.
 
@@ -226,6 +231,9 @@ Organized by task — follow the link that matches what you're trying to do:
 
 **Configure fetching:**
 [load-options-guide.md](references/load-options-guide.md) — cache control, quality requirements, interaction, portal crawling
+
+**Troubleshoot:**
+[shell-quoting.md](references/shell-quoting.md) — avoid shell-quoting breakage for complex JS/X-SQL on Windows / Git Bash
 
 ## Installation
 
