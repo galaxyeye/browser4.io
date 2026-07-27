@@ -28,11 +28,11 @@ Every browser4-cli session follows this pattern:
 
 ```bash
 browser4-cli goto "https://example.com"
-browser4-cli snapshot -v 0          # read the page; note refs
-browser4-cli fill <ref> "<value>"   # interact
+browser4-cli snapshot -v 0 --stdout       # read the page; note refs
+browser4-cli fill <ref> "<value>"         # interact
 browser4-cli press Enter
 browser4-cli wait --load networkidle
-browser4-cli snapshot -v 0 --auto-diff  # verify what changed
+browser4-cli snapshot -v 0 --auto-diff --stdout  # verify what changed
 browser4-cli htmlsnapshot get text "<css-selector>" --all
 ```
 
@@ -81,6 +81,56 @@ The `list` command displays a "Next open" column showing what happens when `goto
 - **Reuse** — reconnects to the existing browser window (session is active on the backend).
 - **Refresh** — opens a fresh window (session is stale or missing).
 
+### Tab Management
+
+Tab commands scope to a session — all operations affect the session targeted via `-s <session>` (or the DEFAULT session when `-s` is omitted).
+
+#### Tab Lifecycle
+
+```
+1. LIST     browser4-cli tab-list                    # See all tabs: index, GUID, title, URL
+2. CREATE   browser4-cli tab-new [url]               # Open a new tab (about:blank if URL omitted)
+3. SWITCH   browser4-cli tab-select <index>          # Switch by index
+           browser4-cli tab-select --guid <guid>    # Switch by stable GUID
+4. CLOSE    browser4-cli tab-close <index>           # Close by index
+           browser4-cli tab-close                   # Close current tab
+           browser4-cli tab-close --guid <guid>     # Close by GUID
+5. VERIFY   browser4-cli tab-list                    # Confirm state after changes
+```
+
+#### Key notes
+
+- **GUIDs:** `tab-list` shows a `GUID` column. Use `--guid` for stable targeting across tab reordering. Extension sessions show a `chrome:` prefix on numeric GUIDs; regular sessions use 32-char hex GUIDs.
+- **Machine-readable output:** Use the global `--json` flag *before* the command: `browser4-cli --json tab-list`. The output includes a `"tabs"` array with `index`, `guid`, `url`, `title` for each tab, plus a `"count"` field.
+- **Session scoping:** Prefix tab commands with `-s <session-id>` to target a non-default session. The `list` command shows all tracked sessions and their IDs.
+- **Last-tab behavior:** Chrome requires at least one open tab. Closing the last tab silently creates a replacement `about:blank` — `tab-list` will still show 1 tab afterward.
+- **Tab insert position:** New tabs are inserted by Chrome (not Browser4). The position depends on Chrome's native behavior — typically after the active tab. Use `tab-list` to verify.
+- **No auto-snapshot:** `tab-list` and `tab-close` do NOT trigger automatic snapshots. After `tab-select`, run `snapshot` explicitly to get fresh element refs for the new active tab.
+- **Re-snapshot after switches:** `tab-select` changes the active page context. Capture a fresh snapshot before interacting with page elements in the new tab.
+- **Extension sessions:** When closing tabs on extension-attached sessions, the backend may report an error even though the tab was successfully closed (Chrome's `chrome.tabs.remove` callback can fire an error after the tab is already gone). The CLI verifies that the tab was actually removed and treats the operation as successful in this case. Extension sessions may also show "Stale" in `list` output after all tabs are closed — the session can be reconnected with `attach --extension`.
+
+#### Examples
+
+```bash
+# List all tabs in the default session
+browser4-cli tab-list
+
+# Machine-readable tab data
+browser4-cli --json tab-list
+
+# Open a tab and switch to it
+browser4-cli tab-new https://httpbin.org/get
+# Output: Switched to tab 1 (https://httpbin.org/get)
+
+# Close by GUID (survives reordering)
+browser4-cli tab-close --guid 2AAA0C47D288D3943BA85D31AA8D084C
+
+# Cross-session tab operations
+browser4-cli -s ext-session tab-list
+browser4-cli -s ext-session tab-new https://example.com
+browser4-cli -s ext-session tab-select 0
+```
+
 ## 3. Command Map
 
 | Command family | Purpose | When to use | Full reference |
@@ -88,7 +138,8 @@ The `list` command displays a "Next open" column showing what happens when `goto
 | `goto`, `open`, `close`, `reload` | Navigation & session management | Every session starts here | — |
 | `snapshot` | Capture accessibility tree with refs | Before/after interactions | [htmlsnapshot.md](references/htmlsnapshot.md) |
 | `snapshot grep` | Search snapshot content with regex | Find elements by text or pattern | — |
-| `click`, `fill`, `type`, `press`, `select`, `check`, `drag` | Page interaction | Form filling, button clicks, navigation | — |
+| `click`, `dblclick`, `drag`, `hover`, `fill`, `type`, `press`, `select`, `check`, `generate-locator` | Page interaction | Form filling, button clicks, mouse actions, navigation | — |
+| `dialog-accept`, `dialog-dismiss` | Native JS dialog handling | After clicking buttons that trigger alert/confirm/prompt | — |
 | `htmlsnapshot get`, `get all` | Extract text/html/attr via CSS selectors | Single-field data extraction | [htmlsnapshot.md](references/htmlsnapshot.md) |
 | `htmlsnapshot query` | X-SQL queries for structured extraction | Multi-field, filtered, sorted data | [x-sql.md](references/x-sql.md) |
 | `eval` | Execute JavaScript in the page | Live DOM access, complex transforms | — |
@@ -98,7 +149,25 @@ The `list` command displays a "Next open" column showing what happens when `goto
 | `loop` | Repeated task execution with persistence | Monitoring, scheduled checks | [loop.md](references/loop.md) |
 | `state-save`, `state-load`, `cookie-*`, `*-storage-*` | Browser storage management | Auth state reuse, cookie manipulation | [storage-state.md](references/storage-state.md) |
 | `attach` | Connect to existing Chrome/Edge via CDP | Debug live browser, reuse auth | [attach.md](references/attach.md) |
-| `screenshot`, `scroll`, `wait`, `resize`, `tab-*` | Visual capture & viewport control | Screenshots, tab management | — |
+| `webdb export`, `webdb normalize` | Export cached pages, normalize URLs to database keys | Post-crawl content extraction, URL key lookup | [webdb.md](references/webdb.md) |
+| `skills`, `skills get`, `skills path`, `skills unpack` | Bundled AI agent skill files | Refresh agent instructions, unpack skill files | [skills.md](references/skills.md) |
+| `skill-list`, `skill-info`, `skill-install`, `skill-uninstall`, `skill-reload` | Backend skill management | Install/manage server-side skills | [skills.md](references/skills.md) |
+| `screenshot`, `scroll`, `wait`, `resize` | Visual capture & viewport control | Screenshots, viewport sizing, scroll control | — |
+| `tab-list`, `tab-new`, `tab-select`, `tab-close` | Tab management | Multi-tab workflows, session-scoped tab operations. See §Tab Management below. | — |
+
+### Refreshing This Skill
+
+The `skills` command retrieves bundled skill content that always matches the installed CLI version. Use it to get current instructions rather than relying on cached copies:
+
+```bash
+browser4-cli skills                         # List all bundled skills
+browser4-cli skills get browser4-cli        # Print this SKILL.md
+browser4-cli skills get browser4-cli --full # Include all reference files
+browser4-cli skills path                    # Print skills directory path
+browser4-cli skills unpack                  # Unpack bundled skill files to disk
+```
+
+Set `BROWSER4_SKILLS_DIR` to override the skills directory location. Skill files are unpacked automatically during `browser4-cli install`. Use `skills unpack` to refresh or relocate skill files without reinstalling.
 
 ## 4. Decision Trees
 
@@ -178,6 +247,66 @@ browser4-cli snapshot grep -i "price|rating"      # case-insensitive regex alter
 browser4-cli snapshot grep -A 3 -B 1 "Checkout"   # show surrounding context lines
 ```
 
+### Mouse Interactions
+
+```bash
+# Hover — reveal tooltips, expand menus, trigger hover effects
+browser4-cli hover <ref>                          # hover over an element
+browser4-cli snapshot grep "tooltip"              # verify tooltip appeared
+
+# Double-click — trigger dblclick handlers
+browser4-cli dblclick <ref>                       # double-click an element
+
+# Drag-and-drop — move elements between containers
+browser4-cli drag <source-ref> <target-ref>       # drag source onto target
+browser4-cli snapshot grep "new position"         # verify element was moved
+```
+
+### Dialog Handling
+
+Native browser dialogs (`alert()`, `confirm()`, `prompt()`) block the page's main thread. When a dialog appears (e.g., after clicking a button), `click` will time out. Handle the dialog with a separate command:
+
+```bash
+browser4-cli click "#alertBtn"                    # triggers alert — click will time out
+browser4-cli dialog-accept                        # dismiss the alert ("OK")
+
+browser4-cli click "#confirmBtn"                  # triggers confirm
+browser4-cli dialog-accept                        # click "OK" (returns true to page)
+
+browser4-cli click "#promptBtn"                   # triggers prompt
+browser4-cli dialog-accept "Hello from Browser4"  # fill prompt and accept
+
+browser4-cli dialog-dismiss                       # cancel/dismiss any dialog
+```
+
+**Note:** `dialog-accept` and `dialog-dismiss` must be run in a separate invocation — they cannot be part of the same command as the triggering `click`.
+
+### Verifying Results (verify-after-interaction)
+
+Every interaction should be followed by verification. These patterns show how to confirm your actions had the expected effect:
+
+```bash
+# After click — diff vs previous snapshot
+browser4-cli click <submit-ref>
+browser4-cli snapshot -v 0 --auto-diff --stdout   # shows only what changed
+
+# After hover — search for expected content
+browser4-cli hover <ref>
+browser4-cli snapshot grep "expected-tooltip-text"
+
+# After drag — confirm reordering
+browser4-cli drag <source> <target>
+browser4-cli snapshot grep "new order|reordered|moved"
+
+# After dialog — verify the interaction log
+browser4-cli click "#alertBtn" && browser4-cli dialog-accept
+browser4-cli snapshot grep "\[alert\]|\[confirm\]|\[prompt\]"
+
+# Generate resilient CSS selectors from snapshot refs
+browser4-cli generate-locator <ref>               # produces e.g. "#contactForm > button.primary"
+browser4-cli get text "#contactForm > button.primary"  # verify with the generated selector
+```
+
 ### Static Data Extraction (Single Field)
 
 ```bash
@@ -194,15 +323,50 @@ browser4-cli htmlsnapshot get attr ".product-image" src
 cat > query.sql << 'SQLEOF'
 SELECT
     DOM_FIRST_TEXT(DOM, '.title') AS title,
-    DOM_FIRST_FLOAT(DOM, '.price', 0.0) AS price,
-    DOM_FIRST_HREF(DOM, 'a') AS url
-FROM DOM_LOAD_AND_SELECT(@url, '.product-card', 1, 48)
-WHERE DOM_IS_NOT_NIL(DOM)
-ORDER BY DOM_FIRST_FLOAT(DOM, '.price', 999999.0) ASC
+    DOM_FIRST_TEXT(DOM, '.price') AS price,
+    DOM_FIRST_ATTR(DOM, 'a[href]', 'href') AS url,
+    DOM_FIRST_ATTR(DOM, 'img:expr(width > 250 && height > 250)', 'src') AS img
+FROM DOM_LOAD_AND_SELECT(@url, '.product-card')
 SQLEOF
 
 browser4-cli htmlsnapshot query "https://example.com/products" --sql @query.sql
 ```
+
+### PowerCSS
+
+Modern web pages change their HTML structure frequently, but their **visual layout** stays stable. PowerCSS extends standard CSS selectors with a `:expr()` pseudo-selector that queries elements by their **computed numerical features** — size, position, and content density. This makes selectors resilient to markup changes.
+
+#### Numerical Features
+
+Browser4 computes these features for every DOM node:
+
+| Feature | Description |
+|---------|-------------|
+| `top` | Top Y-coordinate of the element (pixels) |
+| `left` | Left X-coordinate of the element (pixels) |
+| `width` | Width of the element (pixels) |
+| `height` | Height of the element (pixels) |
+| `char` | Number of characters inside the node |
+| `txt_nd` | Number of descendant text nodes |
+| `img` | Number of descendant `<img>` elements |
+| `a` | Number of descendant `<a>` elements |
+| `sibling` | Number of sibling nodes |
+| `child` | Number of child nodes |
+| `dep` | Node depth in the document tree |
+| `seq` | Node sequence in document order |
+| `txt_dns` | Text node density |
+
+These are usable in any CSS selector via `:expr(...)`, in X-SQL `DOM_*` functions, and in `htmlsnapshot get` / `htmlsnapshot query` commands.
+
+---
+
+#### `:expr()` Pseudo-Selector
+
+```
+element:expr(expression)
+```
+
+Operators in expressions include `+`, `-`, `*`, `/`, `^`, `%`, `==`, `!=`, `<`, `>`, `<=`, `>=`, `&&`, `||`. Use parentheses for grouping.
 
 ## 7. Reference Map
 
@@ -220,7 +384,11 @@ Organized by task — follow the link that matches what you're trying to do:
 
 **Manage browser state:**
 [storage-state.md](references/storage-state.md) — cookies, localStorage, sessionStorage, state save/load
+[webdb.md](references/webdb.md) — export cached pages, normalize URLs for database lookups
 [attach.md](references/attach.md) — connect to existing Chrome/Edge via CDP
+
+**Manage skills and agent instructions:**
+[skills.md](references/skills.md) — bundled skill files, backend skill management
 
 **AI-powered extraction:**
 [agent.md](references/agent.md) — `extract`, `summarize`, `agent run|status|result`, LLM provider config
@@ -237,8 +405,7 @@ Organized by task — follow the link that matches what you're trying to do:
 
 ## Installation
 
-Requires Node.js.
-
+**Cross-platform (Node.js):**
 ```bash
 npm install -g browser4-cli
 browser4-cli install
@@ -247,6 +414,14 @@ browser4-cli install
 **Windows (PowerShell):**
 ```powershell
 irm https://browser4.oss-cn-beijing.aliyuncs.com/scripts/install-browser4-cli.ps1 | iex
+browser4-cli install
+```
+
+> **PowerShell wrapper tip:** When running `b4w.ps1` directly in PowerShell, short flags like `-i` and `-v` may be intercepted by PowerShell's parameter binder (matching `-InformationAction` and `-Verbose`). Use `b4w.bat` from Command Prompt or `b4w.sh` from Git Bash to avoid this. When using `b4w.ps1` directly, pass flags after `--` (e.g. `./b4w.ps1 -- snapshot -i`) or quote arguments individually. See [shell-quoting.md](references/shell-quoting.md) for details.
+
+**Linux / macOS (bash):**
+```bash
+curl -fsSL https://browser4.oss-cn-beijing.aliyuncs.com/scripts/install-browser4-cli.sh | bash
 browser4-cli install
 ```
 
