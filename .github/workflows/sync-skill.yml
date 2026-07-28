@@ -2,7 +2,7 @@ name: Sync Skill Directory
 
 on:
   schedule:
-    - cron: '7 * * * *'  # hourly, on the 7th minute to avoid peak
+    - cron: '7 */6 * * *'  # every 6 hours, on the 7th minute to avoid peak
   workflow_dispatch:      # manual trigger
 
 jobs:
