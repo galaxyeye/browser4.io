@@ -12,7 +12,7 @@
   "hero": {
     "badge": "CLI优先的浏览器智能体时代基础设施",
     "title": "让AI能够{{verb}}网络。",
-    "subtitle": "一个CLI。一个二进制。世界上最{{adjective}}的浏览器自动化 — 就在你的终端里。",
+    "subtitle": "一个CLI，浏览、自动化、抓取、提取全搞定。天生{{adjective}}。",
     "getStarted": "开始使用",
     "github": "GITHUB",
     "milestones": {
@@ -210,7 +210,7 @@
   "codeExamples": {
     "badge": "CLI示例",
     "title": "开发者友好的CLI",
-    "subtitle": "一个二进制。每个终端。完全的浏览器控制。",
+    "subtitle": "每个终端。完全的浏览器控制。",
     "autonomousAgent": {
       "title": "自主智能体",
       "description": "自然语言任务 — CLI提交、轮询并获取结果"
