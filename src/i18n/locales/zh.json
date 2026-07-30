@@ -47,6 +47,18 @@
       "powerful": "强大",
       "intelligent": "智能",
       "optimized": "优化"
+    },
+    "install": {
+      "label": "安装指南",
+      "npmMethod": "npm（需要 Node.js）",
+      "npmInstall": "npm install -g browser4-cli",
+      "npmPostInstall": "browser4-cli install",
+      "curlMethod": "Linux / macOS — 一行命令",
+      "curlCommand": "curl -fsSL https://browser4.oss-cn-beijing.aliyuncs.com/scripts/install-browser4-cli.sh | bash",
+      "psMethod": "Windows PowerShell — 一行命令",
+      "psCommand": "irm https://browser4.oss-cn-beijing.aliyuncs.com/scripts/install-browser4-cli.ps1 | iex",
+      "copyButton": "复制",
+      "copied": "已复制"
     }
   },
   "features": {

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Bot } from 'lucide-react';
+import { Bot, Copy, Check, Terminal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
+import { useTheme } from '../theme/ThemeProvider';
 
 const VERB_KEYS = ['browse', 'automate', 'observe', 'scrape', 'study', 'investigate', 'extract', 'browse', 'monitor',
     'crawl', 'automate', 'extract', 'browse', 'automate', 'study', 'understand', 'investigate'];
@@ -9,8 +11,10 @@ const ADJECTIVE_ROTATION_INTERVAL_MS = 15_000;
 
 export default function Hero() {
     const { t } = useTranslation();
+    const { isDark } = useTheme();
     const [verbIndex, setVerbIndex] = useState(0);
     const [adjectiveIndex, setAdjectiveIndex] = useState(() => Math.floor(Math.random() * ADJECTIVE_KEYS.length));
+    const [copiedKey, setCopiedKey] = useState<string | null>(null);
     
     // Get translated verbs and calculate max width
     const verbs = VERB_KEYS.map(key => t(`hero.verbs.${key}`));
@@ -25,6 +29,19 @@ export default function Hero() {
         { label: t('hero.milestones.founded.label'), detail: t('hero.milestones.founded.detail') },
         { label: t('hero.milestones.evolving.label'), detail: t('hero.milestones.evolving.detail') },
         { label: t('hero.milestones.future.label'), detail: t('hero.milestones.future.detail') },
+    ];
+
+    const handleCopy = (text: string, key: string) => {
+        navigator.clipboard.writeText(text);
+        setCopiedKey(key);
+        setTimeout(() => setCopiedKey(null), 2000);
+    };
+
+    const installMethods = [
+        { key: 'npmInstall', command: t('hero.install.npmInstall'), label: t('hero.install.npmMethod') },
+        { key: 'npmPostInstall', command: t('hero.install.npmPostInstall'), label: '' },
+        { key: 'curlCommand', command: t('hero.install.curlCommand'), label: t('hero.install.curlMethod') },
+        { key: 'psCommand', command: t('hero.install.psCommand'), label: t('hero.install.psMethod') },
     ];
 
     useEffect(() => {
@@ -108,6 +125,62 @@ export default function Hero() {
                     >
                         {t('hero.github')}
                     </a>
+                </div>
+
+                {/* Installation Guide */}
+                <div className="mb-14 max-w-2xl mx-auto">
+                    <div className={clsx(
+                        'relative overflow-hidden rounded-2xl border shadow-lg',
+                        isDark
+                            ? 'bg-slate-900/80 border-slate-700/80 shadow-slate-900/20'
+                            : 'bg-white/80 border-slate-200 shadow-slate-200/30'
+                    )}>
+                        <div className="flex items-center gap-2 px-5 py-3 border-b border-slate-200 dark:border-slate-700/60">
+                            <Terminal className="w-4 h-4 text-sky-500 dark:text-sky-400" />
+                            <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                                {t('hero.install.label')}
+                            </span>
+                        </div>
+                        <div className="p-5 space-y-2">
+                            {installMethods.map((method) => (
+                                <div key={method.key}>
+                                    {method.label ? (
+                                        <div className="text-xs text-slate-500 dark:text-slate-500 mb-1 mt-2 first:mt-0">
+                                            {method.label}
+                                        </div>
+                                    ) : null}
+                                    <div className="flex items-center gap-2 group">
+                                        <code className={clsx(
+                                            'flex-1 font-mono text-sm rounded-lg px-4 py-2 select-all',
+                                            isDark
+                                                ? 'bg-slate-950 text-slate-200 border border-slate-800'
+                                                : 'bg-slate-900 text-slate-100 border border-slate-700'
+                                        )}>
+                                            <span className="text-slate-500 select-none">$ </span>
+                                            {method.command}
+                                        </code>
+                                        <button
+                                            onClick={() => handleCopy(method.command, method.key)}
+                                            className={clsx(
+                                                'shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs transition-all',
+                                                isDark
+                                                    ? 'border-slate-700 text-slate-400 hover:border-slate-500 hover:text-white'
+                                                    : 'border-slate-200 text-slate-500 hover:border-slate-400 hover:text-slate-700'
+                                            )}
+                                            title={t('hero.install.copyButton')}
+                                        >
+                                            {copiedKey === method.key ? (
+                                                <Check className="w-3.5 h-3.5 text-emerald-500" />
+                                            ) : (
+                                                <Copy className="w-3.5 h-3.5" />
+                                            )}
+                                            <span>{copiedKey === method.key ? t('hero.install.copied') : t('hero.install.copyButton')}</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
                 <div className="bg-white/80 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 backdrop-blur">

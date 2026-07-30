@@ -47,6 +47,18 @@
       "powerful": "powerful",
       "intelligent": "intelligent",
       "optimized": "optimized"
+    },
+    "install": {
+      "label": "Installation",
+      "npmMethod": "npm (requires Node.js)",
+      "npmInstall": "npm install -g browser4-cli",
+      "npmPostInstall": "browser4-cli install",
+      "curlMethod": "Linux / macOS — one-liner",
+      "curlCommand": "curl -fsSL https://browser4.oss-cn-beijing.aliyuncs.com/scripts/install-browser4-cli.sh | bash",
+      "psMethod": "Windows PowerShell — one-liner",
+      "psCommand": "irm https://browser4.oss-cn-beijing.aliyuncs.com/scripts/install-browser4-cli.ps1 | iex",
+      "copyButton": "Copy",
+      "copied": "Copied"
     }
   },
   "features": {
