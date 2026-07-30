@@ -12,7 +12,7 @@
   "hero": {
     "badge": "CLI-first infrastructure for the browser agent era",
     "title": "Enable AI to {{verb}} the web.",
-    "subtitle": "One CLI to browse, automate, scrape, and extract. {{adjective}} by design.",
+    "subtitle": "One CLI to browse, automate, scrape, extract, and analyze. {{adjective}} by design.",
     "getStarted": "GET STARTED",
     "github": "GITHUB",
     "milestones": {

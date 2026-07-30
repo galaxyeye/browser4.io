@@ -12,7 +12,7 @@
   "hero": {
     "badge": "CLI优先的浏览器智能体时代基础设施",
     "title": "让AI能够{{verb}}网络。",
-    "subtitle": "一个CLI，浏览、自动化、抓取、提取全搞定。天生{{adjective}}。",
+    "subtitle": "一个CLI，浏览、自动化、抓取、提取、分析全搞定。天生{{adjective}}。",
     "getStarted": "开始使用",
     "github": "GITHUB",
     "milestones": {
