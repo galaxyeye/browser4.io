@@ -135,7 +135,7 @@ const FooterComponent = () => {
                     className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
                     <p>{t('footer.copyright', { year: new Date().getFullYear() })}</p>
                     <div className="flex gap-6">
-                        <a href="#" className="hover:text-sky-600 dark:hover:text-sky-300">{t('footer.privacy')}</a>
+                        <a href="/privacy.html" className="hover:text-sky-600 dark:hover:text-sky-300">{t('footer.privacy')}</a>
                         <a href="#" className="hover:text-sky-600 dark:hover:text-sky-300">{t('footer.terms')}</a>
                         <a href="#" className="hover:text-sky-600 dark:hover:text-sky-300">{t('footer.contact')}</a>
                         <a
