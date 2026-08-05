@@ -95,7 +95,7 @@ export default function Hero() {
                     <span
                         className="inline-flex text-sky-600 dark:text-sky-300"
                         aria-live="polite"
-                        style={{ width: `${VERB_SLOT_WIDTH_CH}ch` }}
+                        style={{ width: `${VERB_SLOT_WIDTH_CH}em` }}
                     >
                         {verbs[verbIndex]}
                     </span>
