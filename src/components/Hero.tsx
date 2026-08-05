@@ -10,15 +10,18 @@ const ADJECTIVE_KEYS = ['fast', 'powerful', 'intelligent', 'optimized'];
 const ADJECTIVE_ROTATION_INTERVAL_MS = 15_000;
 
 export default function Hero() {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { isDark } = useTheme();
     const [verbIndex, setVerbIndex] = useState(0);
     const [adjectiveIndex, setAdjectiveIndex] = useState(() => Math.floor(Math.random() * ADJECTIVE_KEYS.length));
     const [copiedKey, setCopiedKey] = useState<string | null>(null);
     
-    // Get translated verbs and calculate max width
+    // Get translated verbs and calculate max width.
+    // CJK characters are ~1em wide, Latin characters ~1ch wide.
     const verbs = VERB_KEYS.map(key => t(`hero.verbs.${key}`));
     const VERB_SLOT_WIDTH_CH = Math.max(...verbs.map((token) => token.length));
+    const isCJK = /^zh/.test(i18n.language);
+    const widthUnit = isCJK ? 'em' : 'ch';
     const VERB_TEMPO_WAVE_MS = [
         520, 360, 220, 160, 140, 180, 260, 420, 640, 420, 260, 180,
         5200, 3600, 2200, 1600, 1400, 1800, 2600, 4200, 6400, 4200, 2600, 1800,
@@ -95,7 +98,7 @@ export default function Hero() {
                     <span
                         className="inline-flex justify-center text-sky-600 dark:text-sky-300"
                         aria-live="polite"
-                        style={{ width: `${VERB_SLOT_WIDTH_CH}em` }}
+                        style={{ width: `${VERB_SLOT_WIDTH_CH}${widthUnit}` }}
                     >
                         {verbs[verbIndex]}
                     </span>
