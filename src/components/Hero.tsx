@@ -96,7 +96,7 @@ export default function Hero() {
                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 dark:text-white mb-6 leading-tight tracking-tight dark:drop-shadow-[0_10px_35px_rgba(45,212,191,0.15)]">
                     {t('hero.title').split('{{verb}}')[0]}
                     <span
-                        className="inline-flex justify-center text-sky-600 dark:text-sky-300"
+                        className={`inline-flex text-sky-600 dark:text-sky-300 ${isCJK ? 'justify-center' : 'justify-start'}`}
                         aria-live="polite"
                         style={{ width: `${VERB_SLOT_WIDTH_CH}${widthUnit}` }}
                     >
