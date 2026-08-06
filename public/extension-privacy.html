@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy - Browser4 Extension</title>
+    <meta name="description" content="Privacy policy for the Browser4 Extension, published in the Chrome Web Store (Product ID: jdcmdidbgjeebbhkoepjgifeibipfimi)." />
+    <meta property="og:title" content="Privacy Policy - Browser4 Extension" />
+    <meta property="og:description" content="How the Browser4 Extension collects, uses, and protects your information." />
+    <meta name="robots" content="index, follow" />
+    <style>
+        :root {
+            --bg: #020617;
+            --bg-soft: #0f172a;
+            --border: #1e293b;
+            --text: #e2e8f0;
+            --muted: #94a3b8;
+            --accent: #0ea5e9;
+            --accent-2: #8b5cf6;
+            --emerald: #34d399;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .topbar-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .brand {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .brand span {
+            color: var(--accent);
+        }
+        .back-link {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.15s ease;
+        }
+        .back-link:hover {
+            color: var(--accent);
+        }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .lang-link {
+            color: var(--muted);
+            font-size: 0.85rem;
+            border: 1px solid var(--border);
+            background: var(--bg-soft);
+            padding: 0.3rem 0.7rem;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: color 0.15s ease, border-color 0.15s ease;
+        }
+        .lang-link:hover {
+            color: var(--accent);
+            border-color: rgba(14, 165, 233, 0.4);
+            text-decoration: none;
+        }
+        main {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+        header.hero {
+            margin-bottom: 2.5rem;
+        }
+        .eyebrow {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+        h1 {
+            font-size: clamp(1.9rem, 4vw, 2.7rem);
+            line-height: 1.15;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+        .subtitle {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 46rem;
+        }
+        .meta {
+            margin-top: 1.25rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid var(--border);
+            background: var(--bg-soft);
+            padding: 0.4rem 0.85rem;
+            border-radius: 999px;
+        }
+        .pill code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            color: var(--emerald);
+            font-size: 0.8rem;
+        }
+        hr.rule {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.4), rgba(139, 92, 246, 0.4), transparent);
+            margin-bottom: 2.5rem;
+        }
+        section {
+            margin-bottom: 2.25rem;
+        }
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+        }
+        h2 .num {
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+            font-size: 0.95rem;
+        }
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin: 1rem 0 0.4rem;
+        }
+        p {
+            margin-bottom: 0.75rem;
+            color: #cbd5e1;
+        }
+        ul {
+            margin: 0.5rem 0 0.75rem 1.25rem;
+            color: #cbd5e1;
+        }
+        li {
+            margin-bottom: 0.35rem;
+        }
+        li::marker {
+            color: var(--accent);
+        }
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .callout {
+            border-left: 3px solid var(--accent);
+            background: rgba(14, 165, 233, 0.08);
+            padding: 1rem 1.25rem;
+            border-radius: 0 0.75rem 0.75rem 0;
+            margin: 1.25rem 0;
+        }
+        .callout p {
+            margin: 0;
+            color: var(--text);
+        }
+        footer {
+            border-top: 1px solid var(--border);
+            background: var(--bg-soft);
+        }
+        .footer-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        .footer-inner nav {
+            display: flex;
+            gap: 1.25rem;
+        }
+        .footer-inner a {
+            color: var(--muted);
+        }
+        .footer-inner a:hover {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        @media (max-width: 640px) {
+            main {
+                padding: 2rem 1.25rem 3rem;
+            }
+            .meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="/">Browser<span>4</span></a>
+        <div class="topbar-right">
+            <a class="back-link" href="/">← Back to browser4.io</a>
+            <a class="lang-link" href="/extension-privacy.zh.html">中文</a>
+        </div>
+    </div>
+</div>
+
+<main>
+    <header class="hero">
+        <span class="eyebrow">Privacy Policy</span>
+        <h1>Privacy Policy for the Browser4 Extension</h1>
+        <p class="subtitle">
+            This policy explains what information the Browser4 Extension processes, how it is used,
+            and the choices you have. It applies to the Browser4 Extension distributed through the
+            Chrome Web Store.
+        </p>
+        <div class="meta">
+            <span class="pill">Product: Browser4 Extension</span>
+            <span class="pill">Product ID: <code>jdcmdidbgjeebbhkoepjgifeibipfimi</code></span>
+            <span class="pill">Last updated: August 5, 2026</span>
+        </div>
+    </header>
+
+    <hr class="rule" />
+
+    <section>
+        <h2><span class="num">1.</span> Overview</h2>
+        <p>
+            The Browser4 Extension ("the Extension") gives you control of a real browser so that AI
+            agents and automation workflows can browse, automate, extract, and analyze the web on your
+            behalf. We are committed to transparency about how the Extension handles information.
+        </p>
+        <p>
+            The Extension processes data on your device and does not upload your tasks, page content,
+            credentials, or settings to any server. The only information that may be transmitted is
+            limited, non-identifying usage statistics, described in Section 6. This policy describes
+            how the Extension handles information and the choices you have.
+        </p>
+        <p>
+            The Extension is provided by 武汉市翘曲速率信息科技有限公司 (Wuhan Qiaoqu Sulu
+            Information Technology Co., Ltd.), located in the East Lake High-tech Development Zone,
+            Wuhan, Hubei Province, China.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">2.</span> Information We Process</h2>
+        <h3>2.1 Information you provide</h3>
+        <p>
+            When you use the Extension, you may provide:
+        </p>
+        <ul>
+            <li>URLs, tasks, prompts, and automation instructions you create;</li>
+            <li>Form values, text, or file selections you enter as part of a task you initiate;</li>
+            <li>Account credentials you intentionally enter so the Extension can complete a login or
+                authenticated workflow you requested.</li>
+        </ul>
+
+        <h3>2.2 Content you direct the Extension to process</h3>
+        <p>
+            The Extension processes the content of web pages that you direct it to visit, in order to
+            complete your task (for example, reading a product page, filling a form, or extracting
+            structured data). This processing is performed on your behalf and at your direction.
+        </p>
+
+        <h3>2.3 Statistical information</h3>
+        <p>
+            The Extension may collect limited, aggregate statistics about how it is used, such as
+            feature usage counts, the Extension version, and anonymous performance or error rates.
+            These statistics are used to improve the product. They never include your API keys,
+            passwords, account credentials, page content, or any other sensitive or personal
+            information. All other data processed by the Extension remains on your device.
+        </p>
+
+        <h3>2.4 Account information</h3>
+        <p>
+            The Extension does not require you to log in and does not provide account or sync
+            features. It does not collect or upload account, profile, or entitlement information.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">3.</span> How We Use Information</h2>
+        <p>We use the information described above only for the following local purposes:</p>
+        <ul>
+            <li>To operate the Extension and execute the tasks you initiate;</li>
+            <li>To save your settings and task state between sessions;</li>
+            <li>To provide customer support and respond to your requests;</li>
+            <li>To comply with legal obligations and protect the security of our services.</li>
+        </ul>
+        <p>
+            Because the Extension processes data locally, none of the information described above is
+            transmitted to us for these purposes. We do not sell your personal information and we do
+            not use content processed by the Extension to serve advertising.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">4.</span> Permissions</h2>
+        <p>
+            The Extension requests only the browser permissions needed to give AI agents control of a
+            real browser. Depending on the features you use, these may include:
+        </p>
+        <ul>
+            <li><strong>Tabs</strong> — to read and control the tabs your agent works with;</li>
+            <li><strong>Storage</strong> — to save your settings and tasks locally on your device;</li>
+            <li><strong>Scripting and active tab</strong> — to run automation on the page you direct
+                the Extension to act on;</li>
+            <li><strong>Host permissions</strong> — for the sites you choose to automate, so the agent
+                can navigate and interact with them at your direction;</li>
+            <li><strong>Downloads</strong> — to save files and exported data you request;</li>
+            <li><strong>Web navigation and alarms</strong> — to track progress and run scheduled or
+                long-running tasks;</li>
+            <li><strong>Notifications</strong> — to alert you when a task completes.</li>
+        </ul>
+        <p>
+            These permissions are used only to fulfill automation tasks that you initiate, and never
+            to collect data from pages you have not asked the Extension to process. All data handled
+            through these permissions stays on your device, except for the aggregate statistics
+            described in Section 6.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">5.</span> Local Processing and Storage</h2>
+        <p>
+            The Extension processes your tasks locally on your device. All settings, task definitions,
+            and cached data are stored locally using the browser's storage APIs. No user data other
+            than the limited aggregate statistics described in Section 6 is transmitted to Browser4
+            or to any third party. You can clear this data at any time through your browser settings,
+            and uninstalling the Extension removes the data stored by it.
+        </p>
+        <p>
+            Because the Extension can handle sensitive information (such as credentials or personal
+            data on the pages you process), we recommend that you only provide information needed for
+            your task and avoid storing long-lived secrets in saved tasks.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">6.</span> Statistics and Data Uploads</h2>
+        <p>
+            All user data — tasks, prompts, page content, credentials, and settings — is processed
+            locally and is never uploaded to any server. The only information the Extension may
+            transmit is limited, aggregate usage statistics, such as:
+        </p>
+        <ul>
+            <li>Feature usage counts and aggregate interaction patterns;</li>
+            <li>The Extension version and browser version;</li>
+            <li>Anonymous performance and error rates.</li>
+        </ul>
+        <p>
+            These statistics are collected solely to improve the Extension. They never include your
+            API keys, passwords, account credentials, page content, personal identifiers, or any other
+            sensitive information, and they are not sold or shared for advertising purposes. If
+            optional cloud-connected features are introduced in the future, we will update this
+            policy and obtain your consent before any such processing.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">7.</span> Sharing and Disclosure</h2>
+        <p>
+            Because the Extension keeps data on your device, there is no centralized store of user
+            data to disclose. We do not disclose your personal information except:
+        </p>
+        <ul>
+            <li>With your consent;</li>
+            <li>When required by law, regulation, or legal process;</li>
+            <li>In connection with a merger, acquisition, or sale of assets, with notice to you where
+                practicable.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2><span class="num">8.</span> Data Retention and Deletion</h2>
+        <p>
+            Local data is retained until you clear it or uninstall the Extension. Because the
+            Extension does not upload data, there are no server-side copies to delete. You can remove
+            all data at any time by clearing browser storage for the Extension or by uninstalling it.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">9.</span> Security</h2>
+        <p>
+            Because the Extension processes data locally and does not transmit it to any server, there
+            is no remote repository of your data that could be exposed. We still follow security best
+            practices in the Extension's code and dependencies, and we respond promptly to any
+            identified risks or vulnerabilities.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">10.</span> Children's Privacy</h2>
+        <p>
+            The Extension is not directed to children under the age of 13, and we do not knowingly
+            collect personal information from children. If you believe a child has provided us with
+            personal information, please contact us and we will delete it.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">11.</span> Changes to This Policy</h2>
+        <p>
+            We may update this policy from time to time. When we make material changes, we will revise
+            the "Last updated" date at the top of this page and, where appropriate, provide notice
+            through the Extension or the browser4.io website. Continued use of the Extension after
+            changes take effect constitutes acceptance of the revised policy.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">12.</span> Contact Us</h2>
+        <p>
+            If you have questions about this policy or about how the Extension handles your
+            information, you can email us at
+            <a href="mailto:ivincent.zhang@gmail.com">ivincent.zhang@gmail.com</a> or
+            <a href="mailto:galaxyeye@live.cn">galaxyeye@live.cn</a>, reach us through the public
+            channels on
+            <a href="https://browser4.io" target="_blank" rel="noopener noreferrer">browser4.io</a>,
+            or by opening an issue in the official project repository at
+            <a href="https://github.com/platonai/browser4" target="_blank" rel="noopener noreferrer">github.com/platonai/browser4</a>.
+            We will respond to privacy inquiries within 30 days.
+        </p>
+        <p>
+            The Extension is operated by 武汉市翘曲速率信息科技有限公司 (Wuhan Qiaoqu Sulu
+            Information Technology Co., Ltd.), located in the East Lake High-tech Development Zone,
+            Wuhan, Hubei Province, China.
+        </p>
+    </section>
+
+    <div class="callout">
+        <p>
+            This privacy policy is provided for the Browser4 Extension
+            (Chrome Web Store Product ID: <code>jdcmdidbgjeebbhkoepjgifeibipfimi</code>) and is
+            effective as of August 5, 2026.
+        </p>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <p>© 2026 Browser4. All rights reserved.</p>
+        <nav>
+            <a href="/privacy.html">Website Privacy</a>
+            <a href="/terms.html">Terms</a>
+            <a href="/extension-privacy.zh.html">中文</a>
+            <a href="/">Home</a>
+        </nav>
+    </div>
+</footer>
+</body>
+</html>

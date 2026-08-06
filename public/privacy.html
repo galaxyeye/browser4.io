@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Privacy Policy - Browser4 Extension</title>
-    <meta name="description" content="Privacy policy for the Browser4 Extension, published in the Chrome Web Store (Product ID: jdcmdidbgjeebbhkoepjgifeibipfimi)." />
-    <meta property="og:title" content="Privacy Policy - Browser4 Extension" />
-    <meta property="og:description" content="How the Browser4 Extension collects, uses, and protects your information." />
+    <title>Privacy Policy - Browser4</title>
+    <meta name="description" content="Privacy policy for the Browser4 website (browser4.io) and the Browser4 project, operated by Wuhan Qiaoqu Sulu Information Technology Co., Ltd." />
+    <meta property="og:title" content="Privacy Policy - Browser4" />
+    <meta property="og:description" content="How browser4.io and the Browser4 project collect, use, and protect your information." />
     <meta name="robots" content="index, follow" />
     <style>
         :root {
@@ -66,6 +66,26 @@
         }
         .back-link:hover {
             color: var(--accent);
+        }
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .lang-link {
+            color: var(--muted);
+            font-size: 0.85rem;
+            border: 1px solid var(--border);
+            background: var(--bg-soft);
+            padding: 0.3rem 0.7rem;
+            border-radius: 999px;
+            text-decoration: none;
+            transition: color 0.15s ease, border-color 0.15s ease;
+        }
+        .lang-link:hover {
+            color: var(--accent);
+            border-color: rgba(14, 165, 233, 0.4);
+            text-decoration: none;
         }
         main {
             max-width: 860px;
@@ -221,23 +241,27 @@
 <div class="topbar">
     <div class="topbar-inner">
         <a class="brand" href="/">Browser<span>4</span></a>
-        <a class="back-link" href="/">← Back to browser4.io</a>
+        <div class="topbar-right">
+            <a class="back-link" href="/">← Back to browser4.io</a>
+            <a class="lang-link" href="/privacy.zh.html">中文</a>
+        </div>
     </div>
 </div>
 
 <main>
     <header class="hero">
         <span class="eyebrow">Privacy Policy</span>
-        <h1>Privacy Policy for the Browser4 Extension</h1>
+        <h1>Privacy Policy for Browser4</h1>
         <p class="subtitle">
-            This policy explains what information the Browser4 Extension processes, how it is used,
-            and the choices you have. It applies to the Browser4 Extension distributed through the
-            Chrome Web Store.
+            This policy explains what information the Browser4 website (browser4.io) and the
+            Browser4 project process, how that information is used, and the choices you have.
+            It applies to the website and related project services operated under the Browser4
+            name. The Browser4 Extension has its own separate policy.
         </p>
         <div class="meta">
-            <span class="pill">Product: Browser4 Extension</span>
-            <span class="pill">Product ID: <code>jdcmdidbgjeebbhkoepjgifeibipfimi</code></span>
-            <span class="pill">Last updated: August 5, 2026</span>
+            <span class="pill">Scope: browser4.io &amp; Browser4 Project</span>
+            <span class="pill">Operator: 武汉市翘曲速率信息科技有限公司</span>
+            <span class="pill">Last updated: August 6, 2026</span>
         </div>
     </header>
 
@@ -246,215 +270,208 @@
     <section>
         <h2><span class="num">1.</span> Overview</h2>
         <p>
-            The Browser4 Extension ("the Extension") gives you control of a real browser so that AI
-            agents and automation workflows can browse, automate, extract, and analyze the web on your
-            behalf. We are committed to transparency about how the Extension handles information.
+            Browser4 is a browser infrastructure project for the agent era: it provides open-source
+            tooling, browser agents, and automation capabilities that let AI agents browse,
+            automate, extract, and analyze the web. This website is operated by
+            武汉市翘曲速率信息科技有限公司 (Wuhan Qiaoqu Sulu Information Technology Co., Ltd.),
+            the same team behind platon.ai.
         </p>
         <p>
-            The Extension processes data on your device and does not upload your tasks, page content,
-            credentials, or settings to any server. The only information that may be transmitted is
-            limited, non-identifying usage statistics, described in Section 6. This policy describes
-            how the Extension handles information and the choices you have.
-        </p>
-        <p>
-            The Extension is provided by 武汉市翘曲速率信息科技有限公司 (Wuhan Qiaoqu Sulu
-            Information Technology Co., Ltd.), located in the East Lake High-tech Development Zone,
-            Wuhan, Hubei Province, China.
+            We are committed to transparency about how the website and the project handle
+            information. This policy describes what we collect, why we collect it, and the
+            rights you have. It is written to be short and clear; where we say "we" or "us,"
+            we mean the operator named above.
         </p>
     </section>
 
     <section>
-        <h2><span class="num">2.</span> Information We Process</h2>
-        <h3>2.1 Information you provide</h3>
-        <p>
-            When you use the Extension, you may provide:
-        </p>
+        <h2><span class="num">2.</span> Scope of This Policy</h2>
+        <p>This policy covers:</p>
         <ul>
-            <li>URLs, tasks, prompts, and automation instructions you create;</li>
-            <li>Form values, text, or file selections you enter as part of a task you initiate;</li>
-            <li>Account credentials you intentionally enter so the Extension can complete a login or
-                authenticated workflow you requested.</li>
+            <li>The browser4.io website and its subpages;</li>
+            <li>Communications you have with us through the contact channels listed on this site;</li>
+            <li>The open-source Browser4 project and its command-line tooling as described on this site.</li>
         </ul>
-
-        <h3>2.2 Content you direct the Extension to process</h3>
-        <p>
-            The Extension processes the content of web pages that you direct it to visit, in order to
-            complete your task (for example, reading a product page, filling a form, or extracting
-            structured data). This processing is performed on your behalf and at your direction.
-        </p>
-
-        <h3>2.3 Statistical information</h3>
-        <p>
-            The Extension may collect limited, aggregate statistics about how it is used, such as
-            feature usage counts, the Extension version, and anonymous performance or error rates.
-            These statistics are used to improve the product. They never include your API keys,
-            passwords, account credentials, page content, or any other sensitive or personal
-            information. All other data processed by the Extension remains on your device.
-        </p>
-
-        <h3>2.4 Account information</h3>
-        <p>
-            The Extension does not require you to log in and does not provide account or sync
-            features. It does not collect or upload account, profile, or entitlement information.
-        </p>
-    </section>
-
-    <section>
-        <h2><span class="num">3.</span> How We Use Information</h2>
-        <p>We use the information described above only for the following local purposes:</p>
+        <p>This policy does not cover:</p>
         <ul>
-            <li>To operate the Extension and execute the tasks you initiate;</li>
-            <li>To save your settings and task state between sessions;</li>
-            <li>To provide customer support and respond to your requests;</li>
-            <li>To comply with legal obligations and protect the security of our services.</li>
+            <li>
+                The Browser4 Extension distributed through the Chrome Web Store, which is governed
+                by its own
+                <a href="/extension-privacy.html">Browser4 Extension Privacy Policy</a>;
+            </li>
+            <li>
+                Third-party websites and services linked from this site, including GitHub, YouTube,
+                Bilibili, WeChat, Weibo, Twitter, npm, and the download servers used for installers.
+                Those services operate under their own privacy policies.
+            </li>
         </ul>
+    </section>
+
+    <section>
+        <h2><span class="num">3.</span> Information We Collect</h2>
+
+        <h3>3.1 Local preferences</h3>
         <p>
-            Because the Extension processes data locally, none of the information described above is
-            transmitted to us for these purposes. We do not sell your personal information and we do
-            not use content processed by the Extension to serve advertising.
+            The website stores a small number of preferences in your browser's local storage,
+            such as your chosen theme (light/dark) and language. These preferences are stored on
+            your device only, are never transmitted to us, and can be cleared at any time through
+            your browser settings.
+        </p>
+
+        <h3>3.2 Standard website access data</h3>
+        <p>
+            Like most websites, our hosting infrastructure automatically receives standard
+            technical data when you visit, such as your IP address, browser type and version,
+            operating system, pages visited, and timestamps. We use this data to keep the site
+            secure, diagnose problems, and understand general traffic patterns. This data is not
+            combined with any identity you might provide and is retained only as long as
+            reasonably necessary for those purposes.
+        </p>
+
+        <h3>3.3 Communications with us</h3>
+        <p>
+            When you contact us by email or through our public channels, we process the email
+            address you write from, your name if you provide it, and the content of your message
+            so that we can respond to your inquiry.
+        </p>
+
+        <h3>3.4 Information you choose to provide through interactive features</h3>
+        <p>
+            The website currently does not offer online forms, accounts, or order systems. If we
+            later add features such as demo requests, whitepaper downloads, or contact forms, we
+            will process only the information you choose to submit (for example, your name, email,
+            and company), and we will update this policy before doing so.
         </p>
     </section>
 
     <section>
-        <h2><span class="num">4.</span> Permissions</h2>
+        <h2><span class="num">4.</span> Cookies and Analytics</h2>
         <p>
-            The Extension requests only the browser permissions needed to give AI agents control of a
-            real browser. Depending on the features you use, these may include:
+            The website does not currently set its own cookies and does not run analytics or
+            advertising trackers. Some pages embed content from third-party services (for example,
+            video players from YouTube or Bilibili, or a WeChat QR code image), and some links
+            point to third-party sites. Those third parties may set cookies or process data under
+            their own policies, which we do not control.
         </p>
+    </section>
+
+    <section>
+        <h2><span class="num">5.</span> How We Use Information</h2>
+        <p>We use the information described above only for the following purposes:</p>
         <ul>
-            <li><strong>Tabs</strong> — to read and control the tabs your agent works with;</li>
-            <li><strong>Storage</strong> — to save your settings and tasks locally on your device;</li>
-            <li><strong>Scripting and active tab</strong> — to run automation on the page you direct
-                the Extension to act on;</li>
-            <li><strong>Host permissions</strong> — for the sites you choose to automate, so the agent
-                can navigate and interact with them at your direction;</li>
-            <li><strong>Downloads</strong> — to save files and exported data you request;</li>
-            <li><strong>Web navigation and alarms</strong> — to track progress and run scheduled or
-                long-running tasks;</li>
-            <li><strong>Notifications</strong> — to alert you when a task completes.</li>
-        </ul>
-        <p>
-            These permissions are used only to fulfill automation tasks that you initiate, and never
-            to collect data from pages you have not asked the Extension to process. All data handled
-            through these permissions stays on your device, except for the aggregate statistics
-            described in Section 6.
-        </p>
-    </section>
-
-    <section>
-        <h2><span class="num">5.</span> Local Processing and Storage</h2>
-        <p>
-            The Extension processes your tasks locally on your device. All settings, task definitions,
-            and cached data are stored locally using the browser's storage APIs. No user data other
-            than the limited aggregate statistics described in Section 6 is transmitted to Browser4
-            or to any third party. You can clear this data at any time through your browser settings,
-            and uninstalling the Extension removes the data stored by it.
-        </p>
-        <p>
-            Because the Extension can handle sensitive information (such as credentials or personal
-            data on the pages you process), we recommend that you only provide information needed for
-            your task and avoid storing long-lived secrets in saved tasks.
-        </p>
-    </section>
-
-    <section>
-        <h2><span class="num">6.</span> Statistics and Data Uploads</h2>
-        <p>
-            All user data — tasks, prompts, page content, credentials, and settings — is processed
-            locally and is never uploaded to any server. The only information the Extension may
-            transmit is limited, aggregate usage statistics, such as:
-        </p>
-        <ul>
-            <li>Feature usage counts and aggregate interaction patterns;</li>
-            <li>The Extension version and browser version;</li>
-            <li>Anonymous performance and error rates.</li>
+            <li>To operate, secure, and improve the website;</li>
+            <li>To respond to your inquiries and provide support;</li>
+            <li>To comply with legal obligations and protect our rights;</li>
+            <li>To develop and improve the Browser4 project.</li>
         </ul>
         <p>
-            These statistics are collected solely to improve the Extension. They never include your
-            API keys, passwords, account credentials, page content, personal identifiers, or any other
-            sensitive information, and they are not sold or shared for advertising purposes. If
-            optional cloud-connected features are introduced in the future, we will update this
-            policy and obtain your consent before any such processing.
+            We do not sell your personal information and we do not use website data to serve
+            advertising.
         </p>
     </section>
 
     <section>
-        <h2><span class="num">7.</span> Sharing and Disclosure</h2>
-        <p>
-            Because the Extension keeps data on your device, there is no centralized store of user
-            data to disclose. We do not disclose your personal information except:
-        </p>
+        <h2><span class="num">6.</span> Sharing and Disclosure</h2>
+        <p>We do not disclose your personal information except:</p>
         <ul>
+            <li>To service providers that help us operate the website (for example, hosting and
+                storage), who process data on our behalf and under our instructions;</li>
             <li>With your consent;</li>
             <li>When required by law, regulation, or legal process;</li>
-            <li>In connection with a merger, acquisition, or sale of assets, with notice to you where
-                practicable.</li>
+            <li>In connection with a merger, acquisition, or sale of assets, with notice to you
+                where practicable.</li>
         </ul>
     </section>
 
     <section>
-        <h2><span class="num">8.</span> Data Retention and Deletion</h2>
+        <h2><span class="num">7.</span> Data Retention and Deletion</h2>
         <p>
-            Local data is retained until you clear it or uninstall the Extension. Because the
-            Extension does not upload data, there are no server-side copies to delete. You can remove
-            all data at any time by clearing browser storage for the Extension or by uninstalling it.
+            Local preferences remain on your device until you clear your browser's local storage.
+            Website access data is retained only as long as needed for security and operational
+            purposes. Communications are retained for as long as needed to handle your inquiry
+            and to comply with legal obligations. You may request deletion of information you have
+            provided to us at any time using the contact details below.
         </p>
     </section>
 
     <section>
-        <h2><span class="num">9.</span> Security</h2>
+        <h2><span class="num">8.</span> Security</h2>
         <p>
-            Because the Extension processes data locally and does not transmit it to any server, there
-            is no remote repository of your data that could be exposed. We still follow security best
-            practices in the Extension's code and dependencies, and we respond promptly to any
-            identified risks or vulnerabilities.
+            We take reasonable technical and organizational measures to protect the information
+            we process, including the use of encrypted connections (HTTPS). No method of
+            transmission or storage is completely secure, but we work to keep our systems and
+            dependencies up to date and to respond promptly to identified risks.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">9.</span> Your Rights</h2>
+        <p>
+            Depending on your jurisdiction, you may have rights to access, correct, delete, or
+            object to the processing of your personal information, and to request a copy of the
+            information we hold about you. To exercise these rights, contact us using the details
+            below. We will respond to privacy inquiries within 30 days.
         </p>
     </section>
 
     <section>
         <h2><span class="num">10.</span> Children's Privacy</h2>
         <p>
-            The Extension is not directed to children under the age of 13, and we do not knowingly
-            collect personal information from children. If you believe a child has provided us with
-            personal information, please contact us and we will delete it.
+            The website is not directed to children under the age of 13, and we do not knowingly
+            collect personal information from children. If you believe a child has provided us
+            with personal information, please contact us and we will delete it.
         </p>
     </section>
 
     <section>
-        <h2><span class="num">11.</span> Changes to This Policy</h2>
+        <h2><span class="num">11.</span> Browser4 Software and the Extension</h2>
         <p>
-            We may update this policy from time to time. When we make material changes, we will revise
-            the "Last updated" date at the top of this page and, where appropriate, provide notice
-            through the Extension or the browser4.io website. Continued use of the Extension after
-            changes take effect constitutes acceptance of the revised policy.
+            The Browser4 project is open source and available on
+            <a href="https://github.com/platonai/browser4" target="_blank" rel="noopener noreferrer">GitHub</a>.
+            Software you install from the project runs on your own infrastructure under your
+            control; any cloud-connected features will be described in their own documentation
+            and policy before you use them.
+        </p>
+        <p>
+            The Browser4 Extension is a separate product with different data practices. If you use
+            the Extension, please read the
+            <a href="/extension-privacy.html">Browser4 Extension Privacy Policy</a>.
         </p>
     </section>
 
     <section>
-        <h2><span class="num">12.</span> Contact Us</h2>
+        <h2><span class="num">12.</span> Changes to This Policy</h2>
         <p>
-            If you have questions about this policy or about how the Extension handles your
-            information, you can email us at
-            <a href="mailto:ivincent.zhang@gmail.com">ivincent.zhang@gmail.com</a> or
-            <a href="mailto:galaxyeye@live.cn">galaxyeye@live.cn</a>, reach us through the public
-            channels on
-            <a href="https://browser4.io" target="_blank" rel="noopener noreferrer">browser4.io</a>,
-            or by opening an issue in the official project repository at
-            <a href="https://github.com/platonai/browser4" target="_blank" rel="noopener noreferrer">github.com/platonai/browser4</a>.
-            We will respond to privacy inquiries within 30 days.
+            We may update this policy from time to time. When we make material changes, we will
+            revise the "Last updated" date at the top of this page and, where appropriate, provide
+            notice on the website. Continued use of the website after changes take effect
+            constitutes acceptance of the revised policy.
+        </p>
+    </section>
+
+    <section>
+        <h2><span class="num">13.</span> Contact Us</h2>
+        <p>
+            If you have questions about this policy or about how the Browser4 website or project
+            handles your information, you can reach us at
+            <a href="mailto:galaxyeye@live.cn">galaxyeye@live.cn</a> or
+            <a href="mailto:ivincent.zhang@gmail.com">ivincent.zhang@gmail.com</a>,
+            call or message +86 186 2153 8660, or contact us through our WeChat public account
+            (galaxyeye) and other public channels. We will respond to privacy inquiries within
+            30 days.
         </p>
         <p>
-            The Extension is operated by 武汉市翘曲速率信息科技有限公司 (Wuhan Qiaoqu Sulu
-            Information Technology Co., Ltd.), located in the East Lake High-tech Development Zone,
-            Wuhan, Hubei Province, China.
+            The website is operated by 武汉市翘曲速率信息科技有限公司 (Wuhan Qiaoqu Sulu
+            Information Technology Co., Ltd.). Browser4 and platon.ai are operated by the same
+            team.
         </p>
     </section>
 
     <div class="callout">
         <p>
-            This privacy policy is provided for the Browser4 Extension
-            (Chrome Web Store Product ID: <code>jdcmdidbgjeebbhkoepjgifeibipfimi</code>) and is
-            effective as of August 5, 2026.
+            This privacy policy covers the Browser4 website and project and is effective as of
+            August 6, 2026. The Browser4 Extension is covered by the
+            <a href="/extension-privacy.html">Browser4 Extension Privacy Policy</a>.
         </p>
     </div>
 </main>
@@ -464,6 +481,9 @@
         <p>© 2026 Browser4. All rights reserved.</p>
         <nav>
             <a href="/privacy.html">Privacy</a>
+            <a href="/terms.html">Terms</a>
+            <a href="/extension-privacy.html">Extension Privacy</a>
+            <a href="/privacy.zh.html">中文</a>
             <a href="/">Home</a>
         </nav>
     </div>
