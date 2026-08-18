@@ -41,7 +41,7 @@ export default function Hero() {
     };
 
     const installMethods = [
-        { key: 'aiPrompt', command: t('hero.install.aiPrompt'), copyText: t('hero.install.aiInstruction'), label: t('hero.install.aiMethod'), prompt: true, recommended: true },
+        { key: 'aiInstruction', command: t('hero.install.aiInstruction'), label: t('hero.install.aiMethod'), prompt: true, recommended: true },
         { key: 'npmInstall', command: t('hero.install.npmInstall'), label: t('hero.install.npmMethod') },
         { key: 'npmPostInstall', command: t('hero.install.npmPostInstall'), label: '' },
         { key: 'curlCommand', command: t('hero.install.curlCommand'), label: t('hero.install.curlMethod') },
@@ -173,7 +173,7 @@ export default function Hero() {
                                             {method.command}
                                         </code>
                                         <button
-                                            onClick={() => handleCopy(method.copyText ?? method.command, method.key)}
+                                            onClick={() => handleCopy(method.command, method.key)}
                                             className={clsx(
                                                 'shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs transition-all',
                                                 isDark
