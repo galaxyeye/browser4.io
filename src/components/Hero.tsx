@@ -43,7 +43,6 @@ export default function Hero() {
     const installMethods = [
         { key: 'aiInstruction', command: t('hero.install.aiInstruction'), label: t('hero.install.aiMethod'), prompt: true, recommended: true },
         { key: 'npmInstall', command: t('hero.install.npmInstall'), label: t('hero.install.npmMethod') },
-        { key: 'npmPostInstall', command: t('hero.install.npmPostInstall'), label: '' },
         { key: 'curlCommand', command: t('hero.install.curlCommand'), label: t('hero.install.curlMethod') },
         { key: 'psCommand', command: t('hero.install.psCommand'), label: t('hero.install.psMethod') },
     ];
