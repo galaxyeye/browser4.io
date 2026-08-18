@@ -50,6 +50,9 @@
     },
     "install": {
       "label": "Installation",
+      "aiMethod": "Just ask your AI agent",
+      "aiPrompt": "Ask your favorite AI agent (like dsh, Claude, Codex, WorkBuddy, or OpenCode) to read https://browser4.io/SKILL.md and install browser4-cli if it's not already installed — and you're ready for browser automation.",
+      "recommendedBadge": "Recommended",
       "npmMethod": "npm (requires Node.js)",
       "npmInstall": "npm install -g browser4-cli",
       "npmPostInstall": "browser4-cli install",

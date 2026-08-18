@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Bot, Copy, Check, Terminal } from 'lucide-react';
+import { Bot, Copy, Check, Terminal, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { useTheme } from '../theme/ThemeProvider';
@@ -41,6 +41,7 @@ export default function Hero() {
     };
 
     const installMethods = [
+        { key: 'aiPrompt', command: t('hero.install.aiPrompt'), label: t('hero.install.aiMethod'), prompt: true, recommended: true },
         { key: 'npmInstall', command: t('hero.install.npmInstall'), label: t('hero.install.npmMethod') },
         { key: 'npmPostInstall', command: t('hero.install.npmPostInstall'), label: '' },
         { key: 'curlCommand', command: t('hero.install.curlCommand'), label: t('hero.install.curlMethod') },
@@ -148,18 +149,27 @@ export default function Hero() {
                             {installMethods.map((method) => (
                                 <div key={method.key}>
                                     {method.label ? (
-                                        <div className="text-xs text-slate-500 dark:text-slate-500 mb-1 mt-2 first:mt-0">
-                                            {method.label}
+                                        <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-500 mb-1 mt-2 first:mt-0">
+                                            <span>{method.label}</span>
+                                            {method.recommended ? (
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-semibold">
+                                                    <Sparkles className="w-3 h-3" />
+                                                    {t('hero.install.recommendedBadge')}
+                                                </span>
+                                            ) : null}
                                         </div>
                                     ) : null}
                                     <div className="flex items-center gap-2 group">
                                         <code className={clsx(
                                             'flex-1 font-mono text-sm rounded-lg px-4 py-2 select-all',
                                             isDark
-                                                ? 'bg-slate-950 text-slate-200 border border-slate-800'
-                                                : 'bg-slate-900 text-slate-100 border border-slate-700'
+                                                ? 'bg-slate-950 text-slate-200 border'
+                                                : 'bg-slate-900 text-slate-100 border',
+                                            method.prompt
+                                                ? 'border-emerald-500/40'
+                                                : (isDark ? 'border-slate-800' : 'border-slate-700')
                                         )}>
-                                            <span className="text-slate-500 select-none">$ </span>
+                                            {!method.prompt ? <span className="text-slate-500 select-none">$ </span> : null}
                                             {method.command}
                                         </code>
                                         <button

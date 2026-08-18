@@ -50,6 +50,9 @@
     },
     "install": {
       "label": "安装指南",
+      "aiMethod": "直接告诉你的 AI 智能体",
+      "aiPrompt": "让你常用的 AI 智能体（如 dsh、Claude、Codex、WorkBuddy 或 OpenCode）阅读 https://browser4.io/SKILL.md，并安装 browser4-cli（如尚未安装）——即刻开启浏览器自动化。",
+      "recommendedBadge": "推荐",
       "npmMethod": "npm（需要 Node.js）",
       "npmInstall": "npm install -g browser4-cli",
       "npmPostInstall": "browser4-cli install",
