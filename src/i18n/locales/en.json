@@ -6,6 +6,7 @@
     "code": "Code",
     "useCases": "Use Cases",
     "vision": "Vision",
+    "compare": "Compare",
     "github": "GitHub",
     "getStarted": "Get Started"
   },
@@ -490,5 +491,137 @@
     "terms": "Terms",
     "contact": "Contact",
     "editOnGithub": "Edit on GitHub"
+  },
+  "compare": {
+    "badge": "Product comparison",
+    "title": "Compare",
+    "titleSuffix": "Compare",
+    "subtitle": "Four products, one matrix — see the key capability differences at a glance.",
+    "snapshotDate": "2026-08-21",
+    "filters": {
+      "all": "All capabilities",
+      "differences": "Only differences",
+      "advantages": "Browser4 advantages"
+    },
+    "legend": {
+      "title": "Legend",
+      "verified": "Verified",
+      "verifiedDesc": "Directly verifiable in official source code / docs",
+      "claim": "Official claim",
+      "claimDesc": "Officially stated; not yet independently tested or pending release",
+      "notfound": "Not Found",
+      "notfoundDesc": "Official repos/docs checked; no equivalent found. This does not mean “unsupported”."
+    },
+    "matrix": {
+      "capability": "Capability",
+      "hint": "← Swipe to see the full matrix →",
+      "count": "Showing {{visible}} / {{total}} capabilities",
+      "group": {
+        "basics": "Core capabilities",
+        "data": "Data & scale layer"
+      },
+      "note": {
+        "networkHar": "* Browser4 ships Network / HAR in the next release (pending)."
+      }
+    },
+    "rows": {
+      "browserAutomation": "Browser automation",
+      "aiAgent": "AI Agent",
+      "mcp": "MCP",
+      "cdpControl": "CDP / browser control",
+      "crawl": "Crawl",
+      "search": "Search",
+      "structuredExtraction": "Structured extraction",
+      "networkHar": "Network / HAR tooling",
+      "xSql": "X-SQL",
+      "zeroLlmToken": "Zero-LLM-Token extraction",
+      "mlPipeline": "ML extraction pipeline",
+      "webMiner": "WebMiner",
+      "swarmParallel": "Parallel / swarm execution",
+      "experienceLearning": "Experience learning"
+    },
+    "products": {
+      "title": "Product positioning",
+      "subtitle": "What each product is built for",
+      "browser4": {
+        "name": "Browser4",
+        "tagline": "AI-native browser engine",
+        "desc": "An AI-native browser engine for autonomous agents, intelligent extraction, and large-scale web automation. Hybrid Intelligence combines LLMs, ML, X-SQL, and selectors. Open source under Apache 2.0."
+      },
+      "browserUse": {
+        "name": "browser-use",
+        "tagline": "Agent browser automation framework",
+        "desc": "Browser automation framework for AI agents: Python API / CLI / MCP / Cloud, including the official CDP harness (browser-harness), with local and cloud MCP."
+      },
+      "agentBrowser": {
+        "name": "agent-browser",
+        "tagline": "Native Rust automation CLI",
+        "desc": "Browser automation CLI for AI agents: CDP control, accessibility snapshots, network capabilities, state save/load, and an MCP server with core / network / react profiles (stdio)."
+      },
+      "firecrawl": {
+        "name": "Firecrawl",
+        "tagline": "Web data API",
+        "desc": "A web data API that turns websites into LLM-ready data: Search / Scrape / Crawl / Map / Interact, Agent and Batch Scrape, Markdown and structured output, plus MCP integration."
+      }
+    },
+    "differentiators": {
+      "title": "Where Browser4 stands out",
+      "subtitle": "Beyond browser control, Browser4 adds a structured-data processing and scale-execution layer",
+      "xSql": {
+        "title": "X-SQL: query the DOM with SQL",
+        "desc": "Extract multiple related fields in one query; re-query snapshots without re-crawling pages; combinable with crawl / swarm."
+      },
+      "zeroLlmToken": {
+        "title": "Zero-LLM-Token extraction",
+        "desc": "The ML / X-SQL / WebMiner paths make no LLM calls, so no LLM input/output tokens are produced (this does not mean zero operating cost)."
+      },
+      "webMiner": {
+        "title": "Local ML extraction pipeline",
+        "desc": "encode → cluster → views pipeline with HTML report and Excel output; SMILE for small scale, Spark ML for large scale."
+      },
+      "experience": {
+        "title": "Experience learning",
+        "desc": "Reuse site-structure experience (selectors, interceptors, and more) from past tasks in future ones."
+      },
+      "swarm": {
+        "title": "Crawl + Swarm at scale",
+        "desc": "Seed/depth crawling and parallel scrape jobs compose with X-SQL into a large-scale extraction pipeline."
+      },
+      "local": {
+        "title": "Apache 2.0, runs locally",
+        "desc": "Install via npm with native binaries on Windows / Linux / macOS; whether to connect remote proxies or LLMs is your choice."
+      }
+    },
+    "narrative": {
+      "title": "The short version",
+      "subtitle": "Focused on the key difference: how extraction works",
+      "vs": "VS",
+      "browser4Angle": "Browser4: Agent + X-SQL + ML extraction",
+      "angleDetail": "a structured, repeatable extraction layer on top of agent-driven browsing",
+      "browserUse": {
+        "name": "browser-use",
+        "approach": "Agent-driven extraction: MCP extraction tools are LLM-powered"
+      },
+      "agentBrowser": {
+        "name": "agent-browser",
+        "approach": "Rust CLI + MCP profiles (core / network / react)"
+      },
+      "firecrawl": {
+        "name": "Firecrawl",
+        "approach": "Cloud API that turns websites into LLM-ready data"
+      }
+    },
+    "disclaimer": {
+      "title": "How to read this",
+      "items": {
+        "item1": "🟡 “Not Found” only means no equivalent capability was found in their official repos/docs as of the snapshot date — not that it is unsupported.",
+        "item2": "Matrix snapshot 2026-08-21: time-sensitive data such as stars, pricing, and customer counts is excluded.",
+        "item3": "Performance: 100k–200k complex page visits per machine per day; actual results depend on page types, concurrency, browser configuration, and network conditions."
+      }
+    },
+    "sources": {
+      "title": "Sources",
+      "note": "Each product's status is based on its official repository and public docs, verified on 2026-08-21."
+    }
   }
 }

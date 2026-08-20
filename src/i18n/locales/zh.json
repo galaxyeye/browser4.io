@@ -6,6 +6,7 @@
     "code": "代码",
     "useCases": "使用案例",
     "vision": "愿景",
+    "compare": "对比",
     "github": "GitHub",
     "getStarted": "开始使用"
   },
@@ -490,5 +491,137 @@
     "terms": "条款",
     "contact": "联系我们",
     "editOnGithub": "在GitHub上编辑"
+  },
+  "compare": {
+    "badge": "产品对比",
+    "title": "产品对比",
+    "titleSuffix": "产品对比",
+    "subtitle": "四个产品、一张矩阵，快速看清关键能力差异。",
+    "snapshotDate": "2026-08-21",
+    "filters": {
+      "all": "全部能力",
+      "differences": "仅看差异",
+      "advantages": "Browser4 独有优势"
+    },
+    "legend": {
+      "title": "状态图例",
+      "verified": "已核查",
+      "verifiedDesc": "官方源码 / 文档可以直接证明",
+      "claim": "官方声明",
+      "claimDesc": "官方明确声明，尚未经独立测试或尚待发布",
+      "notfound": "未发现",
+      "notfoundDesc": "已核查官方仓库与文档，未发现等价能力；不代表“不支持”"
+    },
+    "matrix": {
+      "capability": "能力",
+      "hint": "← 左右滑动查看完整矩阵 →",
+      "count": "显示 {{visible}} / {{total}} 项能力",
+      "group": {
+        "basics": "基础能力",
+        "data": "数据与规模化层"
+      },
+      "note": {
+        "networkHar": "* Browser4 下一个版本已内建 Network / HAR 能力（待发布）。"
+      }
+    },
+    "rows": {
+      "browserAutomation": "浏览器自动化",
+      "aiAgent": "AI Agent",
+      "mcp": "MCP",
+      "cdpControl": "CDP / 浏览器控制",
+      "crawl": "Crawl 爬取",
+      "search": "Search 搜索",
+      "structuredExtraction": "结构化抽取",
+      "networkHar": "Network / HAR 工具",
+      "xSql": "X-SQL",
+      "zeroLlmToken": "零 LLM Token 抽取",
+      "mlPipeline": "ML 抽取管线",
+      "webMiner": "WebMiner",
+      "swarmParallel": "并行 / Swarm 执行",
+      "experienceLearning": "经验学习"
+    },
+    "products": {
+      "title": "产品定位",
+      "subtitle": "四个产品各自解决什么问题",
+      "browser4": {
+        "name": "Browser4",
+        "tagline": "AI-native browser engine",
+        "desc": "面向 autonomous agents、intelligent extraction 与大规模 web automation 的 AI 原生浏览器引擎；以 Hybrid Intelligence 组合 LLM、ML、X-SQL 与 selectors；Apache 2.0 开源。"
+      },
+      "browserUse": {
+        "name": "browser-use",
+        "tagline": "Agent 浏览器自动化框架",
+        "desc": "面向 AI agents 的浏览器自动化框架：Python API / CLI / MCP / Cloud，包含官方 CDP harness（browser-harness），提供本地与云端 MCP。"
+      },
+      "agentBrowser": {
+        "name": "agent-browser",
+        "tagline": "原生 Rust 自动化 CLI",
+        "desc": "面向 AI agents 的浏览器自动化 CLI：CDP 控制、accessibility snapshot、network 能力、state 保存/加载，MCP server 支持 core / network / react profiles（stdio）。"
+      },
+      "firecrawl": {
+        "name": "Firecrawl",
+        "tagline": "Web data API",
+        "desc": "把网站转为 LLM-ready 数据的 Web API：Search / Scrape / Crawl / Map / Interact、Agent 与 Batch Scrape，输出 Markdown 与结构化数据，并提供 MCP 集成。"
+      }
+    },
+    "differentiators": {
+      "title": "Browser4 的差异化优势",
+      "subtitle": "在“控制浏览器”之外，Browser4 增加了结构化数据处理与规模化执行层",
+      "xSql": {
+        "title": "X-SQL：用 SQL 查询 DOM",
+        "desc": "一次查询提取多个关联字段；htmlsnapshot 可重复查询，无需重新抓取页面；可与 crawl / swarm 组合。"
+      },
+      "zeroLlmToken": {
+        "title": "零 LLM Token 抽取",
+        "desc": "ML / X-SQL / WebMiner 路径不调用 LLM，因此不产生 LLM input/output tokens（不等于零运行成本）。"
+      },
+      "webMiner": {
+        "title": "本地 ML 抽取管线",
+        "desc": "encode → cluster → views 流水线，输出 HTML report 与 Excel；小规模用 SMILE，大规模用 Spark ML。"
+      },
+      "experience": {
+        "title": "经验学习",
+        "desc": "把一次任务中沉淀的网站结构经验（选择器、拦截器等）复用于后续任务。"
+      },
+      "swarm": {
+        "title": "Crawl + Swarm 规模化执行",
+        "desc": "seed / depth 爬取、并行 scrape jobs，与 X-SQL 组合成规模化提取管线。"
+      },
+      "local": {
+        "title": "开源 Apache 2.0，本地可运行",
+        "desc": "npm 安装，Windows / Linux / macOS 原生二进制；是否接入远程代理或 LLM 由你决定。"
+      }
+    },
+    "narrative": {
+      "title": "一句话对比",
+      "subtitle": "围绕“如何做抽取”这一关键差异",
+      "vs": "VS",
+      "browser4Angle": "Browser4：Agent + X-SQL + ML extraction",
+      "angleDetail": "在 Agent 驱动之上，叠加结构化的、可重复的数据抽取层",
+      "browserUse": {
+        "name": "browser-use",
+        "approach": "Agent-driven extraction：MCP 抽取工具为 LLM-powered"
+      },
+      "agentBrowser": {
+        "name": "agent-browser",
+        "approach": "Rust CLI + MCP profiles（core / network / react）"
+      },
+      "firecrawl": {
+        "name": "Firecrawl",
+        "approach": "云端 API，把网站转为 LLM-ready 数据"
+      }
+    },
+    "disclaimer": {
+      "title": "如何阅读这张表",
+      "items": {
+        "item1": "🟡 “未发现”仅表示截至快照日，我们未在其官方仓库与文档中发现等价能力，不代表确认其不支持。",
+        "item2": "矩阵快照日期 2026-08-21：Star、价格、客户数等时效性数据不在此表内。",
+        "item3": "性能：单机每天可处理 100k–200k complex page visits；具体表现取决于页面类型、并发、浏览器配置与网络环境。"
+      }
+    },
+    "sources": {
+      "title": "数据来源",
+      "note": "各产品状态均以其官方仓库与公开文档为准，核查日期：2026-08-21。"
+    }
   }
 }

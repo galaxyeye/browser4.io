@@ -10,7 +10,8 @@ export const navLinks = [
     { label: 'nav.capabilities', href: '#capabilities' },
     { label: 'nav.code', href: '#code-examples' },
     { label: 'nav.useCases', href: '#use-cases' },
-    { label: 'nav.vision', href: '#vision' }
+    { label: 'nav.vision', href: '#vision' },
+    { label: 'nav.compare', href: '#/compare' }
 ];
 
 export default function NavBar() {
