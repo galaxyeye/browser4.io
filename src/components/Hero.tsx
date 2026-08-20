@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Bot, Copy, Check, Terminal, Sparkles } from 'lucide-react';
+import { Bot, Copy, Check, Github, Terminal, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { useTheme } from '../theme/ThemeProvider';
+import GitHubStars from './GitHubStars';
 
 const VERB_KEYS = ['browse', 'automate', 'observe', 'scrape', 'study', 'investigate', 'extract', 'browse', 'monitor',
     'crawl', 'automate', 'extract', 'browse', 'automate', 'study', 'understand', 'investigate'];
@@ -124,9 +125,11 @@ export default function Hero() {
                         href="https://github.com/platonai/Browser4"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-10 py-4 border border-slate-200 dark:border-slate-700/80 text-slate-700 dark:text-white/80 rounded-xl font-semibold transition-all hover:border-slate-400 dark:hover:border-slate-500/80"
+                        aria-label={t('nav.starOnGitHub')}
+                        className="inline-flex items-center gap-2.5 px-8 py-4 border border-slate-200 dark:border-slate-700/80 text-slate-700 dark:text-white/80 rounded-xl font-semibold transition-all hover:border-slate-400 dark:hover:border-slate-500/80"
                     >
-                        {t('hero.github')}
+                        <Github className="w-5 h-5" aria-hidden="true" />
+                        <GitHubStars alt={t('nav.starOnGitHub')} />
                     </a>
                 </div>
 

@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Menu, Moon, Sun, X } from 'lucide-react';
+import { Github, Menu, Moon, Sun, X } from 'lucide-react';
 import { useTheme } from '../theme/ThemeProvider';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from './LanguageSwitcher';
+import GitHubStars from './GitHubStars';
 
 export const navLinks = [
     { label: 'nav.home', href: '#hero' },
@@ -52,12 +53,16 @@ export default function NavBar() {
                         {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                     </button>
                     <a
-                        href="https://github.com/platonai/browser4"
+                        href="https://github.com/platonai/Browser4"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-4 py-2 text-sm font-semibold text-slate-300 border border-slate-700/70 rounded-xl hover:text-white hover:border-slate-500/70"
+                        aria-label={t('nav.starOnGitHub')}
+                        className="inline-flex items-center gap-2 px-3.5 py-2 text-sm font-semibold text-slate-300 border border-slate-700/70 rounded-xl hover:text-white hover:border-slate-500/70"
                     >
-                        {t('nav.github')}
+                        <Github className="w-4 h-4" aria-hidden="true" />
+                        <span className="hidden xl:inline-flex">
+                            <GitHubStars alt={t('nav.starOnGitHub')} />
+                        </span>
                     </a>
                     <a
                         href="#code-examples"
@@ -85,6 +90,17 @@ export default function NavBar() {
                             {t(link.label)}
                         </a>
                     ))}
+                    <a
+                        href="https://github.com/platonai/Browser4"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={handleNavClick}
+                        aria-label={t('nav.starOnGitHub')}
+                        className="inline-flex items-center gap-2 py-1 text-slate-300"
+                    >
+                        <Github className="w-4 h-4" aria-hidden="true" />
+                        <GitHubStars alt={t('nav.starOnGitHub')} />
+                    </a>
                     <a
                         href="#code-examples"
                         onClick={handleNavClick}
