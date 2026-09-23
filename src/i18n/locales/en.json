@@ -17,21 +17,6 @@
     "subtitle": "One CLI to browse, automate, scrape, extract, and analyze. {{adjective}} by design.",
     "getStarted": "GET STARTED",
     "github": "GITHUB",
-    "milestones": {
-      "title": "Milestones",
-      "founded": {
-        "label": "Founded in 2014",
-        "detail": "Dedicated to browser automation and agents"
-      },
-      "evolving": {
-        "label": "Evolving 2020+",
-        "detail": "Operationalizing large-scale AI agents"
-      },
-      "future": {
-        "label": "Future ready",
-        "detail": "Embracing AI agent networks"
-      }
-    },
     "verbs": {
       "browse": "browse",
       "automate": "automate",

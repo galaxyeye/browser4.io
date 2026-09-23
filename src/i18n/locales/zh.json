@@ -17,21 +17,6 @@
     "subtitle": "一个CLI，浏览、自动化、抓取、提取、分析全搞定。天生{{adjective}}。",
     "getStarted": "开始使用",
     "github": "GITHUB",
-    "milestones": {
-      "title": "里程碑",
-      "founded": {
-        "label": "2014年成立",
-        "detail": "致力于浏览器自动化和智能体"
-      },
-      "evolving": {
-        "label": "2020+持续演进",
-        "detail": "大规模AI智能体落地运营"
-      },
-      "future": {
-        "label": "面向未来",
-        "detail": "拥抱AI智能体网络"
-      }
-    },
     "verbs": {
       "browse": "浏览",
       "automate": "自动化",

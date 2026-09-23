@@ -29,12 +29,6 @@ export default function Hero() {
         150, 150, 150, 100, 100, 100, 100, 100, 150, 150, 150, 150,
     ];
     
-    const milestones = [
-        { label: t('hero.milestones.founded.label'), detail: t('hero.milestones.founded.detail') },
-        { label: t('hero.milestones.evolving.label'), detail: t('hero.milestones.evolving.detail') },
-        { label: t('hero.milestones.future.label'), detail: t('hero.milestones.future.detail') },
-    ];
-
     const handleCopy = (text: string, key: string) => {
         navigator.clipboard.writeText(text);
         setCopiedKey(key);
@@ -195,20 +189,6 @@ export default function Hero() {
                                 </div>
                             ))}
                         </div>
-                    </div>
-                </div>
-
-                <div className="bg-white/80 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 backdrop-blur">
-                    <p className="text-slate-500 dark:text-slate-500 text-xs tracking-[0.3em] uppercase mb-4">
-                        {t('hero.milestones.title')}
-                    </p>
-                    <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-center md:gap-12">
-                        {milestones.map((item) => (
-                            <div key={item.label} className="text-center">
-                                <p className="text-sm font-semibold text-slate-900 dark:text-white/90">{item.label}</p>
-                                <p className="text-slate-600 dark:text-slate-400 text-sm">{item.detail}</p>
-                            </div>
-                        ))}
                     </div>
                 </div>
             </div>
