@@ -22,3 +22,8 @@ dist-ssr
 *.sw?
 .env
 .claude
+
+# Browser4 CLI runtime artifacts
+.browser4-cli
+.browser4-cli-state
+.browser4-runtime
