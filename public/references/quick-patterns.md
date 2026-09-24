@@ -14,11 +14,12 @@ browser4-cli snapshot -v 0
 browser4-cli fill <email-ref> "user@example.com"
 browser4-cli fill <password-ref> "password"
 browser4-cli click <submit-ref>
-browser4-cli wait --load networkidle
+browser4-cli wait --load networkidle      # proves the network settled — nothing more
+browser4-cli wait "<result-selector>"     # poll late-rendered results before reading them
 browser4-cli snapshot -v 0 --auto-diff
 ```
 
-Every interaction should be followed by verification (`snapshot -v 0 --auto-diff` or `snapshot grep`).
+Every interaction should be followed by verification (`snapshot -v 0 --auto-diff` or `snapshot grep`). When the result is rendered by page JS after load, wait for the result element first — `wait --load networkidle` only proves the network went quiet and can return while the page is still blank.
 
 ## When to Use
 
@@ -51,7 +52,7 @@ browser4-cli snapshot -v 0
 browser4-cli fill <email-ref> "user@example.com"
 browser4-cli fill <password-ref> "password"
 browser4-cli click <submit-ref>
-browser4-cli wait --load networkidle
+browser4-cli wait --load networkidle      # network settled — add `wait "<result-selector>"` when the result renders late
 browser4-cli snapshot -v 0 --auto-diff
 ```
 
@@ -67,8 +68,7 @@ browser4-cli select <country-ref> "Singapore" --verify # confirms the selected o
 
 ```bash
 browser4-cli open --headless "https://example.com"
-browser4-cli snapshot -v 0                        # capture snapshot first
-browser4-cli snapshot grep "See also"             # search for text in the full AX tree
+browser4-cli snapshot grep "See also"             # searches the live AX tree — no prior capture needed
 browser4-cli snapshot grep -i "price|rating"      # case-insensitive regex alternation
 browser4-cli snapshot grep -A 3 -B 1 "Checkout"   # show surrounding context lines
 ```
@@ -146,8 +146,7 @@ browser4-cli get text "#contactForm > button.primary"  # verify with the generat
 
 ```bash
 browser4-cli open --headless "https://example.com/product/42"
-browser4-cli htmlsnapshot                           # capture static HTML snapshot
-browser4-cli htmlsnapshot get text ".product-title"
+browser4-cli htmlsnapshot get text ".product-title"   # reads the live page — capture is optional
 browser4-cli htmlsnapshot get attr ".product-image" src
 ```
 
@@ -194,7 +193,7 @@ browser4-cli agent run "Find the top 5 products and their prices on this page"
 
 # 2. Poll until complete
 browser4-cli agent status <task-id>
-# Look for: "processState": "done" or "isDone": true
+# Look for: "isDone": true   (terminal states report "processState": "completed")
 
 # 3. Get the result
 browser4-cli agent result <task-id>

@@ -98,6 +98,8 @@ browser4-cli snapshot -v 0 --auto-diff    # shows what changed after form submis
 
 The diff marks elements as added (`+`), removed (`-`), or modified (`~`), making it easy to spot navigation results, error messages, or confirmation text.
 
+> **`wait --load networkidle` only proves the network went quiet.** A page that computes results in JS after load (dashboards, bot-detection verdicts) can still be blank when the wait reports success, and a diff then shows nothing. Poll the result element first — `wait "<result-selector>"` — and treat `networkidle` as a network-settling extra step.
+
 > **Note:** `--auto-diff` requires a previous snapshot in the same session. If no previous snapshot exists, it behaves like a normal capture with a warning.
 
 ## Snapshot Grep
@@ -124,7 +126,7 @@ Grep operates on the most recent snapshot. If no snapshot exists yet, run `snaps
 | `--page N` | Show page N of paginated results |
 | `--all` | Disable pagination (show all results) |
 
-Patterns are **Rust regex** (same dialect as `htmlsnapshot grep`): `|` is alternation, `^`/`$` anchor the start/end of a line, and a literal `$` must be written `[$]` (e.g. `'[$][0-9.]+'` for prices) — `\$` is an invalid escape, not a way to write a literal dollar. Use `-F` to match plain text. See the [htmlsnapshot grep dialect notes](htmlsnapshot.md#regex-dialect) for details.
+Patterns are **Rust regex** (same dialect as `htmlsnapshot grep`): `|` is alternation (an escaped `\|` is also accepted and converted), `^`/`$` anchor the start/end of a line, so write a literal `$` as `[$]` (e.g. `'[$][0-9.]+'` for prices) — it survives every shell layer (`\$` also compiles as an escaped dollar, but is easy to lose between shell layers). Use `-F` to match plain text. See the [htmlsnapshot grep dialect notes](htmlsnapshot.md#regex-dialect) for details.
 
 ## Ref Lifecycle
 
@@ -202,7 +204,7 @@ browser4-cli snapshot -v 0                         # observe: find email ref, pa
 browser4-cli fill <email-ref> "user@example.com"   # interact
 browser4-cli fill <password-ref> "password"
 browser4-cli click <submit-ref>
-browser4-cli wait --load networkidle
+browser4-cli wait --load networkidle               # network settled — nothing more
 browser4-cli snapshot -v 0 --auto-diff             # verify: see what changed
 ```
 
