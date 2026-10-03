@@ -56,7 +56,8 @@ browser4-cli press Enter
 browser4-cli wait --load networkidle   # prove the network settled — nothing more
 browser4-cli wait "<result-selector>"  # poll the element carrying the result (late-rendered pages)
 browser4-cli snapshot -v 0 --auto-diff --stdout  # verify what changed
-browser4-cli htmlsnapshot get all text "<css-selector>"   # extract from the live page
+browser4-cli htmlsnapshot                     # snapshot metadata for the page the tab is showing
+browser4-cli htmlsnapshot get all text "<css-selector>"   # extract from the tab's fresh snapshot
 ```
 
 For quick inline viewing without opening a file, add `--stdout` to any snapshot command.
@@ -130,6 +131,18 @@ Named sessions isolate browser state (cookies, localStorage, tabs) in a **dedica
 
 > **Concurrent runs — always pass `-s <name>`:** the unnamed DEFAULT session is a singleton shared by every invocation that omits `-s` (last writer wins), so parallel agents navigate each other's pages. Give each run its own `-s job-42`.
 
+> **`-s` is a GLOBAL flag — its position is part of the syntax.** Write it **before** the
+> command: `browser4-cli -s job-42 goto <url>`. Written after the command —
+> `goto <url> -s job-42` — it is not recognised as the session option and is rejected as an
+> unexpected positional argument. The long form `--session <name>` behaves identically (also
+> before the command). Because `-s` is reserved globally for `--session`, scope a snapshot with
+> the long form `--selector <css>`, never `-s <css>`.
+>
+> Other ways to pin the session: `BROWSER4_CLI_SESSION=job-42` (per-invocation env var, overridden
+> by `-s` / `--session`), `browser4-cli config set session job-42` (persisted default), or
+> `browser4-cli session-default <name>` (promote an existing named session to the default).
+> `browser4-cli list` shows every session and its current page URL.
+
 Two on-disk locations — don't confuse them:
 
 - **Session state** lives in `~/.browser4` by default (per checkout in development mode — see **Development Mode** below), falling back to `./.browser4-cli-state` when unwritable; override with `BROWSER4_CLI_STATE_DIR` / `BROWSER4_RUNTIME_DIR`.
@@ -163,10 +176,13 @@ Element commands (`click`, `fill`, `type`, …) resolve CSS selectors against th
 | `focus`, `key`, `keyboard` | Focus an element / press a key (key & keyboard alias `press`) | Explicit focus before typing, agent-browser-style keypresses | — |
 | `is visible\|enabled\|checked <sel>` | Element state assertions | Verify visibility, enabled-ness, or checked state before acting | — |
 | `dialog-accept`, `dialog-dismiss`, `dialog-status` | Native JS dialog handling | After clicking buttons that trigger alert/confirm/prompt; `dialog-status` inspects the pending dialog. The triggering click parks server-side until the dialog is handled, so run the dialog command in a **separate** invocation — `dialog-accept "text"` fills a prompt, or `click --auto-dismiss-dialogs <ref>` auto-accepts in one step | — |
-| `htmlsnapshot get`, `get all` | Extract `text` / `textcontent` / `html` / `attr` via CSS selectors from the **live page** (no prior capture) | **Page content & text extraction** — get article text, headings, attributes. Prefer `textcontent` when `text` looks truncated (CSS overflow clips `text`) | [htmlsnapshot.md](references/htmlsnapshot.md) |
+| `htmlsnapshot get`, `get all` | Extract `text` / `textcontent` / `html` / `attr` via CSS selectors from a **fresh snapshot of the active page** (the tab is captured first, then read); `--expires <dur>` serves the stored snapshot instead while it is younger than the window | **Page content & text extraction** — get article text, headings, attributes, including content that only exists in the tab (form results, SPA updates, `eval` mutations); `--expires 1d` reads the previous snapshot version without touching the tab. `text` and `textcontent` are currently equivalent: both return the element's whitespace-normalized text content, and neither is a rendered-text read | [htmlsnapshot.md](references/htmlsnapshot.md) |
 | `get <mode> <selector> [name]` | **Live-DOM single-element read** (`text`, `html`, `box`, `styles`, `property`, `attr`) — capture-free, works on the current live page with refs or CSS selectors (`--raw` keeps text verbatim) | **Post-interaction verification & quick reads** — "did the submit work?" without a capture round-trip. Value contract: a matched element returns its value — or `""` when the attribute/property is absent; `null` means the selector matched nothing; an unresolvable `eN` ref errors explicitly | — |
-| `htmlsnapshot readability` | One-step article extraction via a Readability-style heuristic (no LLM, no selectors) | Get the main article (title, byline, text) from the stored snapshot in one call; `htmlsnapshot readability <url>` fetches a page independently | [htmlsnapshot.md](references/htmlsnapshot.md) |
-| `htmlsnapshot query` | X-SQL queries for structured extraction | Multi-field, filtered, sorted data | [x-sql.md](references/x-sql.md) |
+| `htmlsnapshot` (capture) | Serialize the page the active tab is showing into the page store and return metadata — the same capture every htmlsnapshot command runs before it works | Get the snapshot's metadata (title, size, timestamps, interactive elements, link groups) | [htmlsnapshot.md](references/htmlsnapshot.md) |
+| `htmlsnapshot readability` | One-step article extraction via a Readability-style heuristic (no LLM, no selectors) | Get the main article (title, byline, text) from the active page in one call; `htmlsnapshot readability <url>` reads that URL's own stored copy (never the tab's document) | [htmlsnapshot.md](references/htmlsnapshot.md) |
+| `htmlsnapshot query` | X-SQL queries for structured extraction over a fresh snapshot of the active page (`--expires <dur>` queries the stored snapshot instead) | Multi-field, filtered, sorted data; the query captures the tab first, so live state (login, SPA, `eval` mutations) is visible | [x-sql.md](references/x-sql.md) |
+| `htmlsnapshot summary [--algorithm <id>]` | Compressed WPSI YAML summary of a fresh snapshot (`--expires <dur>` for the stored one); the summarization algorithm is pluggable (built-in `wpsi`, plugins can add ids) | Understand a page's structure/landmarks/key nodes cheaply; pick a non-default algorithm for specialized summaries | [htmlsnapshot.md](references/htmlsnapshot.md) |
+| `htmlsnapshot algorithms` | List installed summary algorithms (`id`, default marker, built-in vs plugin); no page or session needed | Discover valid `--algorithm` ids | [htmlsnapshot.md](references/htmlsnapshot.md) |
 | `eval` | Execute JavaScript in the page (`--await` for Promises/fetch, `--wait-selector` for late-rendered content, `--file`/`--stdin`/`--base64` to dodge shell quoting) | Live DOM access, complex transforms | [eval.md](references/eval.md) |
 | `eval --ref` | Execute JS scoped to a specific element | Element property extraction (text, attrs, styles) | **⚠️ Expression MUST be an arrow function: `element => element.textContent`** |
 | `scrollintoview`, `pushstate`, `highlight` | Element scroll / history / visual highlight (eval-based shortcuts) | Scroll an element into view, push a history entry, outline an element | — |
@@ -192,9 +208,9 @@ Element commands (`click`, `fill`, `type`, …) resolve CSS selectors against th
 | `profiles list` | List browser profile directories | See what profiles exist under `~/.browser4/browser/chrome` before `open --profile` | — |
 | `profile-import` | Import bookmarks/history/passwords/cookies/extensions from system Chrome/Edge/Safari (requires the browser4-profile-import plugin) | `profile-import --list-sources` to discover browsers; `profile-import --source chrome --data bookmarks,cookies` copies a whole profile snapshot to `~/.browser4/imports/`; `--into prototype|default` seeds a managed profile dir; then `open --profile <dir>` mounts it | [browser-state-import.md](references/browser-state-import.md) |
 | `config` | Persistent CLI defaults (server, timeout, proxy, session) | Set default server URL, timeout, proxy, or session name | [config.md](references/config.md) |
-| `status`, `doctor`, `doctor log`, `doctor metrics`, `doctor status` | Server health & diagnostics | `doctor status` prints the aggregated status report (health, build, runtime, LLM, sessions, browsers, swarm, plugins, skills, metrics, logs) in layers: summary by default, `--verbose` for full detail, `--section <name>` for one report, `--json` for machine-readable output. `status` prints the web status panel URL (`http://<server>:8182/status`) — a live dashboard of the same reports; `http://<server>:8182/pages.html` shows every open page | — |
+| `status`, `doctor`, `doctor log`, `doctor metrics`, `doctor status` | Server health & diagnostics | `doctor status` prints the aggregated status report (health, build, runtime, LLM, sessions, browsers, swarm, plugins, skills, metrics, logs) in layers: summary by default, `--verbose` for full detail, `--section <name>` for one report, `--json` for machine-readable output. `status` prints the web status panel URL (`http://<server>:18182/status`) — a live dashboard of the same reports; `http://<server>:18182/pages.html` shows every open page | — |
 | `batch` | Run several commands in one invocation | Scripted multi-step flows, fewer round-trips | [quickstart.md](references/quickstart.md) |
-| `console`, `cdp`, `pdf`, `page-info`, `go-back`, `go-forward`, `keydown`, `keyup`, `mousedown`, `mouseup`, `mousewheel`, `snapshot list`, `snapshot clean`, `crawl status\|result\|cancel\|clear\|list`, `swarm submit\|status\|result\|list\|close`, `chat`, `session-default`, `delete-data`, `kill-all`, `stop`, `uninstall`, `plugin-*` | Remaining command families (not covered here) | Discover with `browser4-cli help` / `browser4-cli help <command>` | — |
+| `console`, `cdp`, `pdf`, `page-info`, `go-back`, `go-forward`, `keydown`, `keyup`, `mousedown`, `mouseup`, `mousewheel`, `snapshot list`, `snapshot clean`, `crawl status\|result\|cancel\|resume\|clear\|list`, `swarm submit\|status\|result\|list\|close`, `chat`, `session-default`, `delete-data`, `kill-all`, `stop`, `uninstall`, `plugin-*` | Remaining command families (not covered here) | Discover with `browser4-cli help` / `browser4-cli help <command>` | — |
 | `experience save`, `experience query`, `experience list`, `experience deep learn` | Progressive experience memory | Reuse selectors, extraction patterns and blocker awareness across sessions — see the sibling skill | [browser4-experience](../browser4-experience/SKILL.md) |
 
 ### Refreshing This Skill
@@ -223,7 +239,8 @@ expanded trees, the comparisons behind them and the X-SQL quickstart template li
 ```text
 What do you need to do?
 |- act on a page (click, fill, press, upload) ..... snapshot -> act on refs -> re-snapshot
-|- read content off the live page ................. htmlsnapshot get / get all / query
+|- get snapshot metadata for the live page ....... htmlsnapshot
+|- read content off the live page ................. htmlsnapshot get / get all / query  (each captures the tab first, then reads)
 |- compute something in page JS ................... eval          (--ref takes an arrow function)
 |- understand a page, or find selectors ........... htmlsnapshot inspect | summary
 |- fetch many known or linked pages ............... crawl         (--seed-file, --depth N)
@@ -232,8 +249,8 @@ What do you need to do?
 `- structure pages you already have ............... webminer all  (< 1,000 pages, no tokens)
 ```
 
-- **4a. Extraction method:** interact → `snapshot` + refs; read content → `htmlsnapshot`; live DOM → `eval --json`; natural language → `extract`; many pages → `crawl`/`swarm`. **`htmlsnapshot` reads the LIVE page — no prior capture is needed** for `get`/`get all`/`inspect`/`summary`/`grep`/`export`/`query`; an empty read means the selector did not match (or no page is loaded), not a missing capture — per-command matrix in [decision-trees.md](references/decision-trees.md).
-- **4b. Bulk/scale:** one list page → `query`; known URLs → `crawl --seed-file`; follow links → `crawl <url> --depth N`; more crawl overlap → `crawl --parallel 8` (each unit collects on its own tab); parallel → `swarm`; scheduled → `loop`.
+- **4a. Extraction method:** interact → `snapshot` + refs; read content → `htmlsnapshot get`/`query`; snapshot metadata → `htmlsnapshot` (capture); live DOM → `eval --json`; natural language → `extract`; many pages → `crawl`/`swarm`. **Every `htmlsnapshot` command captures the active page first and then works on that snapshot**, so `get`/`get all`/`inspect`/`summary`/`grep`/`export`/`query`/`readability` already see what the tab shows *right now* (form results, SPA updates, `eval` mutations, login state) — no capture needed first. `--expires <dur>` (default `0s`) is the one exception you can ask for: a positive value serves the stored snapshot of the active page while it is younger than the window and leaves the tab untouched, i.e. it reads the *previous* snapshot version. The capture is always keyed by the active tab's own URL, so a command aimed at another URL (`readability <url>`, `query --url <url>`) reads that URL's stored copy instead and never files the tab's document under it (`--expires` does not govern that path — it is already store-only). An empty read means the selector did not match the page as it is now (or no page is loaded) — per-command matrix in [decision-trees.md](references/decision-trees.md).
+- **4b. Bulk/scale:** one list page → `query`; known URLs → `crawl --seed-file`; follow links → `crawl <url> --depth N`; more crawl overlap → `crawl --parallel 8` (each unit collects on its own tab); parallel → `swarm`; scheduled → `loop`. An interrupted crawl (backend restart, crash, `--timeout` cut it off, or you cancelled it) keeps its id → `crawl list --status interrupted`, then `crawl resume <task-id>`: already-fetched URLs are **not** requested again and `crawl result` returns the union of both runs (add `--retry-failed` to re-fetch terminal failures; automatic resume at startup is off by default).
 - **4c. Query granularity:** `get` = first match; `get all` = all matches (unaligned arrays — don't combine); `query` = correlated multi-field rows.
 - **4d. Structuring pages (WebMiner):** `< 1,000 pages` → `webminer all` (free, local, zero tokens); `> 1,000 pages` → WebMiner Commercial (Spark). Acquire pages first with `crawl`/`swarm`, then feed the HTML directory in.
 - **4e. X-SQL quickstart:** `SELECT DOM_FIRST_TEXT(DOM,'h2') AS title ... FROM DOM_LOAD_AND_SELECT(@url, '.product-card')` — single quotes for CSS, `@url` unquoted, no JOIN/CTE/subqueries; run via `--sql @file.sql`.
@@ -285,7 +302,7 @@ Proven copy-paste recipes — full walkthroughs in **[quick-patterns.md](referen
 4. **Mouse Interactions** — `hover`, `dblclick`, `drag`; verify with `snapshot grep`
 5. **Dialog Handling** — `dialog-accept`/`dialog-dismiss` in a separate invocation (or `click --auto-dismiss-dialogs <ref>`)
 6. **Verifying Results** — `snapshot -v 0 --auto-diff --stdout` after every interaction; `generate-locator` for resilient selectors
-7. **Static Data Extraction** — `get text` / `get attr "<css>"` read the live page (no capture needed)
+7. **Static Data Extraction** — `get text` / `get attr "<css>"` straight off the live page: every `htmlsnapshot` read captures the active tab itself, so nothing has to be captured first
 8. **Bulk Extraction (X-SQL)** — correlated fields via `--sql @query.sql` with `DOM_LOAD_AND_SELECT(@url, '.product-card')`
 9. **PowerCSS** — `:expr()` visual-feature selectors; full reference in [power-dom.md](references/power-dom.md)
 10. **Agent Task Lifecycle** — `agent run` (async) → `status` → `result`; or `--wait [--wait-timeout]`
@@ -314,7 +331,7 @@ Organized by task — follow the link that matches what you're trying to do:
 [upload.md](references/upload.md) — upload local files to a page `<input type="file">` (multi-file, `--no-snapshot`, browser-host path rules)
 
 **Extract data from pages:**
-[htmlsnapshot.md](references/htmlsnapshot.md) — `get`, `get all`, `query`, `grep`, `summary`, `inspect`, `export`
+[htmlsnapshot.md](references/htmlsnapshot.md) — `get`, `get all`, `query`, `grep`, `summary` (incl. `--algorithm`), `algorithms`, `inspect`, `export`
 [eval.md](references/eval.md) — `eval`, `eval --ref`: live-DOM JavaScript evaluation (inline/`--file`/`--stdin`/`--base64`, `--await`, `--wait-selector`, `--json`, arrow-function rule)
 [x-sql.md](references/x-sql.md) — X-SQL function reference (DOM, STR, ARRAY namespaces); sub-references: [x-sql-dom-functions.md](references/x-sql-dom-functions.md), [x-sql-dom-load-select.md](references/x-sql-dom-load-select.md), [x-sql-dom-select-functions.md](references/x-sql-dom-select-functions.md), [x-sql-string-functions.md](references/x-sql-string-functions.md), [x-sql-array-functions.md](references/x-sql-array-functions.md)
 [htmlsnapshot-scenarios.md](references/htmlsnapshot-scenarios.md) — end-to-end recipes; focused variants: [advanced](references/htmlsnapshot-scenarios-advanced.md), [amazon](references/htmlsnapshot-scenarios-amazon.md), [audit](references/htmlsnapshot-scenarios-audit.md), [extraction](references/htmlsnapshot-scenarios-extraction.md)
