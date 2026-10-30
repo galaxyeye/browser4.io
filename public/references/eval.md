@@ -16,6 +16,9 @@ browser4-cli open "https://example.com"
 # Inline expression — prints the return value
 browser4-cli eval "document.title"
 
+# ⚠ FIRST RULE: an async expression needs --await
+browser4-cli eval --await "(async () => (await fetch('/api/x')).json())()"
+
 # Machine-readable output (scalars become quoted strings)
 browser4-cli eval --json "document.querySelectorAll('.product-card').length"
 
@@ -23,6 +26,10 @@ browser4-cli eval --json "document.querySelectorAll('.product-card').length"
 browser4-cli eval "element => element.textContent" --ref e5
 ```
 
+- **`--await` is the first thing to check.** Without it an async expression returns an
+  unresolved Promise; the backend reports that as a **failure** (`The expression returned
+  an unresolved Promise… re-run with --await`) instead of pretending a value came back.
+  A batch that returns `{}` is this case, not empty data.
 - The expression runs against the live DOM; JS exceptions are surfaced as CLI errors.
 - Only the **return value** is printed — `console.log` output is not part of eval's result
   (read it with `browser4-cli console`).
@@ -46,9 +53,14 @@ The expression is evaluated over CDP against the live page. Input channel and ta
 
 Return-value semantics:
 
-- JS `null` prints as `null`, and so does `undefined` in the default main world: an undefined
-  result is carried as JSON `null`, so the two are **indistinguishable in plain output**. An
-  empty string prints as `""`, which is a third result collapsing into a second rendering.
+- **A Promise is not a value.** An expression that returns one without `--await` is
+  reported as a failure with the fix named (`--await`); it is never silently rendered as
+  `{}` or empty data.
+- JS `undefined` prints a `null` line plus an explanation (`null  (undefined: …)`),
+  because a bare `null` taught nothing about why there was no data. `--json` keeps the
+  type-faithful `null` for it. Return a value (last expression or `return`) when the
+  result matters.
+- JS `null` prints as `null`. An empty string prints as `""`.
 - Objects and arrays are serialized as valid JSON.
 - `--json` wraps the result in the CLI's JSON envelope; scalar results become quoted strings, numbers/booleans/null pass through.
 - Do not rely on telling `undefined`, `null` and `''` apart — have the expression return an
@@ -176,6 +188,7 @@ printed (the logged lines are readable with `browser4-cli console`).
 | Expression mangled by the shell | Quotes stripped by bash/PowerShell before the CLI sees them | Use `--file`, `--stdin`/`--js`, `--base64`, or see [shell-quoting.md](shell-quoting.md) |
 | JS exception reported as a CLI error | The expression threw in the page (typo, missing element) | Guard with optional chaining or select the element first |
 | Element ref no longer resolves | Refs are ephemeral — they expire after navigation/interaction | Take a fresh `snapshot -i` and use the new ref |
+| `Error: eval returned null for a script, which is a wrapper failure …` (exit 1) | A regex or string literal in the script contains a raw `(` or `)`, so the raw paren count is unbalanced and the upstream IIFE detection re-invokes the script (`((expr))()`); the `TypeError` is swallowed as `null` | Rewrite the literal without a raw paren (`\s*\x28` instead of `\s*\(`, `[(]`→`\x28`), or split the script, or evaluate via `cdp Runtime.evaluate`. A single-line expression that really returns `null` keeps exit 0 — only scripts fail this way |
 
 ## Windows / Git Bash quoting
 

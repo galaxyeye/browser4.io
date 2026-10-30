@@ -248,8 +248,8 @@ the geolocation caveat: **[emulation.md](references/emulation.md)**.
 | `htmlsnapshot query` | X-SQL queries for structured extraction over a fresh snapshot of the active page (`--expires <dur>` queries the stored snapshot instead) | Multi-field, filtered, sorted data; the query captures the tab first, so live state (login, SPA, `eval` mutations) is visible | [x-sql.md](references/x-sql.md) |
 | `htmlsnapshot summary [--algorithm <id>]` | Compressed WPSI YAML summary of a fresh snapshot (`--expires <dur>` for the stored one); the summarization algorithm is pluggable (built-in `wpsi`, plugins can add ids) | Understand a page's structure/landmarks/key nodes cheaply; pick a non-default algorithm for specialized summaries | [htmlsnapshot.md](references/htmlsnapshot.md) |
 | `htmlsnapshot algorithms` | List installed summary algorithms (`id`, default marker, built-in vs plugin); no page or session needed | Discover valid `--algorithm` ids | [htmlsnapshot.md](references/htmlsnapshot.md) |
-| `eval` | Execute JavaScript in the page (`--await` for Promises/fetch, `--wait-selector` for late-rendered content, `--file`/`--stdin`/`--base64` to dodge shell quoting, `--world main\|isolated` to choose the JavaScript world). Runs in the **page's own world** by default, so page-defined globals resolve; JS `undefined` prints as `""`, like an empty string | Live DOM access, complex transforms | [eval.md](references/eval.md) |
-| `eval --ref` | Execute JS scoped to a specific element | Element property extraction (text, attrs, styles) | **⚠️ Expression MUST be an arrow function: `element => element.textContent`** |
+| `eval` | Execute JavaScript in the page (`--await` for Promises/fetch, `--wait-selector` for late-rendered content, `--file`/`--stdin`/`--base64` to dodge shell quoting, `--world main\|isolated` to choose the JavaScript world). Runs in the **page's own world** by default, so page-defined globals resolve. **First rule: an async expression needs `--await`** — without it the result is an unresolved Promise, which is reported as a failure (not as data). JS `undefined` prints as a `null` line with an explanation, so it cannot be mistaken for a value | Live DOM access, complex transforms | [eval.md](references/eval.md) |
+| `eval --ref` | Execute JS scoped to a specific element | Element property extraction (text, attrs, styles) | **⚠️ Expression MUST be an arrow function: `element => element.textContent`** — a bare `element.textContent` returns `null` |
 | `scrollintoview`, `pushstate`, `highlight` | Element scroll / history / visual highlight (eval-based shortcuts) | Scroll an element into view, push a history entry, outline an element | — |
 | `vitals`, `web-vitals` | Core Web Vitals measurement (LCP, CLS, INP, FCP, TTFB) via injected web-vitals lib | Performance checks on a live page (needs network for CDN) | — |
 | `set geo\|offline\|headers\|media\|device` | CDP emulation: geolocation, offline mode, extra headers, color scheme, device metrics | Emulate locations, networks, devices, and media features | [emulation.md](references/emulation.md) |
@@ -263,7 +263,7 @@ the geolocation caveat: **[emulation.md](references/emulation.md)**.
 | `webdb export`, `webdb normalize` | Export cached pages, normalize URLs to database keys | Post-crawl content extraction, URL key lookup | [webdb.md](references/webdb.md) |
 | `skills`, `skills get`, `skills path`, `skills unpack` | Bundled AI agent skill files | Refresh agent instructions, unpack skill files | [skills.md](references/skills.md) |
 | `skill-list`, `skill-info`, `skill-install`, `skill-uninstall`, `skill-reload` | Backend skill management | Install/manage server-side skills | [skills.md](references/skills.md) |
-| `screenshot`, `scroll`, `wait`, `resize` | Visual capture & viewport control | Screenshots, viewport sizing, scroll control. A `wait` whose condition never became true exits non-zero; `wait --download` polls a download directory but treats any pre-existing file as a completed download (see §5), and `resize` clears an active `set device` scale factor | — |
+| `screenshot`, `scroll`, `wait`, `resize` | Visual capture & viewport control | Screenshots, viewport sizing, scroll control. A `wait` whose condition never became true exits non-zero; `wait --download` polls a download directory and counts only files that appear or change after the call starts — pre-existing files never count (see §5) — and `resize` clears an active `set device` scale factor | — |
 | `tab-list`, `tab-new`, `tab-select`, `tab-close`, `window new` | Tab & window management | Multi-tab workflows, session-scoped tab operations | [tab-management.md](references/tab-management.md) |
 | `frames`, `frame <target>`, `frame main` | Iframe frame switching | Interact with content inside `<iframe>`s: `frame "#pay-frame"` then `fill`/`click`/`is visible` resolve inside that frame; `frames` lists the frame tree | [frames.md](references/frames.md) |
 | `diff snapshot` | Unified diff between two saved accessibility snapshots | Verify what changed between interactions (`snapshot --auto-diff` equivalent on saved files) | — |
@@ -309,31 +309,29 @@ What do you need to do?
 ```
 
 - **4a. Extraction method:** interact → `snapshot` + refs; read content → `htmlsnapshot get`/`query`; snapshot metadata → `htmlsnapshot` (capture); live DOM → `eval --json`; natural language → `extract`; many pages → `crawl`/`swarm`. **Every `htmlsnapshot` command captures the active page first and then works on that snapshot**, so `get`/`get all`/`inspect`/`summary`/`grep`/`export`/`query`/`readability` already see what the tab shows *right now* (form results, SPA updates, `eval` mutations, login state) — no capture needed first. `--expires <dur>` (default `0s`) is the one exception you can ask for: a positive value serves the stored snapshot of the active page while it is younger than the window and leaves the tab untouched, i.e. it reads the *previous* snapshot version. The capture is always keyed by the active tab's own URL, so a command aimed at another URL (`readability <url>`, `query --url <url>`) reads that URL's stored copy instead and never files the tab's document under it (`--expires` does not govern that path — it is already store-only). An empty read means the selector did not match the page as it is now (or no page is loaded) — per-command matrix in [decision-trees.md](references/decision-trees.md).
-- **4b. Bulk/scale:** one list page → `query`; known URLs → `crawl --seed-file`; follow links → `crawl <url> --depth N`; more crawl overlap → `crawl --parallel 8` (each unit collects on its own tab); parallel → `swarm`; scheduled → `loop`. An interrupted crawl (backend restart, crash, `--timeout` cut it off, or you cancelled it) keeps its id → `crawl list --status interrupted`, then `crawl resume <task-id>`: already-fetched URLs are **not** requested again and `crawl result` returns the union of both runs (add `--retry-failed` to re-fetch terminal failures; automatic resume at startup is off by default).
+- **4b. Bulk/scale:** one list page → `query`; known URLs → `crawl --seed-file`; follow links → `crawl <url> --depth N`; more crawl overlap → `crawl --parallel 8` (each unit collects on its own tab); parallel → `swarm`; scheduled → `loop`. An interrupted crawl (backend restart, crash, `--timeout` cut it off, or you cancelled it) keeps its id → `crawl list --status interrupted`, then `crawl resume <task-id>`: already-fetched URLs are **not** requested again and `crawl result` returns the union of both runs (add `--retry-failed` to re-fetch terminal failures; automatic resume at startup is off by default). **Which browser profile a bulk run reads with decides what the site answers** (locale, currency, delivery location, login — all cookies): `crawl` uses the calling session's browser (DEFAULT unless `-s <name>`), `crawl --session <name>` / `--profile <dir>` pins it explicitly, and `swarm create --session <name>` reuses a warmed session's profile directory (forcing one browser context). Warm a session once (`-s shop open <url>` → choose the storefront), then crawl with it; see [crawl.md](references/crawl.md#which-browser-the-crawl-reads-with).
 - **4c. Query granularity:** `get` = first match; `get all` = all matches (unaligned arrays — don't combine); `query` = correlated multi-field rows.
 - **4d. Structuring pages (WebMiner):** `< 1,000 pages` → `webminer all` (free, local, zero tokens); `> 1,000 pages` → WebMiner Commercial (Spark). Acquire pages first with `crawl`/`swarm`, then feed the HTML directory in. **`webminer all` truncates the corpus at `--max-files`, default 40** — a 900-page corpus silently encodes/clusters its first 40 files and still ends with `PIPELINE COMPLETE`, so raise the cap explicitly: `webminer all <dir> --max-files 900`. The interactive HTML report and the encoded dataset go under the **OS temp dir** (`%TEMP%/webminer-pereg/…`, `$TMPDIR/webminer-pereg/…`), not under `--output` (which receives the clustering results); the end-of-run summary prints both paths, and `webminer views <result-dir>` rebuilds the views next to the results. See [decision-trees.md](references/decision-trees.md).
 - **4e. X-SQL quickstart:** `SELECT DOM_FIRST_TEXT(DOM,'h2') AS title ... FROM DOM_LOAD_AND_SELECT(@url, '.product-card')` — single quotes for CSS, `@url` unquoted; run via `--sql @file.sql`. A **JOIN of two `DOM_LOAD_AND_SELECT` sources executes** (each source loads the page again, so joins are costly), while CTEs (`WITH`) and FROM-clause subqueries are not supported (a CTE fails as "Only select statements are supported"). Numeric-returning functions (`DOM_FIRST_FLOAT`, `STR_FIRST_FLOAT`) serialize as JSON **strings** unless you `CAST(... AS DOUBLE)`.
 
 ## 5. Critical Warnings
 
-> **Refs are single-use.** Re-snapshot after any interaction, and always after `goto`, `reload`, and tab switches. Never reuse a ref across navigations.
+> **Refs are single-use.** Re-snapshot after any interaction, and always after `goto`, `reload`, and tab switches. Never reuse a ref across navigations — full lifecycle (auto-snapshot, `--no-snapshot`, scroll side effects): [§2 Ref Lifecycle](#ref-lifecycle).
 
 > **Selectors break when sites change their HTML.** Discover them with `htmlsnapshot inspect` / `summary` before extracting. Treat scenario examples as patterns, not copy-paste recipes.
 
-> **Shell quoting on Windows.** Complex JS/SQL with nested quotes breaks inline: prefer `--sql @file.sql`, `--sql-stdin`, `--sql-base64`, `eval --file` / `--stdin` / `--base64`; for `htmlsnapshot inspect` use `@file`, `--stdin`, or `--selector-base64`. **On PowerShell always quote `@file` paths (`--sql "@query.sql"`)** — an unquoted `@` is the splatting operator. Never inline `--sql "…"` with double-quoted CSS selectors. See [shell-quoting.md](references/shell-quoting.md).
+> **Shell quoting on Windows.** Complex JS/SQL with nested quotes breaks inline — pass it as a file or stdin/base64 (`--sql @file.sql`, `eval --file x.js`; `htmlsnapshot inspect` also takes `@file` / `--stdin` / `--selector-base64`). **On PowerShell always quote `@file` paths (`--sql "@query.sql"`)** — an unquoted `@` is the splatting operator. Never inline `--sql "…"` with double-quoted CSS selectors. Git Bash (MSYS) path conversion and the full option list: [shell-quoting.md](references/shell-quoting.md).
 
 > **Don't cat snapshot files** — they can exceed 256KB, and `--stdout` can dump 63KB+ trees. Bound the capture with `-v 0`, `--depth`, `--selector`, `--no-boxes`, or use `snapshot grep` / `htmlsnapshot`. `snapshot --stdout`, `htmlsnapshot get html` and `grep` paginate at 2000 lines by default (`--all` / `--page-size 0` disables); `get all …` and `text`/`textcontent` reads print in full.
 
-> **`eval --ref` requires an arrow function:** `element => element.textContent`. Writing `element.textContent` (or `this.textContent`) returns `null` — the #1 mistake with element-scoped eval.
-
-> **`eval` runs in the page's own JavaScript world; JS `undefined` prints as `""`.**
-> Page-defined globals resolve (`eval "window.myApp.version"`), and globals written by `eval` are
-> visible to page scripts. `--world isolated` evaluates in the driver's own world
-> (`__browser4_runtime__`) instead — where the injected runtime lives and page scripts cannot see
-> what you write, but page globals read as `null`. DOM reads work in both worlds — drive the page's
-> own elements with `fill`/`click` for page-visible state. Return values: `null` prints as `null`,
-> but JS `undefined` arrives as an empty string, so **`undefined` and `''` both print `""`** (in
-> `--json`, the string `""`) — return a sentinel when it matters: `eval "typeof x === 'undefined' ? 'M' : x"`.
+> **`eval` runs in the page's own JavaScript world; an async expression needs `--await`.**
+> Page-defined globals resolve and globals written by `eval` are visible to page scripts;
+> `--world isolated` evaluates in the driver's `__browser4_runtime__` world instead, where page
+> scripts cannot see what you write but page globals read as `null`. DOM reads work in both worlds —
+> drive the page's own elements with `fill`/`click` for page-visible state. **An unresolved Promise is
+> reported as a failure, not as data** — pass `--await` for any `async () => …` / `fetch(...)`
+> expression. Return values: `null` prints as `null` and JS `undefined` prints a `null` line plus an
+> explanation (make the expression return a value). Details: [eval.md](references/eval.md).
 
 > **`wait --load networkidle` is not "the page is ready".** It proves only that the network went quiet: a page whose results are computed by page JS after load (dashboards, bot-detection verdicts), or fetched by a long-running XHR, can still be empty when it reports success — and the CLI now says so. For result pages, poll the result element first (`wait "<result-selector>"`, or `eval --wait-selector <css>`); treat `wait --load networkidle` as a network-settling extra step.
 
@@ -343,28 +341,32 @@ What do you need to do?
 
 > **Assertions and `wait` — read the verdict, don't trust the exit code blindly.**
 > `is visible|enabled|checked <sel>` print the value (`true`/`false`, and `null` from `is enabled` on a
-> missing or invalid selector); a false result still exits 0 unless you pass `--fail-on-false`, which
-> `--help` declares as "exit 1 when the assertion is false or null". `wait <selector>`, `wait --text`,
-> `wait --url` and `wait --fn` exit **non-zero when the condition never became true** (a satisfied wait
-> prints the elapsed time and the stderr note names the timed-out target); older builds printed success
-> even for a timed-out wait. If a build does not honour `--fail-on-false`, read the value instead:
-> `browser4-cli --json is visible "#result" | jq -r '.output.result'`, or cross-check live with
-> `eval "!!document.querySelector('#result')"`.
+> missing or invalid selector) and exit 0 even when it is false; pass `--fail-on-false` to make a
+> false/null verdict exit 1. `wait <selector>`, `wait --text`, `wait --url` and `wait --fn` exit
+> **non-zero when the condition never became true** (a satisfied wait prints the elapsed time and the
+> stderr note names the timed-out target).
 >
-> `wait --download` succeeds as soon as the watched directory holds **any** non-partial file while no
-> `.crdownload`/`.tmp`/`.part` file is present — a pre-existing file returns "Download complete"
-> instantly (it lists the whole directory, not what the download produced), so start clean with
-> `rm -rf ./downloads && mkdir -p ./downloads` or delete the old files first.
->
-> **Known deviations:** `wait --download` should count only files that appear *after* the call starts,
-> and accept a target filename.
+> `wait --download` baselines the watched directory when the call starts, so only files that appear or
+> change during the wait count as the download — a pre-existing (or untouched) file never does, and the
+> timeout message reports how many were ignored. **Known deviation:** it does not yet accept a target
+> filename.
 
-> **Snapshot modes — `-v 0` vs `-i` vs default:** plain `snapshot` captures the whole-page AX tree;
-> `-v 0` is the screenful currently visible (`-v all` = whole page); `-i` is interactive-only
-> rendering with inner text merged into element names; `htmlsnapshot` gives static HTML read by CSS
-> selector instead of refs. `-i` is a **strict filter** — draggable items and hover-only targets keep
-> their text but **lose their refs** (and vanish entirely under `-v`), so never use it as your only
-> orientation view; per-mode detail and the draggable caveat: [snapshot.md](references/snapshot.md#interactive-mode).
+> **`-i` is a strict filter, not an orientation view:** interactive-only rendering merges inner text
+> into element names but **drops the refs of draggable and hover-only targets** (they vanish under `-v`
+> too). Use plain `snapshot` / `-v 0` (screenful) / `-v all` (whole page) to orient yourself, and `-i`
+> only to pick a clickable target; `htmlsnapshot` reads static HTML by CSS selector instead of refs.
+> Per-mode detail: [snapshot.md](references/snapshot.md#interactive-mode).
+
+> **A localized marketplace is fixed by operating the page.** Landing on a "change language &
+> currency" page (or `/customer-preferences/…`), or getting Chinese titles/HKD prices for a
+> US-oriented task, means the *site* localized for this profile — not that a flag is missing.
+> Fix it like a shopper: `snapshot -v 0` (or `snapshot grep -i "language|currency|English"`) to
+> find the picker, `select`/`click` language + currency + delivery location, re-snapshot, then
+> verify one known product. The choice is stored in the browser profile, so the rest of the
+> session — and `crawl --session <name>` — inherits it. `?language=en_US`,
+> `set headers Accept-Language` and a hand-written cookie are only hints, not fixes: on a fresh
+> profile all three left amazon.com on the Chinese interstitial. Never post-process localized values;
+> full recipe: [bulk-collection.md](references/bulk-collection.md#pin-the-locale-by-operating-the-page-the-fix-that-works).
 
 ## 6. Quick Patterns & Deep Dives
 
@@ -384,14 +386,16 @@ Proven copy-paste recipes — full walkthroughs in **[quick-patterns.md](referen
 7. **Static Data Extraction** — `get text` / `get attr "<css>"` straight off the live page: every `htmlsnapshot` read captures the active tab itself, so nothing has to be captured first
 8. **Bulk Extraction (X-SQL)** — correlated fields via `--sql @query.sql` with `DOM_LOAD_AND_SELECT(@url, '.product-card')`
 9. **PowerCSS** — `:expr()` visual-feature selectors; full reference in [power-dom.md](references/power-dom.md)
-10. **Agent Task Lifecycle** — `agent run` (async) → `status` → `result`; or `--wait [--wait-timeout]`; `--follow` streams every step (add `--ndjson` for one JSON object per line); `-i` opens an interactive session where a line typed while a task runs steers it, and `/stats` reports what the run cost (LLM rounds/requests, tokens, tool calls). Task type is browser by default; `--coding` explicitly marks a pure file/build task (never auto-detected)
+10. **Agent Task Lifecycle** — `agent run` (async) → `status` → `result`; or `--wait [--wait-timeout]`; `--follow` streams every step (add `--ndjson` for one JSON object per line); `-i` opens an interactive session where a line typed while a task runs steers it, and `/stats` reports what the run cost (LLM rounds/requests, tokens, tool calls). Task type is browser by default; `--coding` explicitly marks a pure file/build task (never auto-detected). `--access full|write|read-build|read` narrows that task's coding tools (read-build = read + project build, no edits, no shell) and is reset when the task ends; `--auto-approve <preset>` sets the automatic approval ceiling for the same task — calls the preset refuses are granted (and audited) when the granting preset is no wider than the ceiling, while `denyTools`, protected paths and sensitive paths are never approved
 11. **Agent Memory** — run-start `## Memory` recall, `memory_note`, `memory_search`/`read`/`forget`, auto-deposit
 12. **Typing text (`type`)** — `type "text" <ref>`; add `--method auto|chars|exec` (requires a target ref): `auto` (default) types short text per-character and switches to a one-shot `execCommand('insertText')` bulk insert for long (>150 chars) or multi-line text on textarea/contenteditable; `chars` forces per-character typing; `exec` forces the bulk insert. `--verify` keeps its strict read-back semantics for tool callers.
 13. **File Upload** — `upload <ref> <file> [file...]` uploads one or more local files to a page file input (`<input type="file">` only); the paths must be readable by the browser process (remote backend: resolved on the backend host). Multi-file, absolute paths, `--no-snapshot` supported; see [upload.md](references/upload.md).
 
 **Resilient selectors (PowerCSS):** `div:expr(width > 400 && height > 400)` filters by computed geometry/position/content density instead of class names, so it survives markup changes — usable in any CSS selector and in `htmlsnapshot get` / X-SQL selectors. Operators: [power-dom.md](references/power-dom.md); refs → selectors: [css-selector-bridge.md](references/css-selector-bridge.md).
 
-**AI-powered extraction:** `agent run "<task>"` submits an async task — poll `agent status <id>` and read `agent result <id>`. Both answer the shared task envelope (`{taskId, status, statusCode, message, error, elapsedMs, …}`, vocabulary `queued|running|done|failed|cancelled`), so **`status: "done"` is the completion check** (terminal: `done`/`failed`/`cancelled`), and the payload carries the agent's `keyFindings`, `filesChanged` and the `workspace` its deliverables live in. `elapsedMs` tells a long-running task from one that just started. `agent list` shows the same knowledge, refreshed from the backend on every call; `extract` / `summarize` are the synchronous variants. `--follow` prints the task's steps live (`[00:03] #1 b4.run(…)`, the model's own text, slow/failed tools) and ends with the result; `--ndjson` emits the same stream as one JSON object per line; `agent run -i` keeps a session open, a line typed while a task runs is injected into it (steering) instead of becoming a second task, and `/stats` reports that run's LLM rounds/requests, token usage and tool calls. See [agent.md](references/agent.md).
+**AI-powered extraction:** `agent run "<task>"` submits an async task — poll `agent status <id>` and read `agent result <id>`. Both answer the shared task envelope (`{taskId, status, statusCode, message, error, errorCode, resumable, elapsedMs, …}`, vocabulary `queued|running|done|failed|cancelled`), so **`status: "done"` is the completion check** (terminal: `done`/`failed`/`cancelled`), and the payload carries the agent's `keyFindings`, `filesChanged` and the `workspace` its deliverables live in — the files **this run** wrote, never an earlier task's. A failed task makes `agent result` exit non-zero (pass `--allow-failed` to read the payload with exit 0) and names the cause in `errorCode`; `resume: agent run --resume <id>` continues the same workspace when the work can continue. `elapsedMs` tells a long-running task from one that just started. `agent list` shows the same knowledge, refreshed from the backend on every call; `extract` / `summarize` are the synchronous variants. `--follow` prints the task's steps live (`[00:03] #1 b4.run(…)`, the model's own text, slow/failed tools) plus a throttled `tokens <used> / <budget> (<pct>)` line (80% warns once, 100% prints the abort line) and ends with the result; `--ndjson` emits the same stream as one JSON object per line; `agent run -i` keeps a session open, a line typed while a task runs is injected into it (steering) instead of becoming a second task, and `/stats` reports that run's LLM rounds/requests, token usage and tool calls. Budgets: `--token-budget <n>` caps **this task** (0 = unlimited) without touching the backend default; `config set agent.token.budget.total` changes every later run. See [agent.md](references/agent.md).
+
+**Spreadsheet-backed tasks:** an `.xlsx` the task names is copied into `<workspace>/.b4inputs/` for the agent (it resolves the path itself — no repo-root hunting). `coding.read` refuses binary files, so the fields are extracted with a script (`python -c "import openpyxl…"`, or convert to CSV first). The **deliverable is CSV/JSONL**, not `.xlsx`: there is no spreadsheet writer, and the downgrade belongs in `problems` at `system.taskComplete`. **`b4.run` runs in that same workspace**: relative paths (`eval --file .b4scratch/x.js`) resolve there, `timeoutSeconds` above 30s is also passed to the CLI as its own `--timeout` (so a long `eval --await` batch is not cut at the MCP default), and a failing command reports `b4.run [fail] …` instead of a successful-looking result.
 
 ## 7. Reference Map
 
@@ -413,6 +417,7 @@ Organized by task — follow the link that matches what you're trying to do:
 [quick-patterns.md](references/quick-patterns.md) — proven interact/verify/extract copy-paste recipes
 
 **Run at scale (multiple pages/URLs):**
+[bulk-collection.md](references/bulk-collection.md) — collecting N items without losing data: persist rows as you go (CSV + `.b4scratch/progress.txt`), pin locale/currency, inspect big outputs without flooding context, deliver CSV (no xlsx writer), and quote commands correctly inside an agent run
 [crawl.md](references/crawl.md) — recursive crawling, seed-file bulk fetch, X-SQL extraction
 [swarm.md](references/swarm.md) — parallel scraping across multiple browser contexts
 [loop.md](references/loop.md) — repeated task execution with persistence/resume
@@ -434,6 +439,8 @@ Organized by task — follow the link that matches what you're trying to do:
 [development-mode.md](references/development-mode.md) — one backend per checkout: development ports from 8282, per-checkout state and app data, workspace-scoped `stop`
 
 **AI-powered extraction:** [agent.md](references/agent.md) — `extract`, `summarize`, `agent run|status|result`, LLM provider config
+[agent-access.md](references/agent-access.md) — task access presets (`full`/`write`/`read-build`/`read`), `PERMISSION_DENIED` codes, `--auto-approve` ceilings
+[agent-workspace.md](references/agent-workspace.md) — where an agent may read/write: per-task workspace, path boundary, credential/protected paths, automatic task-input copying, deliverable format
 
 **Resilient selectors:**
 [power-dom.md](references/power-dom.md) — PowerCSS `:expr()` visual-feature selectors
